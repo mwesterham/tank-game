@@ -1,0 +1,248 @@
+class PlayerTank
+{
+  private float[] position = {0, 0};
+  boolean orientation_updown = false;
+  boolean orientation_leftright = true;
+  boolean orientation_upright = false;
+  boolean orientation_upleft = false;
+  private float tank_speed;
+  private boolean right_collision = false;
+  private boolean left_collision = false;
+  private boolean above_collision = false;
+  private boolean below_collision = false;
+  
+  private float tank_width;
+  private float tank_height;
+  private float turret_cir_width;
+  private float turret_cir_height;
+  private float turret_rec_width;
+  private float turret_rec_height;
+  private int[] tank_color = {0, 0, 255};
+  private int[] turret_color = {255, 0, 0};
+  private int[] tank_outline_color = {0, 0, 0};
+  private float right_collision_dist;
+  private float left_collision_dist;
+  private float above_collision_dist;
+  private float below_collision_dist;
+  
+  private float bullet_size;
+  private float bullet_speed;
+  
+  public PlayerTank(float tank_width, float tank_height, float tank_speed, float bullet_size, float bullet_speed, float spawnX, float spawnY)
+  {
+    this.position[0] = spawnX;
+    this.position[1] = spawnY;
+    this.tank_width = tank_width;
+    this.tank_height = tank_height;
+    this.tank_speed = tank_speed;
+    this.turret_cir_width = tank_width * 1/3;
+    this.turret_cir_height = tank_height * 1/3;
+    this.turret_rec_width = tank_width * 2/5 ;
+    this.turret_rec_height = tank_height * 1/3;
+    this.right_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to the right 
+    this.left_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to the left
+    this.above_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to above
+    this.below_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to below
+    this.bullet_size = bullet_size;
+    this.bullet_speed = bullet_speed;
+  }
+  
+  public void updatePosition()
+  {
+    //the collisionCheck has to update position since speed is based on direction => look in the pushmatrix
+    
+    collisionCheck();
+    if(right_collision)
+    {
+      position[0] -= tank_speed;
+      right_collision = false;
+    }
+    if(left_collision)
+    {
+      position[0] += tank_speed;
+      left_collision = false;
+    }
+    if(above_collision)
+    {
+      position[1] += tank_speed;
+      above_collision = false;
+    }
+    if(below_collision)
+    {
+      position[1] -= tank_speed;
+      below_collision = false;
+    }
+  }
+  
+  private void collisionCheck()
+  {
+    //do not do World myWorld = new World(6) here, it already sees it from the TankGame file
+    //vertical wall check right_collision
+    for(int i = 0; i < myWorld.getNumWalls(); i++)
+    {
+      if ((myWorld.getWalls()[i][0]) - (position[0] + right_collision_dist) <= 0 //scans if the collision box overlaps with a rectangle along a vertical line
+      && (myWorld.getWalls()[i][0]) - (position[0]) >= 0 //Makes sure that this collision box does not affect the other side of the box
+      && (position[1] - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 //makes sure that the tank is within the right vertical segment of the rectangle
+      && (position[1] + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0 //makes sure that the tank is within the right vertical segment of the rectangle
+      || (1900) - (position[0] + right_collision_dist / 2) <= 0) //makes sure the tank cannot go off-screen
+        right_collision = true;
+    }
+    
+    //vertical wall check left_collision
+    for(int i = 0; i < myWorld.getNumWalls(); i++)
+    {
+      if ((myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (position[0] - left_collision_dist) >= 0 
+      && (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (position[0]) <= 0
+      && (position[1] - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 
+      && (position[1] + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0
+      || (position[0] - left_collision_dist / 2) <= 0)
+        left_collision = true;
+    }
+    
+    //horizontal wall check above_collision
+    for(int i = 0; i < myWorld.getNumWalls(); i++)
+    {
+      if ((myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (position[1] - above_collision_dist) >= 0 
+      && (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (position[1]) <= 0
+      && (position[0] - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
+      && (position[0] + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
+      || (position[1] - tank_height / 2) <= 0)
+        above_collision = true;
+    }
+    
+    //horizontal wall check below_collision
+    for(int i = 0; i < myWorld.getNumWalls(); i++)
+    {
+      if ((myWorld.getWalls()[i][1]) - (position[1] + below_collision_dist) <= 0 
+      && (myWorld.getWalls()[i][1]) - (position[1]) >= 0
+      && (position[0] - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
+      && (position[0] + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
+      || (900) - (position[1] + tank_height / 2) <= 0)
+        below_collision = true;
+    }
+
+    //bullet collision with tank check
+    for(int i = 0; i < myController.getBList().size(); i++)
+    {
+      if(dist(position[0], position[1], myController.getBList().get(i).getRealPosition()[0], myController.getBList().get(i).getRealPosition()[1]) 
+      <= tank_width / 2 + myController.getBList().get(i).getSize() / 2
+      && myController.getBList().get(i).playerCollision())
+        myController.removeBullet(myController.getBList().get(i));
+    }
+  }
+  
+  public void renderTank()
+  {
+    stroke(tank_outline_color[0],tank_outline_color[1], tank_outline_color[0]);
+    //body render call
+    renderBody();
+    //turret render call
+    renderTurret();
+  }
+  
+  private void renderBody()
+  {
+    
+    //body rendering
+    pushMatrix();
+    translate(position[0], position[1]);
+    if ((move_up || move_down) && !move_left && !move_right)
+    {
+      orientation_updown = true;
+      orientation_leftright = false;
+      orientation_upright = false;
+      orientation_upleft = false;
+    }
+    if ((move_left || move_right) && !move_up && !move_down)
+    {
+      orientation_updown = false;
+      orientation_leftright = true;
+      orientation_upright = false;
+      orientation_upleft = false;
+    }
+        if (move_up && move_right || move_down && move_left)
+    {
+      orientation_updown = false;
+      orientation_leftright = false;
+      orientation_upright = true;
+      orientation_upleft = false;
+    }
+    if (move_up && move_left || move_down && move_right)
+    {
+      orientation_updown = false;
+      orientation_leftright = false;
+      orientation_upright = false;
+      orientation_upleft = true;
+    }
+    
+    if(orientation_updown)
+      rotate(atan2(1, 0));
+    if(orientation_leftright)
+      rotate(atan2(0, 1));
+    if(orientation_upright)
+      rotate(atan2(-1, 1));
+    if(orientation_upleft)
+      rotate(atan2(1, 1));
+      
+    if(move_left)
+      position[0] -= tank_speed;
+    if(move_right)
+      position[0] += tank_speed;
+    if(move_up)
+      position[1] -= tank_speed;
+    if(move_down)
+      position[1] += tank_speed;
+
+    fill(tank_color[0], tank_color[1], tank_color[2]);
+    ellipse(0, 0, tank_width, tank_height);
+    popMatrix();
+  }
+  
+  private void renderTurret()
+  {
+    //turret rendering
+    pushMatrix();
+    translate(position[0], position[1]);
+    rotate(atan2(mouseY - position[1], mouseX - position[0]));
+    fill(turret_color[0], turret_color[1], turret_color[2]);
+    rect(0,0 - (turret_cir_height) * 1/2, turret_rec_width, turret_rec_height);
+    ellipse(0, 0, turret_cir_width, turret_cir_height);
+    popMatrix();
+  }
+  
+  public void shoot()
+  {
+    stroke(tank_color[0], tank_color[1], tank_color[2]);
+    myController.addBullet(new Bullet(bullet_size, bullet_speed, getPosition()[0], getPosition()[1], getDirection(), getTurretLength(), false, true, false, true, 255, 0, 0, tank_color[0], tank_color[1], tank_color[2]));
+    //(size, speed, spawnpoint x, spawnpoint y, direction of shot, player_shot_collision_with_body allowed, enemy_shot_collision_with_body allowed, player_bullet_collide allowed, enemy_bullet_collide allowed, bullet_color_red, bullet_color_green, bullet_color_blue, outline_color_red, outline_color_green, outline_color_blue)
+  }
+  
+  public void setTurretSize(float tank_width, float tank_height)
+  {
+    this.turret_cir_width = tank_width * 1/3;
+    this.turret_cir_height = tank_height * 1/3;
+    this.turret_rec_width = tank_width * 2/5 ;
+    this.turret_rec_height = tank_height * 1/3;
+  }
+  
+  public float[] getPosition()
+  {
+    return position;
+  }
+  
+  public float getDirection()
+  {
+    return atan2(mouseY - position[1], mouseX - position[0]) - (float)Math.PI / 2;
+
+  }
+  
+  public float getSpeed()
+  {
+    return tank_speed; 
+  }
+  
+  public float getTurretLength()
+  {
+    return turret_rec_width;
+  }
+}
