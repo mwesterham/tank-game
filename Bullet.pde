@@ -18,7 +18,13 @@ class Bullet
   private boolean player_bullet_collide_allowed;
   private boolean enemy_bullet_collide_allowed;
   
-  public Bullet(float size, float speed, float spawn_x, float spawn_y, float direction, float turret_length, boolean player_collision_allowed, boolean enemy_collision_allowed, boolean player_bullet_collide_allowed, boolean enemy_bullet_collide_allowed, int bullet_color_red, int bullet_color_green, int bullet_color_blue, int outline_color_red, int outline_color_green, int outline_color_blue)
+  private boolean right_wall_collision;
+  private boolean left_wall_collision;
+  private boolean above_wall_collision;
+  private boolean below_wall_collision;
+  private int number_of_collisions;
+  
+  public Bullet(int number_of_collisions, float size, float speed, float spawn_x, float spawn_y, float direction, float turret_length, boolean player_collision_allowed, boolean enemy_collision_allowed, boolean player_bullet_collide_allowed, boolean enemy_bullet_collide_allowed, int bullet_color_red, int bullet_color_green, int bullet_color_blue, int outline_color_red, int outline_color_green, int outline_color_blue)
   {
     this.bullet_width = size;
     this.bullet_height = size;
@@ -41,6 +47,12 @@ class Bullet
     this.enemy_collision_allowed = enemy_collision_allowed;
     this.player_bullet_collide_allowed = player_bullet_collide_allowed;
     this.enemy_bullet_collide_allowed = enemy_bullet_collide_allowed;
+    
+    this.right_wall_collision = false;
+    this.left_wall_collision = false;
+    this.above_wall_collision = false;
+    this.below_wall_collision = false;
+    this.number_of_collisions = number_of_collisions;
   }
   
   public void renderBullet()
@@ -60,6 +72,29 @@ class Bullet
   {
     this.bullet_position[1] += this.bullet_speed;
   }
+  
+  public void updateBulletSpeedDirection()
+  {    
+      this.bullet_speed = 0;
+      
+//      myController.addBullet(new Bullet(
+//      /*Number of collisions*/getNumOfCollisions(), 
+//      myTank.bullet_size, 
+//      myTank.bullet_speed, 
+//      /*spawnpoint x*/getRealPosition()[0], 
+//      /*spawnpoint y*/getRealPosition()[1], 
+//      /*Direction of Bullet*/3.14159/2, 
+//      /*spawn distance from center of rotation*/ getSpeed(), 
+//      /*player_shot_collision_with_body allowed*/false, 
+//      /*enemy_shot_collision_with_body allowed*/true, 
+//      /*player_bullet_collide allowed*/false, 
+//      /*enemy_bullet_collide allowed*/true, 
+//      /*Bullet color...*/myTank.turret_color[0], myTank.turret_color[1], myTank.turret_color[2], 
+//      /*Bullet outline color...*/myTank.tank_color[0], myTank.tank_color[1], myTank.tank_color[2]));
+      
+      //(size, speed, spawnpoint x, spawnpoint y, direction of shot, spawn distance from center, player_shot_collision_with_body allowed, enemy_shot_collision_with_body allowed, player_bullet_collide allowed, enemy_bullet_collide allowed, bullet_color_red, bullet_color_green, bullet_color_blue, outline_color_red, outline_color_green, outline_color_blue)
+      
+  }
 
   public void calcRealPosition()
   {
@@ -67,6 +102,60 @@ class Bullet
     bullet_real_position[1] = (bullet_position[1] + turret_length) * sin(bullet_direction + (float) Math.PI / 2) + spawn_y;
   }
   
+  public void rightWallCollisionTrue()
+  {
+      right_wall_collision = true;
+  }
+ public boolean rightWallCollision()
+ {
+   return right_wall_collision;
+ }
+  
+  public void rightWallCollisionFalse()
+  {
+      right_wall_collision = false;
+  }
+  
+  public void leftWallCollisionTrue()
+  {
+      left_wall_collision = true;
+  }
+  
+  public void leftWallCollisionFalse()
+  {
+      left_wall_collision = false;
+  }
+  
+  public void aboveWallCollisionTrue()
+  {
+      above_wall_collision = true;
+  }
+  
+  public void aboveWallCollisionFalse()
+  {
+      above_wall_collision = false;
+  }
+  
+  public void belowWallCollisionTrue()
+  {
+      below_wall_collision = true;
+  }
+  
+  public void belowWallCollisionFalse()
+  {
+      below_wall_collision = false;
+  }
+  
+  public void addCollisionToCount()
+  {
+    number_of_collisions += 1;
+  }
+  
+  public int getNumOfCollisions()
+  {
+    return number_of_collisions;
+  }
+
   public float[] getRealPosition()
   {
     calcRealPosition();

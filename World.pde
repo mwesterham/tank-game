@@ -15,18 +15,19 @@ class World
   
   public void generateWorld()
   {
+    /*
     walls[0][0] = 100; //x-coord
     walls[0][1] = 50;//y cord
     walls[0][2] = 1800;//width
     walls[0][3] = 20;//length
-    
+    */
     Random rand = new Random();
-    for(int i = 1; i < num_of_walls; i++)
+    for(int i = 0; i < num_of_walls; i++)
     {
         walls[i][0] = rand.nextInt(1900); //x-coord
         walls[i][1] = rand.nextInt(900);//y cord
-        walls[i][2] = rand.nextInt(200) + 10;//width
-        walls[i][3] = rand.nextInt(200) + 10;//length
+        walls[i][2] = rand.nextInt(100) + 50;//width
+        walls[i][3] = rand.nextInt(100) + 50;//length
     }
     
   }

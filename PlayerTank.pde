@@ -49,9 +49,9 @@ class PlayerTank
   
   public void updatePosition()
   {
-    //the collisionCheck has to update position since speed is based on direction => look in the pushmatrix
+    //the renderBody() has to update position since speed is based on direction => look in the pushmatrix
     
-    collisionCheck();
+    //collisionCheck();
     if(right_collision)
     {
       position[0] -= tank_speed;
@@ -77,42 +77,33 @@ class PlayerTank
   private void collisionCheck()
   {
     //do not do World myWorld = new World(6) here, it already sees it from the TankGame file
-    //vertical wall check right_collision
-    for(int i = 0; i < myWorld.getNumWalls(); i++)
+    for(int i = 0; i < myWorld.getNumWalls(); i++) //loops through all of the walls
     {
+    //vertical wall check right_collision
       if ((myWorld.getWalls()[i][0]) - (position[0] + right_collision_dist) <= 0 //scans if the collision box overlaps with a rectangle along a vertical line
       && (myWorld.getWalls()[i][0]) - (position[0]) >= 0 //Makes sure that this collision box does not affect the other side of the box
       && (position[1] - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 //makes sure that the tank is within the right vertical segment of the rectangle
       && (position[1] + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0 //makes sure that the tank is within the right vertical segment of the rectangle
       || (1900) - (position[0] + right_collision_dist / 2) <= 0) //makes sure the tank cannot go off-screen
         right_collision = true;
-    }
     
     //vertical wall check left_collision
-    for(int i = 0; i < myWorld.getNumWalls(); i++)
-    {
       if ((myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (position[0] - left_collision_dist) >= 0 
       && (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (position[0]) <= 0
       && (position[1] - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 
       && (position[1] + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0
       || (position[0] - left_collision_dist / 2) <= 0)
         left_collision = true;
-    }
     
     //horizontal wall check above_collision
-    for(int i = 0; i < myWorld.getNumWalls(); i++)
-    {
       if ((myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (position[1] - above_collision_dist) >= 0 
       && (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (position[1]) <= 0
       && (position[0] - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
       && (position[0] + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
       || (position[1] - tank_height / 2) <= 0)
         above_collision = true;
-    }
     
     //horizontal wall check below_collision
-    for(int i = 0; i < myWorld.getNumWalls(); i++)
-    {
       if ((myWorld.getWalls()[i][1]) - (position[1] + below_collision_dist) <= 0 
       && (myWorld.getWalls()[i][1]) - (position[1]) >= 0
       && (position[0] - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
@@ -134,6 +125,8 @@ class PlayerTank
   public void renderTank()
   {
     stroke(tank_outline_color[0],tank_outline_color[1], tank_outline_color[0]);
+    //make sure it updates position
+    updatePosition();
     //body render call
     renderBody();
     //turret render call
@@ -194,6 +187,7 @@ class PlayerTank
       position[1] += tank_speed;
 
     fill(tank_color[0], tank_color[1], tank_color[2]);
+    stroke(0, 0, 0);
     ellipse(0, 0, tank_width, tank_height);
     popMatrix();
   }
@@ -213,8 +207,22 @@ class PlayerTank
   public void shoot()
   {
     stroke(tank_color[0], tank_color[1], tank_color[2]);
-    myController.addBullet(new Bullet(bullet_size, bullet_speed, getPosition()[0], getPosition()[1], getDirection(), getTurretLength(), false, true, false, true, 255, 0, 0, tank_color[0], tank_color[1], tank_color[2]));
-    //(size, speed, spawnpoint x, spawnpoint y, direction of shot, player_shot_collision_with_body allowed, enemy_shot_collision_with_body allowed, player_bullet_collide allowed, enemy_bullet_collide allowed, bullet_color_red, bullet_color_green, bullet_color_blue, outline_color_red, outline_color_green, outline_color_blue)
+    myController.addBullet(new Bullet(
+    /*Number of collisions*/ 0, 
+    bullet_size, 
+    bullet_speed, 
+    /*spawnpoint x*/ getPosition()[0], 
+    /*spawnpoint y*/ getPosition()[1], 
+    /*Direction of Bullet*/ getDirection(), 
+    /*spawn distance from center of rotation*/ getTurretLength(), 
+    /*player_shot_collision_with_body allowed*/ false, 
+    /*enemy_shot_collision_with_body allowed*/ true, 
+    /*player_bullet_collide allowed*/ false, 
+    /*enemy_bullet_collide allowed*/ true, 
+    /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
+    /*Bullet outline color...*/ tank_color[0], tank_color[1], tank_color[2]));
+    
+    //(number of collisions occured, size, speed, spawnpoint x, spawnpoint y, direction of shot, spawn distance from center, player_shot_collision_with_body allowed, enemy_shot_collision_with_body allowed, player_bullet_collide allowed, enemy_bullet_collide allowed, bullet_color_red, bullet_color_green, bullet_color_blue, outline_color_red, outline_color_green, outline_color_blue)
   }
   
   public void setTurretSize(float tank_width, float tank_height)
@@ -223,6 +231,20 @@ class PlayerTank
     this.turret_cir_height = tank_height * 1/3;
     this.turret_rec_width = tank_width * 2/5 ;
     this.turret_rec_height = tank_height * 1/3;
+  }
+  
+  public void setTankColor(int red, int green, int blue)
+  {
+    this.tank_color[0] = red;
+    this.tank_color[1] = green;
+    this.tank_color[2] = blue;
+  }
+  
+  public void setTurretColor(int red, int green, int blue)
+  {
+    this.turret_color[0] = red;
+    this.turret_color[1] = green;
+    this.turret_color[2] = blue;
   }
   
   public float[] getPosition()
