@@ -1,7 +1,7 @@
 class EnemyAI
 {
-  private float[] enemy_position = {0, 0};
-  private float[] target_position = {0, 0};
+  private PVector location;
+  private PVector targetLocation;
   
   private boolean target_visible =false;
   private boolean shot_safe = false;
@@ -9,10 +9,7 @@ class EnemyAI
   
   public EnemyAI(EnemyTank enemy, PlayerTank myTank)
   {
-    this.enemy_position[0] = enemy.getPosition()[0];
-    this.enemy_position[1] = enemy.getPosition()[1];
-    this.target_position[0] = myTank.getPosition()[0];
-    this.target_position[1] = myTank.getPosition()[1];
+    location = new PVector(enemy.getPosition().x, enemy.getPosition().y);
   }
   
   public void shootCheck()

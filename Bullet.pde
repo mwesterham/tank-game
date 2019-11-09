@@ -5,14 +5,11 @@ class Bullet
   private int[] bullet_color = {0, 0, 0};
   private int[] bullet_outline_color = {0, 0, 0};
   
-  private float spawn_x;
-  private float spawn_y;
-  private float[] bullet_position = {0, 0};
-  private float[] bullet_real_position = {0, 0};
-  private float bullet_speed;
+  private PVector location;
+  private float turret_length;
+  private PVector velocity;
   private float bullet_direction;
   
-  private float turret_length;
   private boolean player_collision_allowed;
   private boolean enemy_collision_allowed;
   private boolean player_bullet_collide_allowed;
@@ -35,14 +32,12 @@ class Bullet
     this.bullet_outline_color[1] = outline_color_green;
     this.bullet_outline_color[2] = outline_color_blue;
     
-    this.bullet_speed = speed;
-    this.spawn_x = spawn_x;
-    this.spawn_y = spawn_y;
-    this.bullet_position[0] = 0;
-    this.bullet_position[1] = 0;
+    velocity = new PVector(speed * sin(-direction), speed * cos(direction));
+    location = new PVector(spawn_x, spawn_y);
+    this.turret_length = turret_length;
+    
     this.bullet_direction = direction;
     
-    this.turret_length = turret_length;
     this.player_collision_allowed = player_collision_allowed;
     this.enemy_collision_allowed = enemy_collision_allowed;
     this.player_bullet_collide_allowed = player_bullet_collide_allowed;
@@ -58,58 +53,30 @@ class Bullet
   public void renderBullet()
   {
     //bullet rendering
-    pushMatrix();
-    translate(spawn_x, spawn_y);
-    rotate(bullet_direction);
-    translate(0, turret_length + bullet_height * 4 / 7);
     fill(bullet_color[0], bullet_color[1], bullet_color[2]);
     stroke(bullet_outline_color[0], bullet_outline_color[1], bullet_outline_color[2]);
-    ellipse(bullet_position[0], bullet_position[1], bullet_width, bullet_height);
-    popMatrix();
+    ellipse(location.x + turret_length * sin(-bullet_direction), location.y + turret_length * cos(bullet_direction), bullet_width, bullet_height);
   }
   
   public void updatePosition()
   {
-    this.bullet_position[1] += this.bullet_speed;
+    location.add(velocity);
   }
   
-  public void updateBulletSpeedDirection()
+  public void updateBulletDirectionPosition()
   {    
-      this.bullet_speed = 0;
-      
-//      myController.addBullet(new Bullet(
-//      /*Number of collisions*/getNumOfCollisions(), 
-//      myTank.bullet_size, 
-//      myTank.bullet_speed, 
-//      /*spawnpoint x*/getRealPosition()[0], 
-//      /*spawnpoint y*/getRealPosition()[1], 
-//      /*Direction of Bullet*/3.14159/2, 
-//      /*spawn distance from center of rotation*/ getSpeed(), 
-//      /*player_shot_collision_with_body allowed*/false, 
-//      /*enemy_shot_collision_with_body allowed*/true, 
-//      /*player_bullet_collide allowed*/false, 
-//      /*enemy_bullet_collide allowed*/true, 
-//      /*Bullet color...*/myTank.turret_color[0], myTank.turret_color[1], myTank.turret_color[2], 
-//      /*Bullet outline color...*/myTank.tank_color[0], myTank.tank_color[1], myTank.tank_color[2]));
-      
-      //(size, speed, spawnpoint x, spawnpoint y, direction of shot, spawn distance from center, player_shot_collision_with_body allowed, enemy_shot_collision_with_body allowed, player_bullet_collide allowed, enemy_bullet_collide allowed, bullet_color_red, bullet_color_green, bullet_color_blue, outline_color_red, outline_color_green, outline_color_blue)
-      
-  }
-
-  public void calcRealPosition()
-  {
-    bullet_real_position[0] = (bullet_position[1] + turret_length) * cos(bullet_direction + (float) Math.PI / 2) + spawn_x;
-    bullet_real_position[1] = (bullet_position[1] + turret_length) * sin(bullet_direction + (float) Math.PI / 2) + spawn_y;
+    velocity.sub(velocity); //makes the velocity zero so it can be deleted in the controller class
   }
   
   public void rightWallCollisionTrue()
   {
       right_wall_collision = true;
   }
- public boolean rightWallCollision()
- {
-   return right_wall_collision;
- }
+   
+  public boolean rightWallCollision()
+  {
+    return right_wall_collision;
+  }
   
   public void rightWallCollisionFalse()
   {
@@ -156,10 +123,10 @@ class Bullet
     return number_of_collisions;
   }
 
-  public float[] getRealPosition()
+  public PVector getPosition()
   {
-    calcRealPosition();
-    return bullet_real_position;
+    PVector realLocation = new PVector(location.x + turret_length * sin(-bullet_direction), location.y + turret_length * cos(bullet_direction));
+    return realLocation;
   }
   
   public boolean playerCollision()
@@ -187,8 +154,8 @@ class Bullet
     return bullet_width;
   }
   
-  public float getSpeed()
+  public PVector getVelocity()
   {
-     return bullet_speed; 
+     return velocity;
   }
 }
