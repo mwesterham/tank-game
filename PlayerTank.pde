@@ -209,7 +209,6 @@ class PlayerTank
   
   public void shoot()
   {
-    stroke(tank_color[0], tank_color[1], tank_color[2]);
     myController.addBullet(new Bullet(
     /*Number of collisions*/ 0, 
     bullet_size, 
@@ -222,7 +221,7 @@ class PlayerTank
     /*enemy_shot_collision_with_body allowed*/ true, 
     /*player_bullet_collide allowed*/ false, 
     /*enemy_bullet_collide allowed*/ true, 
-    /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
+    /*Bullet color...*/ /*turret_color[0], turret_color[1], turret_color[2]*/ 255,255,255, 
     /*Bullet outline color...*/ tank_color[0], tank_color[1], tank_color[2]));
   }
   

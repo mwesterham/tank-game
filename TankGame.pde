@@ -1,10 +1,10 @@
   private PlayerTank myTank = new PlayerTank(60, 50, 2.5, 20, 6, 600, 500);//(tank_width, tank_height, tank_speed, bullet_size, bullet_speed, spawn_x, spawn_y)
   private EnemyTank enemy1 = new EnemyTank(100, 100, 1, 50, 2, 100, 200, myTank.getPosition().x, myTank.getPosition().y);//(tank_width, tank_height, tank_speed, bullet_size, bullet_speed, spawn_x, spawn_y, target_location_x, target_location_y)
-  private EnemyTank enemy2 = new EnemyTank(100, 100, 1, 30, 4, 200, 200, myTank.getPosition().x, myTank.getPosition().y);
-  private EnemyTank enemy3 = new EnemyTank(100, 100, 1, 30, 4, 300, 200, myTank.getPosition().x, myTank.getPosition().y);
-  private EnemyTank enemy4 = new EnemyTank(100, 100, 1, 30, 4, 400, 200, myTank.getPosition().x, myTank.getPosition().y);
-  private EnemyTank enemy5 = new EnemyTank(100, 100, 1, 30, 4, 500, 200, myTank.getPosition().x, myTank.getPosition().y);
-  private EnemyTank enemy6 = new EnemyTank(100, 100, 1, 30, 4, 600, 200, myTank.getPosition().x, myTank.getPosition().y);
+  private EnemyTank enemy2 = new EnemyTank(100, 100, 1, 30, 5, 200, 200, myTank.getPosition().x, myTank.getPosition().y);
+  private EnemyTank enemy3 = new EnemyTank(100, 100, 1, 30, 5, 300, 200, myTank.getPosition().x, myTank.getPosition().y);
+  private EnemyTank enemy4 = new EnemyTank(100, 100, 1, 30, 5, 400, 200, myTank.getPosition().x, myTank.getPosition().y);
+  private EnemyTank enemy5 = new EnemyTank(100, 100, 1, 30, 5, 500, 200, myTank.getPosition().x, myTank.getPosition().y);
+  private EnemyTank enemy6 = new EnemyTank(100, 100, 1, 30, 5, 600, 200, myTank.getPosition().x, myTank.getPosition().y);
   private EnemyAI eai = new EnemyAI(enemy1, myTank);//AI applied to enemy1 targeting myTank
 
   private World myWorld = new World(20);
@@ -25,7 +25,6 @@ void setup()
 void draw() 
 {
   tickCount++;
-  
   background(130, 130, 130);
   myWorld.displayWorld();
   

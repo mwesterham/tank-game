@@ -25,7 +25,7 @@ class Controller
       TempBullet = b.get(i);
       TempBullet.updatePosition();
       collisionCheck();
-      
+
       if (TempBullet.getVelocity().mag() == 0)
         myController.removeBullet(b.get(i));
     }
@@ -39,19 +39,16 @@ class Controller
   
   public void collisionBulletBulletCheck()//checks the collisions between different bullets
   {
-    for(int i = 0; i < getBList().size(); i++) //cycles through all the bullets
-    {
-      for(int a = 1; a < getBList().size(); a++) //cycles through the bullets in front of i bullet in the list
-      {  
-        if(dist(getBList().get(a).getPosition().x, getBList().get(a).getPosition().y, getBList().get(i).getPosition().x, getBList().get(i).getPosition().y)
-        <= getBList().get(a).getSize() / 3 + getBList().get(i).getSize() / 3)//checks if the bullets are within range of eachother, divide by 3 if want to look realistic, divide by 2 to be logically accurate
+    for(int a = 1; a < getBList().size(); a++) //cycles through the bullets in front of i bullet in the list
+    {  
+      if(dist(getBList().get(a).getPosition().x, getBList().get(a).getPosition().y, TempBullet.getPosition().x, TempBullet.getPosition().y)
+      <= getBList().get(a).getSize() / 2 + TempBullet.getSize() / 2)//checks if the bullets are within range of eachother, divide by 3 if want to look realistic, divide by 2 to be logically accurate
+      {
+        if(TempBullet.playerBulletCollision() && getBList().get(a).enemyBulletCollision()
+        || TempBullet.enemyBulletCollision() && getBList().get(a).playerBulletCollision())//If bullet collision is enabled remove bullets
         {
-          if(getBList().get(i).playerBulletCollision() && getBList().get(a).enemyBulletCollision()
-          || getBList().get(i).enemyBulletCollision() && getBList().get(a).playerBulletCollision())//If bullet collision is enabled remove bullets
-          {
-            removeBullet(getBList().get(i));
-            removeBullet(getBList().get(a-1));
-          }
+          TempBullet.setVelocityZero(); //Primes it to be deleted in the update() method
+          getBList().get(a).setVelocityZero(); //Ditto ^
         }
       }
     }
@@ -59,66 +56,85 @@ class Controller
  
   public void collisionBulletWallCheck()//checks collisions between bullets and walls
   {
-    for(int i = 0; i < getBList().size(); i++) //cycles through all the bullets    
+    //MUST CHECK OUTER WALL COLLISIONS SEPERATELY, NOT ON A WALL-TO-WALL BASIS
+    
+    //Checks the edge walls on the left and right side
+    if (TempBullet.getPosition().x + TempBullet.getSize() * sqrt(2) / 4 / 2 < 0 || (TempBullet.getPosition().x + TempBullet.getSize() * sqrt(2) / 4 / 2) > width)
     {
-      for(int a = 0; a < myWorld.getNumWalls(); a++)//cycles through all of the walls
+      TempBullet.sideWallCollisionTrue();
+      TempBullet.addCollisionToCount();
+      TempBullet.updateBulletDirection();
+    }
+    else
+      TempBullet.sideWallCollisionFalse();
+    
+    //checks the edge walls on the above and below sides
+    if((TempBullet.getPosition().y - TempBullet.getSize() * sqrt(2) / 4 / 2) <= 0 || (TempBullet.getPosition().y + TempBullet.getSize() * sqrt(2) / 4 / 2) >= height)
+    {  
+      TempBullet.aboveBelowWallCollisionTrue();
+      TempBullet.addCollisionToCount();
+      TempBullet.updateBulletDirection();
+    }
+    else
+      TempBullet.aboveBelowWallCollisionFalse();
+    
+    //Loop to check each stand-alone wall with each bullet
+    for(int a = 0; a < myWorld.getNumWalls(); a++)//cycles through all of the walls
+    {
+      //checks if the bullet collides with bullets' right side, wall left side  
+      if ((myWorld.getWalls()[a][0]) - (TempBullet.getPosition().x + TempBullet.getSize() * sqrt(2) / 4) <= 0 //scans if the collision box overlaps with a rectangle along a vertical line
+      && (myWorld.getWalls()[a][0]) - (TempBullet.getPosition().x) >= 0 //Makes sure that this collision box does not affect the other side of the box
+      && (TempBullet.getPosition().y - TempBullet.getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][1] + myWorld.getWalls()[a][3]) <= 0 //makes sure that the tank bullet is within the right vertical segment of the rectangle
+      && (TempBullet.getPosition().y + TempBullet.getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][1]) >= 0) //makes sure that the tank bullet is within the right vertical segment of the rectangle
       {
-      //checks if the bullet collides with on a bullets right side, wall left side  
-        if ((myWorld.getWalls()[a][0]) - (getBList().get(i).getPosition().x + getBList().get(i).getSize() * sqrt(2) / 4) <= 0 //scans if the collision box overlaps with a rectangle along a vertical line
-        && (myWorld.getWalls()[a][0]) - (getBList().get(i).getPosition().x) >= 0 //Makes sure that this collision box does not affect the other side of the box
-        && (getBList().get(i).getPosition().y - getBList().get(i).getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][1] + myWorld.getWalls()[a][3]) <= 0 //makes sure that the tank bullet is within the right vertical segment of the rectangle
-        && (getBList().get(i).getPosition().y + getBList().get(i).getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][1]) >= 0 //makes sure that the tank bullet is within the right vertical segment of the rectangle
-        || (1900) - (getBList().get(i).getPosition().x + getBList().get(i).getSize() * sqrt(2) / 4 / 2) <= 0) //makes sure the tank bullet cannot go off-screen
-        {
-          getBList().get(i).rightWallCollisionTrue();
-          getBList().get(i).updateBulletDirectionPosition();
-        }
-        else
-          getBList().get(i).rightWallCollisionFalse();
+        TempBullet.sideWallCollisionTrue();
+        TempBullet.addCollisionToCount();
+        TempBullet.updateBulletDirection();
+      }
+      else
+        TempBullet.sideWallCollisionFalse();
 
 
-      
-      //vertical wall check left_collision
-        if ((myWorld.getWalls()[a][0] + myWorld.getWalls()[a][2]) - (getBList().get(i).getPosition().x - getBList().get(i).getSize() * sqrt(2) / 4) >= 0 
-        && (myWorld.getWalls()[a][0] + myWorld.getWalls()[a][2]) - (getBList().get(i).getPosition().x) <= 0
-        && (getBList().get(i).getPosition().y - getBList().get(i).getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][1] + myWorld.getWalls()[a][3]) <= 0 
-        && (getBList().get(i).getPosition().y + getBList().get(i).getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][1]) >= 0
-        || (getBList().get(i).getPosition().x - getBList().get(i).getSize() * sqrt(2) / 4 / 2) <= 0)
-        {
-          getBList().get(i).leftWallCollisionTrue();
-          getBList().get(i).updateBulletDirectionPosition();
-        }
-        else
-          getBList().get(i).leftWallCollisionFalse();
-
+    
+      //vertical wall check left_collision, bullet left side, wall right side
+      if ((myWorld.getWalls()[a][0] + myWorld.getWalls()[a][2]) - (TempBullet.getPosition().x - TempBullet.getSize() * sqrt(2) / 4) >= 0 
+      && (myWorld.getWalls()[a][0] + myWorld.getWalls()[a][2]) - (TempBullet.getPosition().x) <= 0
+      && (TempBullet.getPosition().y - TempBullet.getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][1] + myWorld.getWalls()[a][3]) <= 0 
+      && (TempBullet.getPosition().y + TempBullet.getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][1]) >= 0)
+      {
+        TempBullet.sideWallCollisionTrue();
+        TempBullet.addCollisionToCount();
+        TempBullet.updateBulletDirection();
+      }
+      else
+        TempBullet.sideWallCollisionFalse();
       
       //horizontal wall check above_collision
-        if ((myWorld.getWalls()[a][1] + myWorld.getWalls()[a][3]) - (getBList().get(i).getPosition().y - getBList().get(i).getSize() * sqrt(2) / 4) >= 0 
-        && (myWorld.getWalls()[a][1] + myWorld.getWalls()[a][3]) - (getBList().get(i).getPosition().y) <= 0
-        && (getBList().get(i).getPosition().x - getBList().get(i).getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][0] + myWorld.getWalls()[a][2]) <= 0 
-        && (getBList().get(i).getPosition().x + getBList().get(i).getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][0]) >= 0
-        || (getBList().get(i).getPosition().y - getBList().get(i).getSize() * sqrt(2) / 4 / 2) <= 0)
-        {
-          getBList().get(i).aboveWallCollisionTrue();
-          getBList().get(i).updateBulletDirectionPosition();
-        }
-        else
-          getBList().get(i).aboveWallCollisionFalse();
-
-      
-      //horizontal wall check below_collision
-        if ((myWorld.getWalls()[a][1]) - (getBList().get(i).getPosition().y + getBList().get(i).getSize() * sqrt(2) / 4) <= 0 
-        && (myWorld.getWalls()[a][1]) - (getBList().get(i).getPosition().y) >= 0
-        && (getBList().get(i).getPosition().x - getBList().get(i).getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][0] + myWorld.getWalls()[a][2]) <= 0 
-        && (getBList().get(i).getPosition().x + getBList().get(i).getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][0]) >= 0
-        || (900) - (getBList().get(i).getPosition().y + getBList().get(i).getSize() * sqrt(2) / 4 / 2) <= 0)
-        {  
-          getBList().get(i).belowWallCollisionTrue();
-          getBList().get(i).updateBulletDirectionPosition();
-        }
-        else
-          getBList().get(i).belowWallCollisionFalse();
+      if ((myWorld.getWalls()[a][1] + myWorld.getWalls()[a][3]) - (TempBullet.getPosition().y - TempBullet.getSize() * sqrt(2) / 4) >= 0 
+      && (myWorld.getWalls()[a][1] + myWorld.getWalls()[a][3]) - (TempBullet.getPosition().y) <= 0
+      && (TempBullet.getPosition().x - TempBullet.getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][0] + myWorld.getWalls()[a][2]) <= 0 
+      && (TempBullet.getPosition().x + TempBullet.getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][0]) >= 0)
+      {
+        TempBullet.aboveBelowWallCollisionTrue();
+        TempBullet.addCollisionToCount();
+        TempBullet.updateBulletDirection();
       }
+      else
+        TempBullet.aboveBelowWallCollisionFalse();
+
+    
+      //horizontal wall check below_collision
+      if ((myWorld.getWalls()[a][1]) - (TempBullet.getPosition().y + TempBullet.getSize() * sqrt(2) / 4) <= 0 
+      && (myWorld.getWalls()[a][1]) - (TempBullet.getPosition().y) >= 0
+      && (TempBullet.getPosition().x - TempBullet.getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][0] + myWorld.getWalls()[a][2]) <= 0 
+      && (TempBullet.getPosition().x + TempBullet.getSize() * sqrt(2) / 4) - (myWorld.getWalls()[a][0]) >= 0)
+      {  
+        TempBullet.aboveBelowWallCollisionTrue();
+        TempBullet.addCollisionToCount();
+        TempBullet.updateBulletDirection();
+      }
+      else
+        TempBullet.aboveBelowWallCollisionFalse();
     }
   }
 

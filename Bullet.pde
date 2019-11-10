@@ -15,10 +15,8 @@ class Bullet
   private boolean player_bullet_collide_allowed;
   private boolean enemy_bullet_collide_allowed;
   
-  private boolean right_wall_collision;
-  private boolean left_wall_collision;
-  private boolean above_wall_collision;
-  private boolean below_wall_collision;
+  private boolean side_wall_collision;
+  private boolean abovebelow_wall_collision;
   private int number_of_collisions;
   
   public Bullet(int number_of_collisions, float size, float speed, float spawn_x, float spawn_y, float direction, float turret_length, boolean player_collision_allowed, boolean enemy_collision_allowed, boolean player_bullet_collide_allowed, boolean enemy_bullet_collide_allowed, int bullet_color_red, int bullet_color_green, int bullet_color_blue, int outline_color_red, int outline_color_green, int outline_color_blue)
@@ -43,10 +41,8 @@ class Bullet
     this.player_bullet_collide_allowed = player_bullet_collide_allowed;
     this.enemy_bullet_collide_allowed = enemy_bullet_collide_allowed;
     
-    this.right_wall_collision = false;
-    this.left_wall_collision = false;
-    this.above_wall_collision = false;
-    this.below_wall_collision = false;
+    this.side_wall_collision = false;
+    this.abovebelow_wall_collision = false;
     this.number_of_collisions = number_of_collisions;
   }
   
@@ -63,59 +59,44 @@ class Bullet
     location.add(velocity);
   }
   
-  public void updateBulletDirectionPosition()
+  public void updateBulletDirection()
   {    
-    velocity.sub(velocity); //makes the velocity zero so it can be deleted in the controller class
+    if(side_wall_collision)
+      velocity.x *= -1;
+    if(abovebelow_wall_collision)
+      velocity.y *= -1;
+    if(number_of_collisions > 2)
+      setVelocityZero(); //makes the velocity zero so it can be deleted in the controller class
   }
   
-  public void rightWallCollisionTrue()
+  public void sideWallCollisionTrue()
   {
-      right_wall_collision = true;
-  }
-   
-  public boolean rightWallCollision()
-  {
-    return right_wall_collision;
+      side_wall_collision = true;
   }
   
-  public void rightWallCollisionFalse()
+  public void sideWallCollisionFalse()
   {
-      right_wall_collision = false;
+      side_wall_collision = false;
   }
   
-  public void leftWallCollisionTrue()
+  public void aboveBelowWallCollisionTrue()
   {
-      left_wall_collision = true;
+      abovebelow_wall_collision = true;
   }
   
-  public void leftWallCollisionFalse()
+  public void aboveBelowWallCollisionFalse()
   {
-      left_wall_collision = false;
-  }
-  
-  public void aboveWallCollisionTrue()
-  {
-      above_wall_collision = true;
-  }
-  
-  public void aboveWallCollisionFalse()
-  {
-      above_wall_collision = false;
-  }
-  
-  public void belowWallCollisionTrue()
-  {
-      below_wall_collision = true;
-  }
-  
-  public void belowWallCollisionFalse()
-  {
-      below_wall_collision = false;
+      abovebelow_wall_collision = false;
   }
   
   public void addCollisionToCount()
   {
     number_of_collisions += 1;
+  }
+  
+  public void setVelocityZero()
+  {
+    velocity.sub(velocity); //sets velocity to zero
   }
   
   public int getNumOfCollisions()
