@@ -2,6 +2,7 @@ class Bullet
 {
   private float bullet_width;
   private float bullet_height;
+  private int bullet_health;
   private int[] bullet_color = {0, 0, 0};
   private int[] bullet_outline_color = {0, 0, 0};
   
@@ -19,10 +20,11 @@ class Bullet
   private boolean abovebelow_wall_collision;
   private int number_of_collisions;
   
-  public Bullet(int number_of_collisions, float size, float speed, float spawn_x, float spawn_y, float direction, float turret_length, boolean player_collision_allowed, boolean enemy_collision_allowed, boolean player_bullet_collide_allowed, boolean enemy_bullet_collide_allowed, int bullet_color_red, int bullet_color_green, int bullet_color_blue, int outline_color_red, int outline_color_green, int outline_color_blue)
+  public Bullet(int number_of_collisions, float size, float speed, int bullet_health, float spawn_x, float spawn_y, float direction, float turret_length, boolean player_collision_allowed, boolean enemy_collision_allowed, boolean player_bullet_collide_allowed, boolean enemy_bullet_collide_allowed, int bullet_color_red, int bullet_color_green, int bullet_color_blue, int outline_color_red, int outline_color_green, int outline_color_blue)
   {
     this.bullet_width = size;
     this.bullet_height = size;
+    this.bullet_health = bullet_health;
     this.bullet_color[0] = bullet_color_red;
     this.bullet_color[1] = bullet_color_green;
     this.bullet_color[2] = bullet_color_blue;
@@ -92,6 +94,11 @@ class Bullet
   public void addCollisionToCount()
   {
     number_of_collisions += 1;
+  }
+  
+  public void bulletHealthMinus()
+  {
+    bullet_health = bullet_health - 1;
   }
   
   public void setVelocityZero()
