@@ -31,14 +31,16 @@ class EnemyTank
   
   private float bullet_size;
   private float bullet_speed;
+  private int bullet_health;
+  private int bullet_frequency;
   private PVector targetLocation;
   
-  public EnemyTank(float tank_width, float tank_height, float tank_speed, float bullet_size, float bullet_speed, float spawnX, float spawnY, float aim_x, float aim_y)
+  public EnemyTank(float tank_width, float tank_height, float tank_speed, float bullet_size, float bullet_speed, int bullet_health, int bullet_frequency, float spawnX, float spawnY, float aim_x, float aim_y)
   {
     location = new PVector(spawnX, spawnY);
     this.tank_width = tank_width;
     this.tank_height = tank_height;
-    
+    this.bullet_health = bullet_health;
     velocity = new PVector(tank_speed, tank_speed);
     this.tank_speed = tank_speed;
     
@@ -52,6 +54,7 @@ class EnemyTank
     this.below_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to below
     this.bullet_size = bullet_size;
     this.bullet_speed = bullet_speed;
+    this.bullet_frequency = bullet_frequency;
     
     targetLocation = new PVector(aim_x, aim_y);
   }
@@ -61,6 +64,10 @@ class EnemyTank
     collisionCheck();
     updateTargetLocation();
     updatePosition();
+    
+    renderTank();
+    //setTankColor(255, 255, 255);
+    //setTurretColor(240, 90, 0);
   }
   
   private void collisionCheck()
@@ -124,12 +131,12 @@ class EnemyTank
     
     
     //bullet collision with tank check
-    for(int i = 0; i < myController.getBList().size(); i++)
+    for(int i = 0; i < bulletController.getBList().size(); i++)
     {
-      if(dist(location.x, location.y, myController.getBList().get(i).getPosition().x, myController.getBList().get(i).getPosition().y) 
-      <= tank_width / 2 + myController.getBList().get(i).getSize() / 2
-      && myController.getBList().get(i).enemyCollision())
-        myController.removeBullet(myController.getBList().get(i));
+      if(dist(location.x, location.y, bulletController.getBList().get(i).getPosition().x, bulletController.getBList().get(i).getPosition().y) 
+      <= tank_width / 2 + bulletController.getBList().get(i).getSize() / 2
+      && bulletController.getBList().get(i).enemyCollision())
+        bulletController.removeBullet(bulletController.getBList().get(i));
     }
   }
   
@@ -214,10 +221,11 @@ class EnemyTank
   
   public void shoot()
   {
-    myController.addBullet(new Bullet(
+    bulletController.addBullet(new Bullet(
     /*Number of collisions*/ 0, 
     bullet_size, 
     bullet_speed, 
+    bullet_health,
     /*spawnpoint x*/ location.x, 
     /*spawnpoint y*/ location.y, 
     /*Direction of Bullet*/ getDirection(), 
@@ -265,5 +273,10 @@ class EnemyTank
   public float getTurretLength()
   {
     return turret_rec_width;
+  }
+  
+  public int getBulletFrequency()
+  {
+    return bullet_frequency;
   }
 }

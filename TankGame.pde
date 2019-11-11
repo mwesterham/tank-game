@@ -1,67 +1,47 @@
-  private PlayerTank myTank = new PlayerTank(60, 50, 2.5, 20, 6, 600, 500);//(tank_width, tank_height, tank_speed, bullet_size, bullet_speed, spawn_x, spawn_y)
-  private EnemyTank enemy1 = new EnemyTank(100, 100, 1, 50, 2, 100, 200, myTank.getPosition().x, myTank.getPosition().y);//(tank_width, tank_height, tank_speed, bullet_size, bullet_speed, spawn_x, spawn_y, target_location_x, target_location_y)
-  private EnemyTank enemy2 = new EnemyTank(100, 100, 1, 30, 5, 200, 200, myTank.getPosition().x, myTank.getPosition().y);
-  private EnemyTank enemy3 = new EnemyTank(100, 100, 1, 30, 5, 300, 200, myTank.getPosition().x, myTank.getPosition().y);
-  private EnemyTank enemy4 = new EnemyTank(100, 100, 1, 30, 5, 400, 200, myTank.getPosition().x, myTank.getPosition().y);
-  private EnemyTank enemy5 = new EnemyTank(100, 100, 1, 30, 5, 500, 200, myTank.getPosition().x, myTank.getPosition().y);
-  private EnemyTank enemy6 = new EnemyTank(100, 100, 1, 30, 5, 600, 200, myTank.getPosition().x, myTank.getPosition().y);
-  private EnemyAI eai = new EnemyAI(enemy1, myTank);//AI applied to enemy1 targeting myTank
-
-  private World myWorld = new World(20);
-  private Controller myController = new Controller(myTank);
+  private PlayerTank myTank = new PlayerTank(
+  /*tank_width*/60, 
+  /*tank_height*/50, 
+  /*tank_speed*/2.5, 
+  /*bullet_size*/20, 
+  /*bullet_speed*/6, 
+  /*bullet_health*/2,
+  /*bullet_frequency*/24, 
+  /*spawn_x*/600, 
+  /*spawn_y*/500);
+  
+  //(tank_width, tank_height, tank_speed, bullet_size, bullet_speed, bullet_frequency in terms of ticks per bullet, spawn_x, spawn_y)
   private boolean move_left = false;
   private boolean move_right = false;
   private boolean move_up = false;
   private boolean move_down = false;
+  private boolean shoot_input = false;
+
+  private World myWorld = new World(20);//set how many walls spawn (need at least 1), they are randomly placed
+  private BulletController bulletController = new BulletController();
+  private TankController enemyController = new TankController(7); //set how many enemies spawn, they are randomly placed
+
   private int tickCount = 0;
   
 void setup() 
 {
-  size(1900, 900);
+  size(1900, 900); //the width and height variables not working in tankcontroller for some reason /: BE SURE TO UPDATE IF CHANGING SIZE (typical is 1900, 900)
   frameRate(60);
   myWorld.generateWorld();
-}
-
+}  
+  
 void draw() 
 {
-  tickCount++;
   background(130, 130, 130);
+  tickCount++;
   myWorld.displayWorld();
+  enemyController.update();
+  bulletController.update();//updates the bullets and checks for bullet collisions
   
   myTank.update();
     myTank.renderTank();
     myTank.setTankColor(255, 50, 50);
     myTank.setTurretColor(0, 50, 50);
-
-  enemy1.update();
-    enemy1.renderTank();
-    enemy1.setTankColor(255, 255, 255);
-    enemy1.setTurretColor(240, 90, 0);
-  enemy2.update();
-    enemy2.renderTank();
-  enemy3.update();
-    enemy3.renderTank();
-  enemy4.update();
-    enemy4.renderTank();
-  enemy5.update();
-    enemy5.renderTank();
-  enemy6.update();
-    enemy6.renderTank();
-    
-  eai.shootCheck();//AI of enemy1 checks if its safe to shoot
-  boolean shootON = true;
-  if(eai.canShoot())
-    if(tickCount % 64 == 0 && shootON)
-    {
-      enemy1.shoot();
-      enemy2.shoot();
-      //enemy3.shoot();
-      //enemy4.shoot();
-      //enemy5.shoot();
-      //enemy6.shoot();
-    }
-  myController.update();//updates the bullets and checks for bullet collisions
-  myController.render();//renders the bullets
+  
 }
 
 void keyReleased()
@@ -88,14 +68,15 @@ void keyPressed()
     move_down = true;
 }
 
+
 void mousePressed() 
 {
-  myTank.shoot();
+  shoot_input = true;
 }
 
 void mouseReleased() 
 {
-
+  shoot_input = false;
 }
 
 /*

@@ -30,13 +30,17 @@ class PlayerTank
   
   private float bullet_size;
   private float bullet_speed;
+  private int bullet_health;
+  private int bullet_frequency;
+  private int shot_cool_down = 0;
+  private int tempTickCount = 0;
   
-  public PlayerTank(float tank_width, float tank_height, float tank_speed, float bullet_size, float bullet_speed, float spawnX, float spawnY)
+  public PlayerTank(float tank_width, float tank_height, float tank_speed, float bullet_size, float bullet_speed, int bullet_health, int bullet_frequency, float spawnX, float spawnY)
   {
     location = new PVector(spawnX, spawnY);
     this.tank_width = tank_width;
     this.tank_height = tank_height;
-    
+    this.bullet_health = bullet_health;
     velocity = new PVector(tank_speed, tank_speed);
     this.tank_speed = tank_speed;
     
@@ -50,12 +54,18 @@ class PlayerTank
     this.below_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to below
     this.bullet_size = bullet_size;
     this.bullet_speed = bullet_speed;
+    this.bullet_frequency = bullet_frequency;
   }
   
   public void update()
   {
     collisionCheck();    
     updatePosition();
+    shootCheck();
+    if(shoot_input)
+      tempTickCount++;
+
+    
   }
   
   private void collisionCheck()
@@ -118,12 +128,12 @@ class PlayerTank
     }
 
     //bullet collision with tank check
-    for(int i = 0; i < myController.getBList().size(); i++)
+    for(int i = 0; i < bulletController.getBList().size(); i++)
     {
-      if(dist(location.x, location.y, myController.getBList().get(i).getPosition().x, myController.getBList().get(i).getPosition().y) 
-      <= tank_width / 2 + myController.getBList().get(i).getSize() / 2
-      && myController.getBList().get(i).playerCollision())
-        myController.removeBullet(myController.getBList().get(i));
+      if(dist(location.x, location.y, bulletController.getBList().get(i).getPosition().x, bulletController.getBList().get(i).getPosition().y) 
+      <= tank_width / 2 + bulletController.getBList().get(i).getSize() / 2
+      && bulletController.getBList().get(i).playerCollision())
+        bulletController.removeBullet(bulletController.getBList().get(i));
     }
   }
   
@@ -207,12 +217,26 @@ class PlayerTank
     popMatrix();
   }
   
+  public void shootCheck()
+  {
+    if(tempTickCount % bullet_frequency == 0 && shoot_input)//regulates how fast player can shoot
+      {
+          myTank.shoot();
+          shot_cool_down = bullet_frequency;
+      }
+    if(shot_cool_down > 0)//counts the counter down for a "reload" of the next shot
+      shot_cool_down--;
+    if(shot_cool_down == 0 && !shoot_input)//Resets the counter if the player stops shooting and the counter is over counting (prevents re-clicking to get faster shooting)
+        tempTickCount = 0;
+  }
+  
   public void shoot()
   {
-    myController.addBullet(new Bullet(
+    bulletController.addBullet(new Bullet(
     /*Number of collisions*/ 0, 
     bullet_size, 
     bullet_speed, 
+    bullet_health,
     /*spawnpoint x*/ location.x, 
     /*spawnpoint y*/ location.y, 
     /*Direction of Bullet*/ getDirection(), 

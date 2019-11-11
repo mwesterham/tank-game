@@ -7,7 +7,7 @@ class EnemyAI
   private boolean shot_safe = false;
   private boolean shoot = false;
   
-  public EnemyAI(EnemyTank enemy, PlayerTank myTank)
+  public EnemyAI(EnemyTank enemy)
   {
     location = new PVector(enemy.getPosition().x, enemy.getPosition().y);
   }

@@ -24,10 +24,11 @@ class World
     Random rand = new Random();
     for(int i = 0; i < num_of_walls; i++)
     {
-        walls[i][0] = rand.nextInt(1900); //x-coord
-        walls[i][1] = rand.nextInt(900);//y cord
-        walls[i][2] = rand.nextInt(100) + 50;//width
-        walls[i][3] = rand.nextInt(100) + 50;//length
+        //System.out.println(height);  
+        walls[i][0] = rand.nextInt(width); //x-coord
+        walls[i][1] = rand.nextInt(height);//y cord
+        walls[i][2] = rand.nextInt(100) + 50;//width will be between 50 and 150 px
+        walls[i][3] = rand.nextInt(100) + 50;//length will be between 50 and 150 px
     }
     
   }
