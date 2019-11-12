@@ -17,7 +17,7 @@ class BulletController
       TempBullet.updatePosition();
       collisionCheck();
 
-      if (TempBullet.getVelocity().mag() == 0  || TempBullet.bullet_health <= 0)//if the bullet collides more than twice vel = 0 and removed, if health reaches 0, it is removed
+      if (TempBullet.getVelocity().mag() == 0)//  || TempBullet.bullet_health <= 0)//if the bullet collides more than twice vel = 0 and removed, if health reaches 0, it is removed
         bulletController.removeBullet(b.get(i));
     }
     
@@ -42,10 +42,19 @@ class BulletController
       <= getBList().get(a).getSize() / 2 + TempBullet.getSize() / 2)//checks if the bullets are within range of eachother, divide by 3 if want to look realistic, divide by 2 to be logically accurate
       {
         if(TempBullet.playerBulletCollision() && getBList().get(a).enemyBulletCollision()
-        || TempBullet.enemyBulletCollision() && getBList().get(a).playerBulletCollision())//If bullet collision is enabled remove bullets
+        || TempBullet.enemyBulletCollision() && getBList().get(a).playerBulletCollision())//If bullet collision is enabled, move on to bullet interaction
         {
-          TempBullet.bulletHealthMinus(); //deals 1 damage to the bullet 
-          getBList().get(a).bulletHealthMinus(); //ditto ^
+          //int originalHealth = TempBullet.getHealth();
+          //int originalHealthA = getBList().get(a).getHealth();
+          TempBullet.bulletHealthMinus(getBList().get(a).original_bullet_health); //subtracts health of a from tempbullet
+          if(TempBullet.getHealth() <= 0)
+            TempBullet.setVelocityZero();
+          getBList().get(a).bulletHealthMinus(TempBullet.original_bullet_health); //subtracts health of tempbullet from a
+          if(getBList().get(a).getHealth() <= 0)
+            getBList().get(a).setVelocityZero();
+          
+          TempBullet.original_bullet_health = getBList().get(a).getHealth();
+          getBList().get(a).original_bullet_health = getBList().get(a).getHealth();
         }
       }
     }

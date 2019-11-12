@@ -2,7 +2,9 @@ class Bullet
 {
   private float bullet_width;
   private float bullet_height;
-  private int bullet_health;
+  private float original_bullet_health;
+  private float bullet_health;
+  private int num_bullet_bounce;
   private int[] bullet_color = {0, 0, 0};
   private int[] bullet_outline_color = {0, 0, 0};
   
@@ -20,11 +22,13 @@ class Bullet
   private boolean abovebelow_wall_collision;
   private int number_of_collisions;
   
-  public Bullet(int number_of_collisions, float size, float speed, int bullet_health, float spawn_x, float spawn_y, float direction, float turret_length, boolean player_collision_allowed, boolean enemy_collision_allowed, boolean player_bullet_collide_allowed, boolean enemy_bullet_collide_allowed, int bullet_color_red, int bullet_color_green, int bullet_color_blue, int outline_color_red, int outline_color_green, int outline_color_blue)
+  public Bullet(int number_of_collisions, float size, float speed, float bullet_health, int num_bullet_bounce, float spawn_x, float spawn_y, float direction, float turret_length, boolean player_collision_allowed, boolean enemy_collision_allowed, boolean player_bullet_collide_allowed, boolean enemy_bullet_collide_allowed, int bullet_color_red, int bullet_color_green, int bullet_color_blue, int outline_color_red, int outline_color_green, int outline_color_blue)
   {
     this.bullet_width = size;
     this.bullet_height = size;
+    this.original_bullet_health = bullet_health;
     this.bullet_health = bullet_health;
+    this.num_bullet_bounce = num_bullet_bounce;
     this.bullet_color[0] = bullet_color_red;
     this.bullet_color[1] = bullet_color_green;
     this.bullet_color[2] = bullet_color_blue;
@@ -67,7 +71,7 @@ class Bullet
       velocity.x *= -1;
     if(abovebelow_wall_collision)
       velocity.y *= -1;
-    if(number_of_collisions > 2)
+    if(number_of_collisions > this.num_bullet_bounce)
       setVelocityZero(); //makes the velocity zero so it can be deleted in the controller class
   }
   
@@ -96,9 +100,9 @@ class Bullet
     number_of_collisions += 1;
   }
   
-  public void bulletHealthMinus()
+  public void bulletHealthMinus(float damage)
   {
-    bullet_health = bullet_health - 1;
+    bullet_health -= damage;
   }
   
   public void setVelocityZero()
@@ -145,5 +149,10 @@ class Bullet
   public PVector getVelocity()
   {
      return velocity;
+  }
+  
+  public float getHealth()
+  {
+    return bullet_health;
   }
 }

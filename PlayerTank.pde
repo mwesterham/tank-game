@@ -14,6 +14,8 @@ class PlayerTank
   private boolean above_collision = false;
   private boolean below_collision = false;
   
+  private float original_tank_health;
+  private float tank_health;
   private float tank_width;
   private float tank_height;
   private float turret_cir_width;
@@ -30,16 +32,29 @@ class PlayerTank
   
   private float bullet_size;
   private float bullet_speed;
-  private int bullet_health;
+  private float bullet_health;
   private int bullet_frequency;
+  private int num_bullet_bounce;
   private int shot_cool_down = 0;
   private int tempTickCount = 0;
   
-  public PlayerTank(float tank_width, float tank_height, float tank_speed, float bullet_size, float bullet_speed, int bullet_health, int bullet_frequency, float spawnX, float spawnY)
+  public PlayerTank(
+  float tank_width, 
+  float tank_height, 
+  float tank_health,
+  float tank_speed, 
+  float bullet_size, 
+  float bullet_speed, 
+  float bullet_health, 
+  int bullet_frequency, 
+  int num_bullet_bounce, 
+  float spawnX, float spawnY)
   {
     location = new PVector(spawnX, spawnY);
     this.tank_width = tank_width;
     this.tank_height = tank_height;
+    this.original_tank_health = tank_health;
+    this.tank_health = tank_health;
     this.bullet_health = bullet_health;
     velocity = new PVector(tank_speed, tank_speed);
     this.tank_speed = tank_speed;
@@ -55,6 +70,7 @@ class PlayerTank
     this.bullet_size = bullet_size;
     this.bullet_speed = bullet_speed;
     this.bullet_frequency = bullet_frequency;
+    this.num_bullet_bounce = num_bullet_bounce;
   }
   
   public void update()
@@ -133,7 +149,10 @@ class PlayerTank
       if(dist(location.x, location.y, bulletController.getBList().get(i).getPosition().x, bulletController.getBList().get(i).getPosition().y) 
       <= tank_width / 2 + bulletController.getBList().get(i).getSize() / 2
       && bulletController.getBList().get(i).playerCollision())
+      {
+        this.tank_health -= bulletController.getBList().get(i).getHealth();
         bulletController.removeBullet(bulletController.getBList().get(i));
+      }
     }
   }
   
@@ -154,6 +173,7 @@ class PlayerTank
     stroke(tank_outline_color[0],tank_outline_color[1], tank_outline_color[0]);
     renderBody();
     renderTurret();
+    renderHealthBar();
   }
   
   private void renderBody()
@@ -217,6 +237,19 @@ class PlayerTank
     popMatrix();
   }
   
+  private void renderHealthBar()
+  {
+    pushMatrix();
+    translate(location.x, location.y);
+    stroke(0, 0, 0);
+    fill(255, 0, 0);
+    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width, 10);//renders the red bar first
+    fill(0, 255, 0);
+    stroke(0, 0, 0, 0); //4th parameter sets opacity at 0
+    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width * (tank_health / original_tank_health), 10);//renders the red bar and overlaps
+    popMatrix();
+  }
+  
   public void shootCheck()
   {
     if(tempTickCount % bullet_frequency == 0 && shoot_input)//regulates how fast player can shoot
@@ -237,6 +270,7 @@ class PlayerTank
     bullet_size, 
     bullet_speed, 
     bullet_health,
+    /*Number of times bullets bounce*/num_bullet_bounce,
     /*spawnpoint x*/ location.x, 
     /*spawnpoint y*/ location.y, 
     /*Direction of Bullet*/ getDirection(), 
@@ -245,7 +279,7 @@ class PlayerTank
     /*enemy_shot_collision_with_body allowed*/ true, 
     /*player_bullet_collide allowed*/ false, 
     /*enemy_bullet_collide allowed*/ true, 
-    /*Bullet color...*/ /*turret_color[0], turret_color[1], turret_color[2]*/ 255,255,255, 
+    /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
     /*Bullet outline color...*/ tank_color[0], tank_color[1], tank_color[2]));
   }
   

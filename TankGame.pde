@@ -1,24 +1,25 @@
   private PlayerTank myTank = new PlayerTank(
   /*tank_width*/60, 
   /*tank_height*/50, 
+  /*tank_health*/5.1,
   /*tank_speed*/2.5, 
   /*bullet_size*/20, 
-  /*bullet_speed*/6, 
-  /*bullet_health*/2,
+  /*bullet_speed*/4, 
+  /*bullet_health/pentration/damage*/1,
   /*bullet_frequency*/24, 
+  /*number of times bullets bounce*/1,
   /*spawn_x*/600, 
   /*spawn_y*/500);
-  
-  //(tank_width, tank_height, tank_speed, bullet_size, bullet_speed, bullet_frequency in terms of ticks per bullet, spawn_x, spawn_y)
+
   private boolean move_left = false;
   private boolean move_right = false;
   private boolean move_up = false;
   private boolean move_down = false;
   private boolean shoot_input = false;
 
-  private World myWorld = new World(20);//set how many walls spawn (need at least 1), they are randomly placed
+  private World myWorld = new World(10);//set how many walls spawn (need at least 1), they are randomly placed
   private BulletController bulletController = new BulletController();
-  private TankController enemyController = new TankController(7); //set how many enemies spawn, they are randomly placed
+  private TankController enemyController = new TankController(5, 2); //set how many enemies spawn, they are randomly placed (standardEnemy, strongSlowEnemy)
 
   private int tickCount = 0;
   

@@ -14,15 +14,17 @@ class EnemyTank
   private boolean above_collision = false;
   private boolean below_collision = false;
   
+  private float original_tank_health;
+  private float tank_health;
   private float tank_width;
   private float tank_height;
   private float turret_cir_width;
   private float turret_cir_height;
   private float turret_rec_width;
   private float turret_rec_height;
-  private int[] tank_color = {0, 255, 123};
+  private int[] tank_color = {0, 0, 0};
   private int[] turret_color = {0, 0, 0};
-  private int[] tank_outline_color = {0, 255, 123};
+  private int[] tank_outline_color = {0, 0, 0};
   
   private float right_collision_dist;
   private float left_collision_dist;
@@ -31,16 +33,34 @@ class EnemyTank
   
   private float bullet_size;
   private float bullet_speed;
-  private int bullet_health;
+  private float bullet_health;
   private int bullet_frequency;
+  private int num_bullet_bounce;
   private PVector targetLocation;
   
-  public EnemyTank(float tank_width, float tank_height, float tank_speed, float bullet_size, float bullet_speed, int bullet_health, int bullet_frequency, float spawnX, float spawnY, float aim_x, float aim_y)
+  public EnemyTank(
+  float tank_width, 
+  float tank_height, 
+  float tank_speed, 
+  float tank_health,
+  float bullet_size, 
+  float bullet_speed, 
+  float bullet_health, 
+  int bullet_frequency, 
+  int num_bullet_bounce, 
+  float spawnX, float spawnY, 
+  float aim_x, float aim_y,
+  int tank_color_red, int tank_color_green, int tank_color_blue,
+  int turret_color_red, int turret_color_green, int turret_color_blue,
+  int tank_outline_red, int tank_outline_green, int tank_outline_blue)
   {
     location = new PVector(spawnX, spawnY);
     this.tank_width = tank_width;
     this.tank_height = tank_height;
+    this.original_tank_health = tank_health;
+    this.tank_health = tank_health;
     this.bullet_health = bullet_health;
+    this.num_bullet_bounce = num_bullet_bounce;
     velocity = new PVector(tank_speed, tank_speed);
     this.tank_speed = tank_speed;
     
@@ -57,6 +77,16 @@ class EnemyTank
     this.bullet_frequency = bullet_frequency;
     
     targetLocation = new PVector(aim_x, aim_y);
+    
+    this.tank_color[0] = tank_color_red;
+    this.tank_color[1] = tank_color_green;
+    this.tank_color[2] = tank_color_blue;
+    this.turret_color[0] = turret_color_red;
+    this.turret_color[1] = turret_color_green;
+    this.turret_color[2] = turret_color_blue;
+    this.tank_outline_color[0] = tank_outline_red;
+    this.tank_outline_color[1] = tank_outline_green;
+    this.tank_outline_color[2] = tank_outline_blue;
   }
   
   public void update()
@@ -66,8 +96,6 @@ class EnemyTank
     updatePosition();
     
     renderTank();
-    //setTankColor(255, 255, 255);
-    //setTurretColor(240, 90, 0);
   }
   
   private void collisionCheck()
@@ -136,7 +164,10 @@ class EnemyTank
       if(dist(location.x, location.y, bulletController.getBList().get(i).getPosition().x, bulletController.getBList().get(i).getPosition().y) 
       <= tank_width / 2 + bulletController.getBList().get(i).getSize() / 2
       && bulletController.getBList().get(i).enemyCollision())
+      {  
+        this.tank_health -= bulletController.getBList().get(i).getHealth();
         bulletController.removeBullet(bulletController.getBList().get(i));
+      }
     }
   }
   
@@ -155,6 +186,7 @@ class EnemyTank
     stroke(tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
     renderBody();
     renderTurret();
+    renderHealthBar();
   }
   
   private void renderBody()
@@ -162,6 +194,7 @@ class EnemyTank
     //body rendering
     pushMatrix();
     translate(location.x, location.y);
+    /*
     if ((move_up || move_down) && !move_left && !move_right)
     {
       orientation_updown = true;
@@ -199,7 +232,7 @@ class EnemyTank
       rotate(atan2(-1, 1));
     if(orientation_upleft)
       rotate(atan2(1, 1));
-
+    */
     fill(tank_color[0], tank_color[1], tank_color[2]);
     stroke(tank_color[0], tank_color[1], tank_color[2]);
     ellipse(0, 0, tank_width, tank_height);
@@ -219,6 +252,19 @@ class EnemyTank
     popMatrix();
   }
   
+  private void renderHealthBar()
+  {
+    pushMatrix();
+    translate(location.x, location.y);
+    stroke(0, 0, 0);
+    fill(255, 0, 0);
+    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width, 10);//renders the red bar first
+    fill(0, 255, 0);
+    stroke(0, 0, 0, 0); //4th parameter sets opacity at 0
+    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width * (tank_health / original_tank_health), 10);//renders the red bar and overlaps
+    popMatrix();
+  }
+  
   public void shoot()
   {
     bulletController.addBullet(new Bullet(
@@ -226,6 +272,7 @@ class EnemyTank
     bullet_size, 
     bullet_speed, 
     bullet_health,
+    /*number of times bullets bounce*/num_bullet_bounce,
     /*spawnpoint x*/ location.x, 
     /*spawnpoint y*/ location.y, 
     /*Direction of Bullet*/ getDirection(), 
@@ -245,21 +292,22 @@ class EnemyTank
     this.turret_rec_width = tank_width * 2/5 ;
     this.turret_rec_height = tank_height * 1/3;
   }
-  
+  /*
   public void setTankColor(int red, int green, int blue)
   {
     this.tank_color[0] = red;
     this.tank_color[1] = green;
     this.tank_color[2] = blue;
   }
-  
+  */
+  /*
   public void setTurretColor(int red, int green, int blue)
   {
     this.turret_color[0] = red;
     this.turret_color[1] = green;
     this.turret_color[2] = blue;
   }
-  
+  */
   public float getDirection()
   {
     return -atan2(targetLocation.x - location.x, targetLocation.y - location.y);
