@@ -168,4 +168,11 @@ class BulletController
     return b;
   }
   
+  public void resetBullets()
+  {
+    for(int i = 0; i < b.size(); i++)
+    {
+      removeBullet(b.get(i));
+    }
+  }
 }

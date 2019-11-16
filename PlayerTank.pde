@@ -1,6 +1,8 @@
 class PlayerTank
 {
   private PVector location;
+  private float spawn_x;
+  private float spawn_y;
   boolean orientation_updown = false;
   boolean orientation_leftright = true;
   boolean orientation_upright = false;
@@ -25,6 +27,7 @@ class PlayerTank
   private int[] tank_color = {0, 0, 255};
   private int[] turret_color = {255, 0, 0};
   private int[] tank_outline_color = {0, 0, 0};
+  
   private float right_collision_dist;
   private float left_collision_dist;
   private float above_collision_dist;
@@ -51,6 +54,8 @@ class PlayerTank
   float spawnX, float spawnY)
   {
     location = new PVector(spawnX, spawnY);
+    this.spawn_x = spawnX;
+    this.spawn_y = spawnY;
     this.tank_width = tank_width;
     this.tank_height = tank_height;
     this.original_tank_health = tank_health;
@@ -303,6 +308,13 @@ class PlayerTank
     this.turret_color[0] = red;
     this.turret_color[1] = green;
     this.turret_color[2] = blue;
+  }
+  
+  public void resetTank()
+  {
+    tank_health = original_tank_health;
+    location = new PVector(spawn_x, spawn_y);
+    
   }
   
   public PVector getPosition()

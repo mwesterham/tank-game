@@ -108,4 +108,11 @@ class TankController
     return enemies;
   }
   
+  public void resetEnemies()
+  {
+    for(int i = 0; i < enemies.size(); i++)
+    {
+      removeEnemy(enemies.get(i));
+    }
+  }
 }
