@@ -4,6 +4,7 @@
   private boolean displayYouWon = false;
   private boolean displayHome = true;
   private boolean displayLevelSelect = false;
+  private boolean displayAbout = false;
   
   private PlayerTank myTank = new PlayerTank(
   /*tank_width*/60, 
@@ -24,9 +25,9 @@
   private boolean move_down = false;
   private boolean shoot_input = false;
 
-  private World myWorld = new World(10);//set how many walls spawn (need at least 1), they are randomly placed
+  private World myWorld = new World();//set how many walls spawn (need at least 1), they are randomly placed
   private BulletController bulletController = new BulletController();
-  private TankController enemyController = new TankController(5, 3); //set how many enemies spawn, they are randomly placed (standardEnemy, strongSlowEnemy)
+  private TankController enemyController = new TankController(0, 0); //set how many enemies spawn, they are randomly placed (standardEnemy, strongSlowEnemy) PS this is only used to instantiate
 
   private int tickCount = 0;
   
@@ -41,48 +42,20 @@ void draw()
   background(130, 130, 130);
   if(!runGame)
   {
-    //displays the screen indicated
-    if(displayHome)
+    if(displayHome)//displays the screen indicated
       myUI.displayHome();
+    if(displayAbout)
+      myUI.displayAbout();
     if(displayLevelSelect)
       myUI.displayLevelSelect();
     if(displayGameOver)
       myUI.displayGameOver();
     if(displayYouWon)
       myUI.displayYouWon();
-    
-    myWorld.generateWorld();
-    myTank.resetTank();
-    enemyController.resetEnemies();
-    enemyController = new TankController(1, 0);
-    bulletController.resetBullets();
-    bulletController = new BulletController();
   }
-  
-  if(runGame)
-  {
-    
-    tickCount++;
-    myWorld.displayWorld();
-    enemyController.update();
-    bulletController.update();//updates the bullets and checks for bullet collisions
-    
-    myTank.update();
-    if(myTank.tank_health <= 0)
-    {
-      runGame = false;
-      displayGameOver = true;
-    }
-    if(enemyController.enemies.size() == 0)
-    {
-      runGame = false;
-      displayYouWon = true;
-    }
-    myTank.renderTank();
-    myTank.setTankColor(255, 50, 50);
-    myTank.setTurretColor(0, 50, 50);
 
-  }
+  if(runGame) //runs the game, if player health reaches zero or num of enemies reach zero, resets the game
+    myUI.runGame();
 }
 
 void keyReleased()
@@ -116,27 +89,33 @@ void mousePressed()
     shoot_input = true;
   if(!runGame)
   {
-    displayHome = false;//sets all the screens to not displaying
+    //now displaying none of the pages
+    displayHome = false;
+    displayAbout = false;
     displayLevelSelect = false;
     displayGameOver = false;
     displayYouWon = false;
     runGame = false;
-    System.out.print(myUI.clickArea());
-    switch (myUI.clickArea())//navigates a series of screens by detecting click placement
+    
+    switch (myUI.trigger_text)//navigates to a screen using the click placement
     {
-      case "Display Home":    
+      case "Home Page":
         displayHome = true;
         break;
       case "Level Select":
         displayLevelSelect = true;
         break;
-      case "Test":
-        displayHome = true;
+      case "About":
+        displayAbout = true;
         break;
-      case "Return to home":
-        displayHome = true;
+      case "Game Over":
+        displayGameOver = true;
         break;
-      case "Start Game":
+      case "You Won":
+        displayYouWon = true;
+        break;
+      case "Start Game": //start game is default random world and with non-randomized tanks
+        myWorld.generateRandomWorld(10, 2, 1); //(num_of_walls, num_of_regular enemies, num_of_slowstrong)
         runGame = true;
         break;
     }

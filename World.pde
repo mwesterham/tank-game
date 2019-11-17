@@ -6,14 +6,11 @@ class World
   private int[] wall_color = {0, 0, 0};
   private int[] wall_outline_color = {0, 0, 0};
   
-  public World(int num_of_walls)
+  public World()
   {
-    this.num_of_walls = num_of_walls;
-    float[][] walls = new float[num_of_walls][4]; 
-    this.walls = walls;
   }
   
-  public void generateWorld()
+  public void generateRandomWorld(int number_of_walls, int num_regular_enemies, int num_slowstrong_enemies)
   {
     /*
     walls[0][0] = 100; //x-coord
@@ -21,8 +18,12 @@ class World
     walls[0][2] = 1800;//width
     walls[0][3] = 20;//length
     */
+    this.num_of_walls = number_of_walls;
+    float[][] walls = new float[num_of_walls][4]; 
+    this.walls = walls;
+    
     Random rand = new Random();
-    for(int i = 0; i < num_of_walls; i++)
+    for(int i = 0; i < this.num_of_walls; i++)
     {
         //System.out.println(height);  
         walls[i][0] = rand.nextInt(width); //x-coord
@@ -31,6 +32,8 @@ class World
         walls[i][3] = rand.nextInt(100) + 50;//length will be between 50 and 150 px
     }
     
+    enemyController = new TankController(num_regular_enemies, num_slowstrong_enemies);
+    bulletController = new BulletController(); //MUST reinstantiate the bullet controller, not entirely sure why though...
   }
   
   public void displayWorld()
