@@ -9,16 +9,17 @@ class TankController
   
   public TankController(int num_of_standard_enemies, int num_of_slow_strong_enemies)
   {
+    Random rand = new Random();
     this.num_of_standard_enemies = num_of_standard_enemies;
     for(int i = 0; i < this.num_of_standard_enemies; i++)
     {
-      addStandardEnemy();
+      addStandardEnemy(rand.nextInt(1900), rand.nextInt(900));
     }
     
     this.num_of_slow_strong_enemies = num_of_slow_strong_enemies;
     for(int i = 0; i < this.num_of_slow_strong_enemies; i++)
     {
-      addSlowStrongEnemy();
+      addSlowStrongEnemy(rand.nextInt(1900), rand.nextInt(900));
     }
   }
   
@@ -43,10 +44,8 @@ class TankController
     }
   }
   
-  public void addStandardEnemy()
+  public void addStandardEnemy(float spawnX, float spawnY)
   {
-
-    Random rand = new Random();
     TempEnemyTank = new EnemyTank(
     /*tank_width*/75, 
     /*tank_height*/75, 
@@ -57,8 +56,8 @@ class TankController
     /*bullet_health/pentration/damage*/.8,
     /*bullet frequency measured in ticks per shot*/ 64,
     /*number of times bullets bounce*/1,
-    /*spawn_x*/rand.nextInt(1900), 
-    /*spawn_y*/rand.nextInt(900), 
+    /*spawn_x*/spawnX, 
+    /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.getPosition().x, 
     /*target_location_y*/myTank.getPosition().y,
     /*Tank Color         r/g/b*/0, 255, 123,
@@ -68,10 +67,8 @@ class TankController
     enemies.add(TempEnemyTank);
   }
   
-  public void addSlowStrongEnemy()
+  public void addSlowStrongEnemy(float spawnX, float spawnY)
   {
-
-    Random rand = new Random();
     TempEnemyTank = new EnemyTank(
     /*tank_width*/100, 
     /*tank_height*/100, 
@@ -82,8 +79,8 @@ class TankController
     /*bullet_health/pentration/damage*/3,
     /*bullet frequency measured in ticks per shot*/ 100,
     /*number of times bullets bounce*/1,
-    /*spawn_x*/rand.nextInt(1900), 
-    /*spawn_y*/rand.nextInt(900), 
+    /*spawn_x*/spawnX, 
+    /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.getPosition().x, 
     /*target_location_y*/myTank.getPosition().y,
     /*Tank Color         r/g/b*/255, 255, 255,
@@ -110,9 +107,6 @@ class TankController
   
   public void resetEnemies()
   {
-    for(int i = 0; i < enemies.size(); i++)
-    {
-      removeEnemy(enemies.get(i));
-    }
+    enemies = new LinkedList<EnemyTank>();
   }
 }

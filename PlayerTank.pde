@@ -310,11 +310,15 @@ class PlayerTank
     this.turret_color[2] = blue;
   }
   
+  public void setSpawn(float spawnX, float spawnY)
+  {
+    location = new PVector(spawnX, spawnY);
+  }
+  
   public void resetTank()
   {
     tank_health = original_tank_health;
     location = new PVector(spawn_x, spawn_y);
-    
   }
   
   public PVector getPosition()

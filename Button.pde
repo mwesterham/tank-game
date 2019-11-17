@@ -23,6 +23,6 @@ class Button
     rect(button_location[0], button_location[1], button_size[0], button_size[1]);
     fill(255, 255, 255);
     textSize(button_size[1]);
-    text(button_text, button_location[0], button_location[1] + button_size[1]);
+    text(button_text, button_location[0], button_location[1] + button_size[1] * 8/9);
   }
 }
