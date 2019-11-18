@@ -234,7 +234,7 @@ class EnemyTank
       rotate(atan2(1, 1));
     */
     fill(tank_color[0], tank_color[1], tank_color[2]);
-    stroke(tank_color[0], tank_color[1], tank_color[2]);
+    stroke(tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
     ellipse(0, 0, tank_width, tank_height);
     popMatrix();
   }
@@ -247,6 +247,7 @@ class EnemyTank
     translate(location.x, location.y);
     rotate(atan2(targetLocation.y - location.y, targetLocation.x - location.x));
     fill(turret_color[0], turret_color[1], turret_color[2]);
+    stroke(tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
     rect(0,0 - (turret_cir_height) * 1/2, turret_rec_width, turret_rec_height);
     ellipse(0, 0, turret_cir_width, turret_cir_height);
     popMatrix();
@@ -261,7 +262,7 @@ class EnemyTank
     rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width, 10);//renders the red bar first
     fill(0, 255, 0);
     stroke(0, 0, 0, 0); //4th parameter sets opacity at 0
-    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width * (tank_health / original_tank_health), 10);//renders the red bar and overlaps
+    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width * (tank_health / original_tank_health), 10);//renders the green bar and overlaps
     popMatrix();
   }
   

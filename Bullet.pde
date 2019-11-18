@@ -18,8 +18,11 @@ class Bullet
   private boolean player_bullet_collide_allowed;
   private boolean enemy_bullet_collide_allowed;
   
-  private boolean side_wall_collision;
-  private boolean abovebelow_wall_collision;
+  private boolean right_wall_collision;
+  private boolean left_wall_collision;
+  private boolean above_wall_collision;
+  private boolean below_wall_collision;
+  
   private int number_of_collisions;
   
   public Bullet(int number_of_collisions, float size, float speed, float bullet_health, int num_bullet_bounce, float spawn_x, float spawn_y, float direction, float turret_length, boolean player_collision_allowed, boolean enemy_collision_allowed, boolean player_bullet_collide_allowed, boolean enemy_bullet_collide_allowed, int bullet_color_red, int bullet_color_green, int bullet_color_blue, int outline_color_red, int outline_color_green, int outline_color_blue)
@@ -47,8 +50,10 @@ class Bullet
     this.player_bullet_collide_allowed = player_bullet_collide_allowed;
     this.enemy_bullet_collide_allowed = enemy_bullet_collide_allowed;
     
-    this.side_wall_collision = false;
-    this.abovebelow_wall_collision = false;
+    this.right_wall_collision = false;
+    this.left_wall_collision = false;
+    this.above_wall_collision = false;
+    this.below_wall_collision = false;
     this.number_of_collisions = number_of_collisions;
   }
   
@@ -58,6 +63,20 @@ class Bullet
     fill(bullet_color[0], bullet_color[1], bullet_color[2]);
     stroke(bullet_outline_color[0], bullet_outline_color[1], bullet_outline_color[2]);
     ellipse(location.x + turret_length * sin(-bullet_direction), location.y + turret_length * cos(bullet_direction), bullet_width, bullet_height);
+    //renderHealthBar(); //used for debugging
+  }
+  
+  private void renderHealthBar()
+  {
+    pushMatrix();
+    translate(location.x, location.y + 10);
+    stroke(0, 0, 0);
+    fill(255, 0, 0);
+    rect( -(bullet_width) * 1/2, -(bullet_height) * 2/3, bullet_width, 10);//renders the red bar first
+    fill(0, 255, 0);
+    stroke(0, 0, 0); //4th parameter sets opacity at 0
+    rect( -(bullet_width) * 1/2, -(bullet_height) * 2/3, bullet_width * (bullet_health / original_bullet_health), 10);//renders the green bar and overlaps
+    popMatrix();
   }
   
   public void updatePosition()
@@ -67,32 +86,57 @@ class Bullet
   
   public void updateBulletDirection()
   {    
-    if(side_wall_collision)
+    if(right_wall_collision || left_wall_collision)
       velocity.x *= -1;
-    if(abovebelow_wall_collision)
+    if(above_wall_collision || below_wall_collision)
       velocity.y *= -1;
     if(number_of_collisions > this.num_bullet_bounce)
-      setVelocityZero(); //makes the velocity zero so it can be deleted in the controller class
+      prepDelete(); //makes the velocity zero so it can be deleted in the controller class
   }
   
-  public void sideWallCollisionTrue()
+  public void updateBulletDirection(PVector new_velocity)
   {
-      side_wall_collision = true;
+    this.velocity = new_velocity;
   }
   
-  public void sideWallCollisionFalse()
+  public void rightWallCollisionTrue()
   {
-      side_wall_collision = false;
+      right_wall_collision = true;
   }
   
-  public void aboveBelowWallCollisionTrue()
+  public void rightWallCollisionFalse()
   {
-      abovebelow_wall_collision = true;
+      right_wall_collision = false;
   }
   
-  public void aboveBelowWallCollisionFalse()
+  public void aboveWallCollisionTrue()
   {
-      abovebelow_wall_collision = false;
+      above_wall_collision = true;
+  }
+  
+  public void aboveWallCollisionFalse()
+  {
+      above_wall_collision = false;
+  }
+  
+  public void leftWallCollisionTrue()
+  {
+      left_wall_collision = true;
+  }
+  
+  public void leftWallCollisionFalse()
+  {
+      left_wall_collision = false;
+  }
+  
+  public void belowWallCollisionTrue()
+  {
+      below_wall_collision = true;
+  }
+  
+  public void belowWallCollisionFalse()
+  {
+      below_wall_collision = false;
   }
   
   public void addCollisionToCount()
@@ -100,14 +144,20 @@ class Bullet
     number_of_collisions += 1;
   }
   
+  public void subtractCollisionFromCount()
+  {
+    number_of_collisions -= 1;
+  }
+  
   public void bulletHealthMinus(float damage)
   {
     bullet_health -= damage;
   }
   
-  public void setVelocityZero()
+  public void prepDelete()
   {
     velocity.sub(velocity); //sets velocity to zero
+    this.bullet_health = 0;
   }
   
   public int getNumOfCollisions()

@@ -44,6 +44,29 @@ class TankController
     }
   }
   
+  public void addDummyEnemy(float spawnX, float spawnY)
+  {
+    TempEnemyTank = new EnemyTank(
+    /*tank_width*/100, 
+    /*tank_height*/100, 
+    /*tank_speed*/0, 
+    /*tank_health*/10000,
+    /*bullet_size*/0, 
+    /*bullet_speed*/15, 
+    /*bullet_health/pentration/damage*/0,
+    /*bullet frequency measured in ticks per shot*/ 100000,
+    /*number of times bullets bounce*/0,
+    /*spawn_x*/spawnX, 
+    /*spawn_y*/spawnY, 
+    /*target_location_x*/myTank.getPosition().x, 
+    /*target_location_y*/myTank.getPosition().y,
+    /*Tank Color         r/g/b*/255, 255, 255,
+    /*Turret Color       r/g/b*/255, 255, 255,
+    /*Tank Outline Color r/g/b*/255, 255, 255);
+    
+    enemies.add(TempEnemyTank);
+  }
+  
   public void addStandardEnemy(float spawnX, float spawnY)
   {
     TempEnemyTank = new EnemyTank(

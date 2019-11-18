@@ -18,7 +18,7 @@
   /*number of times bullets bounce*/1,
   /*spawn_x*/600, 
   /*spawn_y*/500);
-
+  
   private boolean move_left = false;
   private boolean move_right = false;
   private boolean move_up = false;
@@ -42,7 +42,7 @@ void draw()
   background(130, 130, 130);
   if(!runGame)
   {
-    System.out.println(myUI.trigger_text);
+    //System.out.println(myUI.trigger_text);
     if(displayHome)//displays the screen indicated
       myUI.displayHome();
     if(displayAbout)
@@ -122,8 +122,12 @@ void mousePressed()
         myWorld.generateRandomWorld(10, 2, 1); //(num_of_walls, num_of_regular enemies, num_of_slowstrong)
         runGame = true;
         break;
+      case "TestGrounds":
+        myWorld.generateTestGrounds();
+        runGame = true;
+        break;
       case "Level1": //start game is default random world and with non-randomized tanks
-        myWorld.generateLevel1(); //(num_of_walls, num_of_regular enemies, num_of_slowstrong)
+        myWorld.generateLevel1();
         runGame = true;
         break;
     }

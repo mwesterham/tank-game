@@ -1,6 +1,6 @@
 class UI
 {
-  private Button[] ButtonList = new Button[11];
+  private Button[] ButtonList = new Button[12];
   private String trigger_text = "Home Page";
   
   public UI()
@@ -15,6 +15,7 @@ class UI
     this.ButtonList[4] = new Button("Game Over", "Home Page", "Return to Home Page", 50, 50, 260, 25);
     this.ButtonList[5] = new Button("You Won", "Home Page", "Return to Home Page", 50, 50, 260, 25);
     
+    this.ButtonList[11] = new Button("Level Select", "TestGrounds", "Test Grounds", 360, 50, 260, 25);
     this.ButtonList[6] = new Button("Level Select", "Home Page", "Return to Home Page", 50, 50, 260, 25);
     this.ButtonList[7] = new Button("Level Select", "Level1", "Level 1", 50, 200, 250, 30);
     this.ButtonList[8] = new Button("Level Select", "Level2", "Level 2", 50, 250, 250, 30);

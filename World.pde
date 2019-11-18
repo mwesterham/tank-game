@@ -12,6 +12,7 @@ class World
   
   public void generateRandomWorld(int number_of_walls, int num_regular_enemies, int num_slowstrong_enemies)
   {
+    myUI.resetGame();
     /*
     walls[0][0] = 100; //x-coord
     walls[0][1] = 50;//y cord
@@ -35,6 +36,46 @@ class World
     enemyController = new TankController(num_regular_enemies, num_slowstrong_enemies);
     bulletController = new BulletController(); //MUST reinstantiate the bullet controller, not entirely sure why though...
   }
+  
+  public void generateTestGrounds()
+  {
+    myUI.resetGame();
+    this.num_of_walls = 4;
+    float[][] walls = new float[num_of_walls][4]; 
+    this.walls = walls;
+    
+    {//top corner wall left
+      walls[0][0] = 100; //x-coord
+      walls[0][1] = 100;//y cord
+      walls[0][2] = 200;//width
+      walls[0][3] = 200;//length
+    }
+    
+    {//lower corner wall left
+      walls[1][0] = 100; //x-coord
+      walls[1][1] = 600;//y cord
+      walls[1][2] = 200;//width 
+      walls[1][3] = 200;//length 
+    }
+
+    {//top corner wall right
+      walls[2][0] = 1600; //x-coord
+      walls[2][1] = 100;//y cord
+      walls[2][2] = 200;//width
+      walls[2][3] = 200;//length
+    }
+    
+    {//lower corner wall right
+      walls[3][0] = 1600; //x-coord
+      walls[3][1] = 600;//y cord
+      walls[3][2] = 200;//width 
+      walls[3][3] = 200;//length 
+    }
+    
+    myTank.setSpawn(950, 450);
+    enemyController.addDummyEnemy(500, 500);
+    bulletController = new BulletController(); //MUST reinstantiate the bullet controller, not entirely sure why though...
+  }  
   
   public void generateLevel1()
   {
