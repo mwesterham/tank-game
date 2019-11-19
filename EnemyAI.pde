@@ -64,7 +64,7 @@ class EnemyAI
   private void targetVisible() //creates a sudobullet and spawns a given number of iterations of it in a seperate bulletController, if intersects woth tank, shoot
   {
     sudoBullet = enemyTank.getBullet();
-    sudoBullet.updateBulletSpeed(30); //sudo bullet goes way faster to do less calculations
+    sudoBullet.updateBulletSpeed(35); //sudo bullet goes way faster to do less calculations
     BulletController sudoBulletController = new BulletController();
     sudoBulletController.addBullet(sudoBullet);
     

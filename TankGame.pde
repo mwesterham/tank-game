@@ -1,4 +1,4 @@
-  private UI myUI = new UI();
+  private UI myUI = new UI(0);
   private boolean runGame = false;
   private boolean displayGameOver = false;
   private boolean displayYouWon = false;
@@ -16,7 +16,8 @@
   private World myWorld = new World();//set how many walls spawn (need at least 1), they are randomly placed
   private BulletController bulletController = new BulletController();
   private TankController enemyController = new TankController(0, 0); //set how many enemies spawn, they are randomly placed (standardEnemy, strongSlowEnemy) PS this is only used to instantiate
-
+  private int trigger_int = 0;
+  
   private int tickCount = 0;
   
 void setup() 
@@ -25,14 +26,14 @@ void setup()
   frameRate(60);
   
   myTank  = new PlayerTank(
-  /*tank_width*/60, 
-  /*tank_height*/50, 
-  /*tank_health*/5.1,
-  /*tank_speed*/2.5, 
+  /*tank_width*/75, 
+  /*tank_height*/75, 
+  /*tank_health*/4.1,
+  /*tank_speed*/2, 
   /*bullet_size*/20, 
   /*bullet_speed*/4, //typically 4
   /*bullet_health/pentration/damage*/1,//typically 1
-  /*bullet_frequency*/24, //typically 24
+  /*bullet_frequency*/36, //typically 36
   /*number of times bullets bounce*/1,
   /*spawn_x*/600, 
   /*spawn_y*/500);
@@ -124,6 +125,7 @@ void mousePressed()
         displayGameOver = true;
         break;
       case "You Won":
+        myUI = new UI(1);
         displayYouWon = true;
         break;
       case "Start Game": //start game is default random world and with non-randomized tanks
@@ -134,8 +136,29 @@ void mousePressed()
         myWorld.generateTestGrounds();
         runGame = true;
         break;
-      case "Level1": //start game is default random world and with non-randomized tanks
+    }
+    
+    
+    //if(myUI.trigger_int == -1)
+     //UI.setTriggerInt(1);
+    switch (myUI.trigger_int)//navigates to a screen using the click placement
+    {
+      case 1:
         myWorld.generateLevel1();
+        trigger_int = myUI.getTriggerInt();
+        myUI = new UI(trigger_int + 1);//makes it so that the next button references the level ahead of it
+        runGame = true;
+        break;
+      case 2:
+        myWorld.generateLevel2();
+        trigger_int = myUI.getTriggerInt();
+        myUI = new UI(trigger_int + 1);
+        runGame = true;
+        break;
+      case 3:
+        myWorld.generateLevel3();
+        trigger_int = myUI.getTriggerInt();
+        myUI = new UI(trigger_int + 1);
         runGame = true;
         break;
     }

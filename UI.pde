@@ -1,10 +1,12 @@
 class UI
 {
-  private Button[] ButtonList = new Button[12];
+  private Button[] ButtonList = new Button[13];
   private String trigger_text = "Home Page";
+  private int trigger_int = 0;
   
-  public UI()
+  public UI(int a)
   {
+    trigger_int = a;
     //(where the button is (parent page), where the button goes (reference name), text in the button, locationX, locationY, sizeX, sizeY)
     this.ButtonList[0] = new Button("Home Page", "Start Game", "Start Game", 1900 / 2 - 530 / 2, 100, 530, 100); 
     this.ButtonList[1] = new Button("Home Page", "Level Select", "Level Select", 1900 / 2 - 560 / 2, 300, 560, 100);
@@ -13,14 +15,15 @@ class UI
     this.ButtonList[3] = new Button("About", "Home Page", "Return to Home Page", 50, 50, 260, 25);
     
     this.ButtonList[4] = new Button("Game Over", "Home Page", "Return to Home Page", 50, 50, 260, 25);
+    this.ButtonList[12] = new Button("You Won", trigger_int, "Next", 900, 500, 260, 25);
     this.ButtonList[5] = new Button("You Won", "Home Page", "Return to Home Page", 50, 50, 260, 25);
     
     this.ButtonList[11] = new Button("Level Select", "TestGrounds", "Test Grounds", 360, 50, 260, 25);
     this.ButtonList[6] = new Button("Level Select", "Home Page", "Return to Home Page", 50, 50, 260, 25);
-    this.ButtonList[7] = new Button("Level Select", "Level1", "Level 1", 50, 200, 250, 30);
-    this.ButtonList[8] = new Button("Level Select", "Level2", "Level 2", 50, 250, 250, 30);
-    this.ButtonList[9] = new Button("Level Select", "Level3", "Level 3", 50, 300, 250, 30);
-    this.ButtonList[10] = new Button("Level Select", "Level4", "Level 4", 50, 350, 250, 30);
+    this.ButtonList[7] = new Button("Level Select", 1, "Level 1", 50, 200, 250, 30);
+    this.ButtonList[8] = new Button("Level Select", 2, "Level 2", 50, 250, 250, 30);
+    this.ButtonList[9] = new Button("Level Select", 3, "Level 3", 50, 300, 250, 30);
+    this.ButtonList[10] = new Button("Level Select", 4, "Level 4", 50, 350, 250, 30);
   }
   
   public void displayHome()
@@ -72,10 +75,14 @@ class UI
         && mouseY > ButtonList[i].button_location[1] && mouseY < ButtonList[i].button_location[1] + ButtonList[i].button_size[1])
         {  
           trigger_text = ButtonList[i].button_reference_name;
+          trigger_int = ButtonList[i].button_reference_int;
           break;
         }
         else
+        {
           trigger_text = ButtonList[i].button_parent_name;
+          trigger_int = 0;
+        }
   }
   
   public void runGame()
@@ -115,5 +122,10 @@ class UI
     enemyController.resetEnemies();
     bulletController.resetBullets();
     myTank.resetTank();
+  }
+  
+  public int getTriggerInt()
+  {
+    return trigger_int;
   }
 }

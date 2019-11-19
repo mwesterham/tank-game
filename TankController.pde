@@ -82,6 +82,38 @@ class TankController
     enemies.add(TempEnemyTank);
   }
   
+  public void addNoMovingEnemy(float spawnX, float spawnY)
+  {
+    TempEnemyTank = new EnemyTank(
+    /*tank_width*/75, 
+    /*tank_height*/75, 
+    /*tank_speed*/0, 
+    /*tank_health*/3,
+    /*bullet_size*/20, 
+    /*bullet_speed*/4, 
+    /*bullet_health/pentration/damage*/.8,
+    /*bullet frequency measured in ticks per shot*/ 100,
+    /*number of times bullets bounce*/0,
+    /*spawn_x*/spawnX, 
+    /*spawn_y*/spawnY, 
+    /*target_location_x*/myTank.getPosition().x, 
+    /*target_location_y*/myTank.getPosition().y,
+    /*Tank Color         r/g/b*/124, 107, 78,
+    /*Turret Color       r/g/b*/135, 120, 95,
+    /*Tank Outline Color r/g/b*/0, 0, 0);
+    
+    TempEnemyTank.updateCollisionPermissions(
+    /*player_shot_collision_with_body allowed*/ true, 
+    /*enemy_shot_collision_with_body allowed*/ false, 
+    /*player_bullet_collide allowed*/ true, 
+    /*enemy_bullet_collide allowed*/ false,
+    /*collision_bullet_with_wall_allowed*/ true);
+    
+    TempEnemyTank.setAIVersion(1);    
+    
+    enemies.add(TempEnemyTank);
+  }  
+
   public void addStandardEnemy(float spawnX, float spawnY)
   {
     TempEnemyTank = new EnemyTank(
@@ -98,9 +130,9 @@ class TankController
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.getPosition().x, 
     /*target_location_y*/myTank.getPosition().y,
-    /*Tank Color         r/g/b*/0, 255, 123,
-    /*Turret Color       r/g/b*/0, 0, 0,
-    /*Tank Outline Color r/g/b*/0, 255, 123);
+    /*Tank Color         r/g/b*/80, 70, 50,
+    /*Turret Color       r/g/b*/90, 80, 70,
+    /*Tank Outline Color r/g/b*/0, 0, 0);
     
     TempEnemyTank.updateCollisionPermissions(
     /*player_shot_collision_with_body allowed*/ true, 
@@ -130,9 +162,9 @@ class TankController
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.getPosition().x, 
     /*target_location_y*/myTank.getPosition().y,
-    /*Tank Color         r/g/b*/255, 255, 255,
-    /*Turret Color       r/g/b*/240, 90, 0,
-    /*Tank Outline Color r/g/b*/255, 255, 255);
+    /*Tank Color         r/g/b*/50, 40, 30,
+    /*Turret Color       r/g/b*/70, 60, 50,
+    /*Tank Outline Color r/g/b*/0, 0, 0);
     
     TempEnemyTank.updateCollisionPermissions(
     /*player_shot_collision_with_body allowed*/ true, 
