@@ -28,19 +28,25 @@ class TankController
     for(int i = 0; i < enemies.size(); i++)
     {
       TempEnemyTank = enemies.get(i);
-      AI = new EnemyAI(TempEnemyTank); //applies AI to the tank in the enemies list
+      if(TempEnemyTank.AI_version == 1)
+        AI = new EnemyAI(TempEnemyTank); //applies AI to the tank in the enemies list
+      
+      
       AI.shootCheck(); //checks if should shoot
-      TempEnemyTank.update();
+      AI.updateAimLocation(); //updates the aiming location
+      AI.updateVelocity(); //updates where the tank is gonna move next
+      TempEnemyTank.update(); //implements all the updates
+      
       if(AI.canShoot() && tickCount % TempEnemyTank.getBulletFrequency() == 0)
         TempEnemyTank.shoot();
       if(TempEnemyTank.tank_health <= 0)
         removeEnemy(TempEnemyTank);
     }
     
-    for(int i = 0; i < enemies.size(); i++)
+    //for(int i = 0; i < enemies.size(); i++)
     {
-      TempEnemyTank = enemies.get(i);
-      TempEnemyTank.renderTank();
+      //TempEnemyTank = enemies.get(i);
+      //TempEnemyTank.renderTank();
     }
   }
   
@@ -49,10 +55,10 @@ class TankController
     TempEnemyTank = new EnemyTank(
     /*tank_width*/100, 
     /*tank_height*/100, 
-    /*tank_speed*/0, 
+    /*tank_speed*/1, 
     /*tank_health*/10000,
     /*bullet_size*/0, 
-    /*bullet_speed*/15, 
+    /*bullet_speed*/0, 
     /*bullet_health/pentration/damage*/0,
     /*bullet frequency measured in ticks per shot*/ 100000,
     /*number of times bullets bounce*/0,
@@ -63,6 +69,15 @@ class TankController
     /*Tank Color         r/g/b*/255, 255, 255,
     /*Turret Color       r/g/b*/255, 255, 255,
     /*Tank Outline Color r/g/b*/255, 255, 255);
+
+    TempEnemyTank.updateCollisionPermissions(
+    /*player_shot_collision_with_body allowed*/ true, 
+    /*enemy_shot_collision_with_body allowed*/ false, 
+    /*player_bullet_collide allowed*/ true, 
+    /*enemy_bullet_collide allowed*/ false,
+    /*collision_bullet_with_wall_allowed*/ true);
+    
+    TempEnemyTank.setAIVersion(1);
     
     enemies.add(TempEnemyTank);
   }
@@ -87,6 +102,15 @@ class TankController
     /*Turret Color       r/g/b*/0, 0, 0,
     /*Tank Outline Color r/g/b*/0, 255, 123);
     
+    TempEnemyTank.updateCollisionPermissions(
+    /*player_shot_collision_with_body allowed*/ true, 
+    /*enemy_shot_collision_with_body allowed*/ false, 
+    /*player_bullet_collide allowed*/ true, 
+    /*enemy_bullet_collide allowed*/ false,
+    /*collision_bullet_with_wall_allowed*/ true);
+    
+    TempEnemyTank.setAIVersion(1);    
+    
     enemies.add(TempEnemyTank);
   }
   
@@ -109,6 +133,15 @@ class TankController
     /*Tank Color         r/g/b*/255, 255, 255,
     /*Turret Color       r/g/b*/240, 90, 0,
     /*Tank Outline Color r/g/b*/255, 255, 255);
+    
+    TempEnemyTank.updateCollisionPermissions(
+    /*player_shot_collision_with_body allowed*/ true, 
+    /*enemy_shot_collision_with_body allowed*/ false, 
+    /*player_bullet_collide allowed*/ true, 
+    /*enemy_bullet_collide allowed*/ false,
+    /*collision_bullet_with_wall_allowed*/ true);
+    
+    TempEnemyTank.setAIVersion(1);    
     
     enemies.add(TempEnemyTank);
   }

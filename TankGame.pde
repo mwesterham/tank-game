@@ -6,19 +6,7 @@
   private boolean displayLevelSelect = false;
   private boolean displayAbout = false;
   
-  private PlayerTank myTank = new PlayerTank(
-  /*tank_width*/60, 
-  /*tank_height*/50, 
-  /*tank_health*/5.1,
-  /*tank_speed*/2.5, 
-  /*bullet_size*/20, 
-  /*bullet_speed*/4, 
-  /*bullet_health/pentration/damage*/1,
-  /*bullet_frequency*/24, 
-  /*number of times bullets bounce*/1,
-  /*spawn_x*/600, 
-  /*spawn_y*/500);
-  
+  private PlayerTank myTank;
   private boolean move_left = false;
   private boolean move_right = false;
   private boolean move_up = false;
@@ -35,6 +23,26 @@ void setup()
 {
   size(1900, 900); //the width and height variables not working in tankcontroller for some reason /: BE SURE TO UPDATE IF CHANGING SIZE (typical is 1900, 900)
   frameRate(60);
+  
+  myTank  = new PlayerTank(
+  /*tank_width*/60, 
+  /*tank_height*/50, 
+  /*tank_health*/5.1,
+  /*tank_speed*/2.5, 
+  /*bullet_size*/20, 
+  /*bullet_speed*/4, //typically 4
+  /*bullet_health/pentration/damage*/1,//typically 1
+  /*bullet_frequency*/24, //typically 24
+  /*number of times bullets bounce*/1,
+  /*spawn_x*/600, 
+  /*spawn_y*/500);
+  
+  myTank.updateCollisionPermissions(
+  /*player_shot_collision_with_body allowed*/ false, 
+  /*enemy_shot_collision_with_body allowed*/ true, 
+  /*player_bullet_collide allowed*/ false, 
+  /*enemy_bullet_collide allowed*/ true,
+  /*collision_bullet_with_wall_allowed*/ true);
 }  
   
 void draw() 
@@ -119,7 +127,7 @@ void mousePressed()
         displayYouWon = true;
         break;
       case "Start Game": //start game is default random world and with non-randomized tanks
-        myWorld.generateRandomWorld(10, 2, 1); //(num_of_walls, num_of_regular enemies, num_of_slowstrong)
+        myWorld.generateRandomWorld(20, 3, 1); //(num_of_walls, num_of_regular enemies, num_of_slowstrong)
         runGame = true;
         break;
       case "TestGrounds":

@@ -36,7 +36,15 @@ class EnemyTank
   private float bullet_health;
   private int bullet_frequency;
   private int num_bullet_bounce;
-  private PVector targetLocation;
+  private boolean player_shot_collision_with_body_allowed = true; 
+  private boolean enemy_shot_collision_with_body_allowed = false; 
+  private boolean player_bullet_collide_allowed = true; 
+  private boolean enemy_bullet_collide_allowed = false;
+  private boolean collision_bullet_with_wall_allowed = true;
+  
+  private PVector aimLocation;
+  private int AI_version = 1;
+  
   
   public EnemyTank(
   float tank_width, 
@@ -76,7 +84,7 @@ class EnemyTank
     this.bullet_speed = bullet_speed;
     this.bullet_frequency = bullet_frequency;
     
-    targetLocation = new PVector(aim_x, aim_y);
+    aimLocation = new PVector(aim_x, aim_y);
     
     this.tank_color[0] = tank_color_red;
     this.tank_color[1] = tank_color_green;
@@ -92,7 +100,6 @@ class EnemyTank
   public void update()
   {
     collisionCheck();
-    updateTargetLocation();
     updatePosition();
     
     renderTank();
@@ -171,14 +178,20 @@ class EnemyTank
     }
   }
   
+  public void setNewVelocityDirection(PVector newVelocityDirection)
+  {
+    this.velocity.x = newVelocityDirection.x * tank_speed;
+    this.velocity.y = newVelocityDirection.y * tank_speed;
+  }
+  
+  public void setNewAimLocation(PVector newAimLocation)
+  {
+    this.aimLocation = newAimLocation;
+  }
+  
   public void updatePosition()
   {
     location.add(velocity);
-  }
-  
-  public void updateTargetLocation()
-  {
-    targetLocation = myTank.getPosition();
   }
 
   public void renderTank()
@@ -245,7 +258,7 @@ class EnemyTank
     //turret rendering
     pushMatrix();
     translate(location.x, location.y);
-    rotate(atan2(targetLocation.y - location.y, targetLocation.x - location.x));
+    rotate(atan2(aimLocation.y - location.y, aimLocation.x - location.x));
     fill(turret_color[0], turret_color[1], turret_color[2]);
     stroke(tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
     rect(0,0 - (turret_cir_height) * 1/2, turret_rec_width, turret_rec_height);
@@ -268,7 +281,12 @@ class EnemyTank
   
   public void shoot()
   {
-    bulletController.addBullet(new Bullet(
+    bulletController.addBullet(getBullet());
+  }
+  
+  public Bullet getBullet()
+  {
+    return new Bullet(
     /*Number of collisions*/ 0, 
     bullet_size, 
     bullet_speed, 
@@ -276,14 +294,24 @@ class EnemyTank
     /*number of times bullets bounce*/num_bullet_bounce,
     /*spawnpoint x*/ location.x, 
     /*spawnpoint y*/ location.y, 
-    /*Direction of Bullet*/ getDirection(), 
+    /*Direction of Bullet*/ getAimDirection(), 
     /*spawn distance from center of rotation*/ getTurretLength(), 
-    /*player_shot_collision_with_body allowed*/ true, 
-    /*enemy_shot_collision_with_body allowed*/ false, 
-    /*player_bullet_collide allowed*/ true, 
-    /*enemy_bullet_collide allowed*/ false, 
+    /*player_shot_collision_with_body allowed*/ player_shot_collision_with_body_allowed, 
+    /*enemy_shot_collision_with_body allowed*/ enemy_shot_collision_with_body_allowed, 
+    /*player_bullet_collide allowed*/ player_bullet_collide_allowed, 
+    /*enemy_bullet_collide allowed*/ enemy_bullet_collide_allowed, 
+    /*collision_bullet_with_wall_allowed*/ collision_bullet_with_wall_allowed,
     /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
-    /*Bullet outline color...*/ tank_color[0], tank_color[1], tank_color[2]));
+    /*Bullet outline color...*/ tank_color[0], tank_color[1], tank_color[2]);
+  }
+  
+  public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e)
+  {
+    player_shot_collision_with_body_allowed = a;
+    enemy_shot_collision_with_body_allowed = b;
+    player_bullet_collide_allowed = c;
+    enemy_bullet_collide_allowed = d;
+    collision_bullet_with_wall_allowed = e;
   }
   
   public void setTurretSize(float tank_width, float tank_height)
@@ -292,6 +320,11 @@ class EnemyTank
     this.turret_cir_height = tank_height * 1/3;
     this.turret_rec_width = tank_width * 2/5 ;
     this.turret_rec_height = tank_height * 1/3;
+  }
+  
+  public void setAIVersion(int AIVersion)
+  {
+    AI_version = AIVersion;
   }
   /*
   public void setTankColor(int red, int green, int blue)
@@ -309,9 +342,14 @@ class EnemyTank
     this.turret_color[2] = blue;
   }
   */
-  public float getDirection()
+  public float getNaturalMoveDirection()
   {
-    return -atan2(targetLocation.x - location.x, targetLocation.y - location.y);
+    return -atan2(myTank.location.x - location.x, myTank.location.y - location.y);
+  }
+  
+  public float getAimDirection()
+  {
+    return -atan2(aimLocation.x - location.x, aimLocation.y - location.y);
   }
   
   public PVector getPosition()

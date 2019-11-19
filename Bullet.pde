@@ -10,6 +10,7 @@ class Bullet
   
   private PVector location;
   private float turret_length;
+  private float bullet_speed;
   private PVector velocity;
   private float bullet_direction;
   
@@ -17,6 +18,7 @@ class Bullet
   private boolean enemy_collision_allowed;
   private boolean player_bullet_collide_allowed;
   private boolean enemy_bullet_collide_allowed;
+  private boolean collision_bullet_with_wall_allowed;
   
   private boolean right_wall_collision;
   private boolean left_wall_collision;
@@ -25,7 +27,22 @@ class Bullet
   
   private int number_of_collisions;
   
-  public Bullet(int number_of_collisions, float size, float speed, float bullet_health, int num_bullet_bounce, float spawn_x, float spawn_y, float direction, float turret_length, boolean player_collision_allowed, boolean enemy_collision_allowed, boolean player_bullet_collide_allowed, boolean enemy_bullet_collide_allowed, int bullet_color_red, int bullet_color_green, int bullet_color_blue, int outline_color_red, int outline_color_green, int outline_color_blue)
+  public Bullet(
+  int number_of_collisions, 
+  float size, 
+  float speed, 
+  float bullet_health, 
+  int num_bullet_bounce, 
+  float spawn_x, float spawn_y, 
+  float direction, 
+  float turret_length, 
+  boolean player_collision_allowed, 
+  boolean enemy_collision_allowed, 
+  boolean player_bullet_collide_allowed, 
+  boolean enemy_bullet_collide_allowed, 
+  boolean collision_bullet_with_wall_allowed, 
+  int bullet_color_red, int bullet_color_green, int bullet_color_blue, 
+  int outline_color_red, int outline_color_green, int outline_color_blue)
   {
     this.bullet_width = size;
     this.bullet_height = size;
@@ -39,7 +56,9 @@ class Bullet
     this.bullet_outline_color[1] = outline_color_green;
     this.bullet_outline_color[2] = outline_color_blue;
     
-    velocity = new PVector(speed * sin(-direction), speed * cos(direction));
+    this.bullet_speed = speed;
+    //this.bullet_direction = direction;
+    velocity = new PVector(bullet_speed * sin(-direction), bullet_speed * cos(direction));
     location = new PVector(spawn_x, spawn_y);
     this.turret_length = turret_length;
     
@@ -49,6 +68,7 @@ class Bullet
     this.enemy_collision_allowed = enemy_collision_allowed;
     this.player_bullet_collide_allowed = player_bullet_collide_allowed;
     this.enemy_bullet_collide_allowed = enemy_bullet_collide_allowed;
+    this.collision_bullet_with_wall_allowed = collision_bullet_with_wall_allowed;
     
     this.right_wall_collision = false;
     this.left_wall_collision = false;
@@ -81,6 +101,7 @@ class Bullet
   
   public void updatePosition()
   {
+    //velocity = new PVector(bullet_speed * sin(-bullet_direction), bullet_speed * cos(bullet_direction));
     location.add(velocity);
   }
   
@@ -94,9 +115,10 @@ class Bullet
       prepDelete(); //makes the velocity zero so it can be deleted in the controller class
   }
   
-  public void updateBulletDirection(PVector new_velocity)
+  public void updateBulletSpeed(int speed)
   {
-    this.velocity = new_velocity;
+    this.bullet_speed = speed;
+    velocity = new PVector(bullet_speed * sin(-bullet_direction), bullet_speed * cos(bullet_direction));
   }
   
   public void rightWallCollisionTrue()

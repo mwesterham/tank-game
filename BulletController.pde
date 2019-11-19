@@ -9,7 +9,24 @@ class BulletController
   {
     
   }
-  
+
+  public void sudoUpdate()
+  {
+    for(int i = 0; i < b.size(); i++) //updates position, checks for collisions and deletes accordingly
+    {
+      TempPos = i;
+      TempBullet = b.get(i);
+      TempBullet.updatePosition();
+      collisionBulletBulletCheck();
+      collisioinBulletOuterWallCheck();
+      if(TempBullet.collision_bullet_with_wall_allowed)
+        collisionBulletWallCheck();
+
+      if (TempBullet.getVelocity().mag() == 0)//  || TempBullet.bullet_health <= 0)//if the bullet collides more than twice vel = 0 and removed, if health reaches 0, it is removed
+        bulletController.removeBullet(b.get(i));
+    }
+  }
+
   public void update()
   {
     for(int i = 0; i < b.size(); i++) //updates position, checks for collisions and deletes accordingly
@@ -17,23 +34,20 @@ class BulletController
       TempPos = i;
       TempBullet = b.get(i);
       TempBullet.updatePosition();
-      collisionCheck();
+      collisionBulletBulletCheck();
+      collisioinBulletOuterWallCheck();
+      if(TempBullet.collision_bullet_with_wall_allowed)
+        collisionBulletWallCheck();
 
       if (TempBullet.getVelocity().mag() == 0)//  || TempBullet.bullet_health <= 0)//if the bullet collides more than twice vel = 0 and removed, if health reaches 0, it is removed
         bulletController.removeBullet(b.get(i));
     }
-    
+
     for(int i = 0; i < b.size(); i++) //Renders the bullets
     {
       TempBullet = b.get(i);
       TempBullet.renderBullet();
     }
-  }
-  
-  public void collisionCheck()//combines all the checks
-  {
-    collisionBulletBulletCheck();
-    collisionBulletWallCheck();
   }
   
   public void collisionBulletBulletCheck()//checks the collisions between different bullets
@@ -66,7 +80,7 @@ class BulletController
     }
   }
  
-  public void collisionBulletWallCheck()//checks collisions between bullets and walls
+  public void collisioinBulletOuterWallCheck()
   {
     //MUST CHECK OUTER WALL COLLISIONS SEPERATELY, NOT ON A WALL-TO-WALL BASIS
     
@@ -89,13 +103,16 @@ class BulletController
     }
     else
       TempBullet.aboveWallCollisionFalse();
-    
+  }
+  
+  public void collisionBulletWallCheck()//checks collisions between bullets and walls
+  {
     //Loop to check each stand-alone wall with each bullet
     for(int a = 0; a < myWorld.getNumWalls(); a++)//cycles through all of the walls
     {
       float innerRim = TempBullet.getVelocity().mag() + 1;
       float thisCollisionCount = 0;
-      PVector original_velocity = TempBullet.getVelocity();
+      //PVector original_velocity = TempBullet.getVelocity();
       
       //checks if the bullet collides with bullets' right side, wall left side  
       if ((myWorld.getWalls()[a][0]) - (TempBullet.getPosition().x + TempBullet.getSize() * sqrt(2) / 4) <= 0 //scans if the collision box overlaps with a rectangle along a vertical line

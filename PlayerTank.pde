@@ -39,6 +39,11 @@ class PlayerTank
   private int bullet_frequency;
   private int num_bullet_bounce;
   private int shot_cool_down = 0;
+  private boolean player_shot_collision_with_body_allowed = true; 
+  private boolean enemy_shot_collision_with_body_allowed = false; 
+  private boolean player_bullet_collide_allowed = true; 
+  private boolean enemy_bullet_collide_allowed = false;
+  private boolean collision_bullet_with_wall_allowed = true;
   private int tempTickCount = 0;
   
   public PlayerTank(
@@ -85,8 +90,6 @@ class PlayerTank
     shootCheck();
     if(shoot_input)
       tempTickCount++;
-
-    
   }
   
   private void collisionCheck()
@@ -280,12 +283,22 @@ class PlayerTank
     /*spawnpoint y*/ location.y, 
     /*Direction of Bullet*/ getDirection(), 
     /*spawn distance from center of rotation*/ getTurretLength(), 
-    /*player_shot_collision_with_body allowed*/ false, 
-    /*enemy_shot_collision_with_body allowed*/ true, 
-    /*player_bullet_collide allowed*/ false, 
-    /*enemy_bullet_collide allowed*/ true, 
+    /*player_shot_collision_with_body allowed*/ player_shot_collision_with_body_allowed, 
+    /*enemy_shot_collision_with_body allowed*/ enemy_shot_collision_with_body_allowed, 
+    /*player_bullet_collide allowed*/ player_bullet_collide_allowed, 
+    /*enemy_bullet_collide allowed*/ enemy_bullet_collide_allowed, 
+    /*collision_bullet_with_wall_allowed*/ collision_bullet_with_wall_allowed,
     /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
     /*Bullet outline color...*/ tank_color[0], tank_color[1], tank_color[2]));
+  }
+  
+  public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e)
+  {
+    player_shot_collision_with_body_allowed = a;
+    enemy_shot_collision_with_body_allowed = b;
+    player_bullet_collide_allowed = c;
+    enemy_bullet_collide_allowed = d;
+    collision_bullet_with_wall_allowed = e;
   }
   
   public void setTurretSize(float tank_width, float tank_height)

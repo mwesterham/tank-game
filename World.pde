@@ -98,6 +98,7 @@ class World
       walls[1][2] = width / 2;//width 
       walls[1][3] = height / 8;//length 
     }
+    
     myTank.setSpawn(100, 450);
     enemyController.addStandardEnemy(1800, 100);//spawn is at 1800, 100)
   }
