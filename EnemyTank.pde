@@ -36,6 +36,7 @@ class EnemyTank
   private float bullet_health;
   private int bullet_frequency;
   private int num_bullet_bounce;
+  private float bullet_spawn_from_length = 14;
   private boolean player_shot_collision_with_body_allowed = true; 
   private boolean enemy_shot_collision_with_body_allowed = false; 
   private boolean player_bullet_collide_allowed = true; 
@@ -295,7 +296,7 @@ class EnemyTank
     /*spawnpoint x*/ location.x, 
     /*spawnpoint y*/ location.y, 
     /*Direction of Bullet*/ getAimDirection(), 
-    /*spawn distance from center of rotation*/ getTurretLength(), 
+    /*spawn distance from center of rotation*/ getTurretLength() + bullet_spawn_from_length, 
     /*player_shot_collision_with_body allowed*/ player_shot_collision_with_body_allowed, 
     /*enemy_shot_collision_with_body allowed*/ enemy_shot_collision_with_body_allowed, 
     /*player_bullet_collide allowed*/ player_bullet_collide_allowed, 
@@ -326,6 +327,11 @@ class EnemyTank
   {
     AI_version = AIVersion;
   }
+  
+  public void setBulletSpawnFromLength(int extra_distance)
+  {
+    bullet_spawn_from_length = extra_distance;
+  }
   /*
   public void setTankColor(int red, int green, int blue)
   {
@@ -342,7 +348,7 @@ class EnemyTank
     this.turret_color[2] = blue;
   }
   */
-  public float getNaturalMoveDirection()
+  public float getTowardMoveDirection()
   {
     return -atan2(myTank.location.x - location.x, myTank.location.y - location.y);
   }

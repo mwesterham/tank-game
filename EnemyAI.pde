@@ -4,6 +4,7 @@ class EnemyAI
   private PVector location;
   private PVector velocity_direction;
   private PVector aimLocation;
+  private PVector between_vector;
   
   Bullet sudoBullet;
   private boolean target_visible = false;
@@ -19,23 +20,41 @@ class EnemyAI
   
   public void updateVelocity() //actual movement AI part
   {
-
-    float current_move_direction_x = -sin(enemyTank.getNaturalMoveDirection());
-    float current_move_direction_y = cos(enemyTank.getNaturalMoveDirection());
-    velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
+    float current_move_direction_x = enemyTank.velocity.x;//-sin(enemyTank.getTowardMoveDirection());
+    float current_move_direction_y = enemyTank.velocity.y;//cos(enemyTank.getTowardMoveDirection());
     
-    //natural movement: get within 400 px of myTank and then go back and forth
+    //if target is visible, move towards
+    if(target_visible) 
+    {
+      current_move_direction_x = -sin(enemyTank.getTowardMoveDirection());
+      current_move_direction_y = cos(enemyTank.getTowardMoveDirection());
+      velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
+    }
+    else
+      velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
+    
+    //if tank is within 200 ox move backwards
     if(dist(location.x, location.y, myTank.location.x, myTank.location.y) < 200) //if distance between enemy and you is less than 400 move away from them
-    {  
+    {
       velocity_direction.x *= -1;
       velocity_direction.y *= -1;
     }
-
+    
+    for(int i = 0; i < enemyController.enemies.size(); i++)
+    {
+      //draws a vector between each tank and other tanks
+      between_vector = new PVector(location.x - enemyController.getEList().get(i).getPosition().x, location.y - enemyController.getEList().get(i).getPosition().y);
+      
+      if(dist(location.x, location.y, enemyController.getEList().get(i).getPosition().x, enemyController.getEList().get(i).getPosition().y) < 50
+      && dist(location.x, location.y, enemyController.getEList().get(i).getPosition().x, enemyController.getEList().get(i).getPosition().y) > 0)
+        velocity_direction.add(between_vector); //if the tanks are within 50 px, add opposing velocity
+    }
+    
     //bullet reaction: move away from the bullet on the path parrallel to line between the center of bullet and center of the tank
     for(int i = 0; i < bulletController.getBList().size(); i++)
     {
       //draws a vector between bullet and tank
-      PVector between_vector = new PVector(location.x - bulletController.getBList().get(i).getPosition().x, location.y - bulletController.getBList().get(i).getPosition().y); 
+      between_vector = new PVector(location.x - bulletController.getBList().get(i).getPosition().x, location.y - bulletController.getBList().get(i).getPosition().y); 
       
       //if bullet is within 50px of size, add vector moving opposite direction
       if(dist(location.x, location.y, bulletController.getBList().get(i).getPosition().x, bulletController.getBList().get(i).getPosition().y) <= enemyTank.tank_width + 50

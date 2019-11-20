@@ -24,6 +24,7 @@ class BulletController
 
       if (TempBullet.getVelocity().mag() == 0)//  || TempBullet.bullet_health <= 0)//if the bullet collides more than twice vel = 0 and removed, if health reaches 0, it is removed
         bulletController.removeBullet(b.get(i));
+      //TempBullet.renderBullet();
     }
   }
 

@@ -27,10 +27,22 @@ class TankController
   {
     for(int i = 0; i < enemies.size(); i++)
     {
+      Random rand = new Random();
       TempEnemyTank = enemies.get(i);
-      if(TempEnemyTank.AI_version == 1)
-        AI = new EnemyAI(TempEnemyTank); //applies AI to the tank in the enemies list
       
+      if(TempEnemyTank.AI_version == 1)
+        AI = new EnemyAI(TempEnemyTank); //applies AI to the tank in the enemies list with new velocity
+      
+      
+      if(tickCount % 64 == 0 && rand.nextInt(3) == 0) //every 64 ticks give it a 1/3 chance of changing direction
+      {
+        int tank_direction_x = rand.nextInt();
+        int tank_direction_y = rand.nextInt();
+        
+        PVector velocity_direction = new PVector(tank_direction_x, tank_direction_y);
+        velocity_direction.normalize();
+        TempEnemyTank.setNewVelocityDirection(velocity_direction);
+      }
       
       AI.shootCheck(); //checks if should shoot
       AI.updateAimLocation(); //updates the aiming location
@@ -55,12 +67,12 @@ class TankController
     TempEnemyTank = new EnemyTank(
     /*tank_width*/100, 
     /*tank_height*/100, 
-    /*tank_speed*/1, 
-    /*tank_health*/10000,
+    /*tank_speed*/0, 
+    /*tank_health*/20,
     /*bullet_size*/0, 
     /*bullet_speed*/0, 
     /*bullet_health/pentration/damage*/0,
-    /*bullet frequency measured in ticks per shot*/ 100000,
+    /*bullet frequency measured in ticks per shot*/ 10000,
     /*number of times bullets bounce*/0,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
@@ -75,7 +87,7 @@ class TankController
     /*enemy_shot_collision_with_body allowed*/ false, 
     /*player_bullet_collide allowed*/ true, 
     /*enemy_bullet_collide allowed*/ false,
-    /*collision_bullet_with_wall_allowed*/ true);
+    /*collision_bullet_with_wall_allowed*/ false);
     
     TempEnemyTank.setAIVersion(1);
     
@@ -130,8 +142,8 @@ class TankController
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.getPosition().x, 
     /*target_location_y*/myTank.getPosition().y,
-    /*Tank Color         r/g/b*/80, 70, 50,
-    /*Turret Color       r/g/b*/90, 80, 70,
+    /*Tank Color         r/g/b*/70, 140, 20,
+    /*Turret Color       r/g/b*/80, 150, 30,
     /*Tank Outline Color r/g/b*/0, 0, 0);
     
     TempEnemyTank.updateCollisionPermissions(

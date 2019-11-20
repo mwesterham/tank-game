@@ -37,6 +37,7 @@ class PlayerTank
   private float bullet_speed;
   private float bullet_health;
   private int bullet_frequency;
+  private float bullet_spawn_from_length = 14;
   private int num_bullet_bounce;
   private int shot_cool_down = 0;
   private boolean player_shot_collision_with_body_allowed = true; 
@@ -128,6 +129,18 @@ class PlayerTank
       && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
       || (900) - (location.y + tank_height / 2) <= 0)
         below_collision = true;
+    }
+    
+    for(int i = 0; i < enemyController.enemies.size(); i++)
+    {
+      //draws a vector between each tank and other tanks
+      PVector between_vector = new PVector(location.x - enemyController.getEList().get(i).getPosition().x, location.y - enemyController.getEList().get(i).getPosition().y);
+      between_vector.normalize();
+      between_vector.x *= tank_speed;
+      between_vector.y *= tank_speed;
+      
+      if(dist(location.x, location.y, enemyController.getEList().get(i).getPosition().x, enemyController.getEList().get(i).getPosition().y) < tank_width)
+        location.add(between_vector); //if the tanks' centers are within the range the size of tank_width, add opposing velocity
     }
     
     if(right_collision)
@@ -282,7 +295,7 @@ class PlayerTank
     /*spawnpoint x*/ location.x, 
     /*spawnpoint y*/ location.y, 
     /*Direction of Bullet*/ getDirection(), 
-    /*spawn distance from center of rotation*/ getTurretLength(), 
+    /*spawn distance from center of rotation*/ getTurretLength() + bullet_spawn_from_length, 
     /*player_shot_collision_with_body allowed*/ player_shot_collision_with_body_allowed, 
     /*enemy_shot_collision_with_body allowed*/ enemy_shot_collision_with_body_allowed, 
     /*player_bullet_collide allowed*/ player_bullet_collide_allowed, 
@@ -328,10 +341,20 @@ class PlayerTank
     location = new PVector(spawnX, spawnY);
   }
   
+  public void setTankHealthZero()
+  {
+    tank_health = 0;
+  }
+  
   public void resetTank()
   {
     tank_health = original_tank_health;
     location = new PVector(spawn_x, spawn_y);
+  }
+  
+  public void setBulletSpawnFromLength(int extra_distance)
+  {
+    bullet_spawn_from_length = extra_distance;
   }
   
   public PVector getPosition()
