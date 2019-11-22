@@ -47,9 +47,11 @@ class TankController
       AI.shootCheck(); //checks if should shoot
       AI.updateAimLocation(); //updates the aiming location
       AI.updateVelocity(); //updates where the tank is gonna move next
+      AI.collisionCheck();
       TempEnemyTank.update(); //implements all the updates
-      
-      if(AI.canShoot() && tickCount % TempEnemyTank.getBulletFrequency() == 0)
+      if(AI.target_visible)
+        TempEnemyTank.local_tick_count++;
+      if(AI.canShoot() && TempEnemyTank.local_tick_count % TempEnemyTank.bullet_frequency == 0)
         TempEnemyTank.shoot();
       if(TempEnemyTank.tank_health <= 0)
         removeEnemy(TempEnemyTank);
@@ -76,8 +78,8 @@ class TankController
     /*number of times bullets bounce*/0,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
-    /*target_location_x*/myTank.getPosition().x, 
-    /*target_location_y*/myTank.getPosition().y,
+    /*target_location_x*/myTank.location.x, 
+    /*target_location_y*/myTank.location.y,
     /*Tank Color         r/g/b*/255, 255, 255,
     /*Turret Color       r/g/b*/255, 255, 255,
     /*Tank Outline Color r/g/b*/255, 255, 255);
@@ -108,8 +110,8 @@ class TankController
     /*number of times bullets bounce*/0,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
-    /*target_location_x*/myTank.getPosition().x, 
-    /*target_location_y*/myTank.getPosition().y,
+    /*target_location_x*/myTank.location.x, 
+    /*target_location_y*/myTank.location.y,
     /*Tank Color         r/g/b*/124, 107, 78,
     /*Turret Color       r/g/b*/135, 120, 95,
     /*Tank Outline Color r/g/b*/0, 0, 0);
@@ -140,10 +142,10 @@ class TankController
     /*number of times bullets bounce*/1,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
-    /*target_location_x*/myTank.getPosition().x, 
-    /*target_location_y*/myTank.getPosition().y,
-    /*Tank Color         r/g/b*/70, 140, 20,
-    /*Turret Color       r/g/b*/80, 150, 30,
+    /*target_location_x*/myTank.location.x, 
+    /*target_location_y*/myTank.location.y,
+    /*Tank Color         r/g/b*/80, 70, 50,
+    /*Turret Color       r/g/b*/90, 80, 70,
     /*Tank Outline Color r/g/b*/0, 0, 0);
     
     TempEnemyTank.updateCollisionPermissions(
@@ -172,8 +174,8 @@ class TankController
     /*number of times bullets bounce*/1,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
-    /*target_location_x*/myTank.getPosition().x, 
-    /*target_location_y*/myTank.getPosition().y,
+    /*target_location_x*/myTank.location.x, 
+    /*target_location_y*/myTank.location.y,
     /*Tank Color         r/g/b*/50, 40, 30,
     /*Turret Color       r/g/b*/70, 60, 50,
     /*Tank Outline Color r/g/b*/0, 0, 0);

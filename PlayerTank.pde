@@ -37,7 +37,7 @@ class PlayerTank
   private float bullet_speed;
   private float bullet_health;
   private int bullet_frequency;
-  private float bullet_spawn_from_length = 14;
+  private float bullet_spawn_from_length = 0;
   private int num_bullet_bounce;
   private int shot_cool_down = 0;
   private boolean player_shot_collision_with_body_allowed = true; 
@@ -134,12 +134,12 @@ class PlayerTank
     for(int i = 0; i < enemyController.enemies.size(); i++)
     {
       //draws a vector between each tank and other tanks
-      PVector between_vector = new PVector(location.x - enemyController.getEList().get(i).getPosition().x, location.y - enemyController.getEList().get(i).getPosition().y);
+      PVector between_vector = new PVector(location.x - enemyController.getEList().get(i).location.x, location.y - enemyController.getEList().get(i).location.y);
       between_vector.normalize();
       between_vector.x *= tank_speed;
       between_vector.y *= tank_speed;
       
-      if(dist(location.x, location.y, enemyController.getEList().get(i).getPosition().x, enemyController.getEList().get(i).getPosition().y) < tank_width)
+      if(dist(location.x, location.y, enemyController.getEList().get(i).location.x, enemyController.getEList().get(i).location.y) < tank_width)
         location.add(between_vector); //if the tanks' centers are within the range the size of tank_width, add opposing velocity
     }
     
@@ -167,7 +167,7 @@ class PlayerTank
     //bullet collision with tank check
     for(int i = 0; i < bulletController.getBList().size(); i++)
     {
-      if(dist(location.x, location.y, bulletController.getBList().get(i).getPosition().x, bulletController.getBList().get(i).getPosition().y) 
+      if(dist(location.x, location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y) 
       <= tank_width / 2 + bulletController.getBList().get(i).getSize() / 2
       && bulletController.getBList().get(i).playerCollision())
       {
@@ -357,10 +357,7 @@ class PlayerTank
     bullet_spawn_from_length = extra_distance;
   }
   
-  public PVector getPosition()
-  {
-    return location;
-  }
+
   
   public float getDirection()
   {

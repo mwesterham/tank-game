@@ -9,11 +9,6 @@ class EnemyTank
   private PVector velocity;
   private float tank_speed;
   
-  private boolean right_collision = false;
-  private boolean left_collision = false;
-  private boolean above_collision = false;
-  private boolean below_collision = false;
-  
   private float original_tank_health;
   private float tank_health;
   private float tank_width;
@@ -36,7 +31,7 @@ class EnemyTank
   private float bullet_health;
   private int bullet_frequency;
   private int num_bullet_bounce;
-  private float bullet_spawn_from_length = 14;
+  private float bullet_spawn_from_length = 0;
   private boolean player_shot_collision_with_body_allowed = true; 
   private boolean enemy_shot_collision_with_body_allowed = false; 
   private boolean player_bullet_collide_allowed = true; 
@@ -45,7 +40,7 @@ class EnemyTank
   
   private PVector aimLocation;
   private int AI_version = 1;
-  
+  private int local_tick_count = 0;
   
   public EnemyTank(
   float tank_width, 
@@ -100,101 +95,15 @@ class EnemyTank
   
   public void update()
   {
-    collisionCheck();
     updatePosition();
-    
     renderTank();
-  }
-  
-  private void collisionCheck()
-  {
-    //do not do World myWorld = new World(6) here, it already sees it from the TankGame file
-    for(int i = 0; i < myWorld.getNumWalls(); i++) //loops through all of the walls
-    {
-    //vertical wall check right_collision
-      if ((myWorld.getWalls()[i][0]) - (location.x + right_collision_dist) <= 0 //scans if the collision box overlaps with a rectangle along a vertical line
-      && (myWorld.getWalls()[i][0]) - (location.x) >= 0 //Makes sure that this collision box does not affect the other side of the box
-      && (location.y - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 //makes sure that the tank is within the right vertical segment of the rectangle
-      && (location.y + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0 //makes sure that the tank is within the right vertical segment of the rectangle
-      || (1900) - (location.x + right_collision_dist / 2) <= 0) //makes sure the tank cannot go off-screen
-        right_collision = true;
-    
-    //vertical wall check left_collision
-      if ((myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (location.x - left_collision_dist) >= 0 
-      && (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (location.x) <= 0
-      && (location.y - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 
-      && (location.y + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0
-      || (location.x - left_collision_dist / 2) <= 0)
-        left_collision = true;
-    
-    //horizontal wall check above_collision
-      if ((myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (location.y - above_collision_dist) >= 0 
-      && (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (location.y) <= 0
-      && (location.x - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
-      && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
-      || (location.y - tank_height / 2) <= 0)
-        above_collision = true;
-    
-    //horizontal wall check below_collision
-      if ((myWorld.getWalls()[i][1]) - (location.y + below_collision_dist) <= 0 
-      && (myWorld.getWalls()[i][1]) - (location.y) >= 0
-      && (location.x - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
-      && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
-      || (900) - (location.y + tank_height / 2) <= 0)
-        below_collision = true;
-    }
-    
-    if(right_collision)
-    {
-      location.x -= tank_speed;
-      right_collision = false;
-    }
-    if(left_collision)
-    {
-      location.x += tank_speed;
-      left_collision = false;
-    }
-    if(above_collision)
-    {
-      location.y += tank_speed;
-      above_collision = false;
-    }
-    if(below_collision)
-    {
-      location.y -= tank_speed;
-      below_collision = false;
-    }
-    
-    
-    //bullet collision with tank check
-    for(int i = 0; i < bulletController.getBList().size(); i++)
-    {
-      if(dist(location.x, location.y, bulletController.getBList().get(i).getPosition().x, bulletController.getBList().get(i).getPosition().y) 
-      <= tank_width / 2 + bulletController.getBList().get(i).getSize() / 2
-      && bulletController.getBList().get(i).enemyCollision())
-      {  
-        this.tank_health -= bulletController.getBList().get(i).getHealth();
-        bulletController.removeBullet(bulletController.getBList().get(i));
-      }
-    }
-  }
-  
-  public void setNewVelocityDirection(PVector newVelocityDirection)
-  {
-    this.velocity.x = newVelocityDirection.x * tank_speed;
-    this.velocity.y = newVelocityDirection.y * tank_speed;
-  }
-  
-  public void setNewAimLocation(PVector newAimLocation)
-  {
-    this.aimLocation = newAimLocation;
   }
   
   public void updatePosition()
   {
     location.add(velocity);
   }
-
+  
   public void renderTank()
   {
     stroke(tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
@@ -296,7 +205,7 @@ class EnemyTank
     /*spawnpoint x*/ location.x, 
     /*spawnpoint y*/ location.y, 
     /*Direction of Bullet*/ getAimDirection(), 
-    /*spawn distance from center of rotation*/ getTurretLength() + bullet_spawn_from_length, 
+    /*spawn distance from center of rotation*/ turret_rec_width + bullet_spawn_from_length, 
     /*player_shot_collision_with_body allowed*/ player_shot_collision_with_body_allowed, 
     /*enemy_shot_collision_with_body allowed*/ enemy_shot_collision_with_body_allowed, 
     /*player_bullet_collide allowed*/ player_bullet_collide_allowed, 
@@ -304,6 +213,22 @@ class EnemyTank
     /*collision_bullet_with_wall_allowed*/ collision_bullet_with_wall_allowed,
     /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
     /*Bullet outline color...*/ tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
+  }  
+
+  public void setNewVelocityDirection(PVector newVelocityDirection)
+  {
+    this.velocity.x = newVelocityDirection.x * tank_speed;
+    this.velocity.y = newVelocityDirection.y * tank_speed;
+  }
+  
+  public void setNewAimLocation(PVector newAimLocation)
+  {
+    this.aimLocation = newAimLocation;
+  }
+  
+  public void setAIVersion(int AIVersion)
+  {
+    AI_version = AIVersion;
   }
   
   public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e)
@@ -323,15 +248,11 @@ class EnemyTank
     this.turret_rec_height = tank_height * 1/3;
   }
   
-  public void setAIVersion(int AIVersion)
-  {
-    AI_version = AIVersion;
-  }
-  
   public void setBulletSpawnFromLength(int extra_distance)
   {
     bullet_spawn_from_length = extra_distance;
   }
+
   /*
   public void setTankColor(int red, int green, int blue)
   {
@@ -348,6 +269,7 @@ class EnemyTank
     this.turret_color[2] = blue;
   }
   */
+  
   public float getTowardMoveDirection()
   {
     return -atan2(myTank.location.x - location.x, myTank.location.y - location.y);
@@ -358,18 +280,5 @@ class EnemyTank
     return -atan2(aimLocation.x - location.x, aimLocation.y - location.y);
   }
   
-  public PVector getPosition()
-  {
-    return location;
-  }
-  
-  public float getTurretLength()
-  {
-    return turret_rec_width;
-  }
-  
-  public int getBulletFrequency()
-  {
-    return bullet_frequency;
-  }
+
 }

@@ -21,6 +21,9 @@
   
   public int tickCount = 0;
   
+  
+  //tanks can now collide with eachother
+  //moved 
 void setup() 
 {
   size(1900, 900); //the width and height variables not working in tankcontroller for some reason /: BE SURE TO UPDATE IF CHANGING SIZE (typical is 1900, 900)
@@ -30,8 +33,8 @@ void setup()
   /*tank_width*/75, 
   /*tank_height*/75, 
   /*tank_health*/4.1, //typically 4.1
-  /*tank_speed*/2, 
-  /*bullet_size*/20, 
+  /*tank_speed*/2, //typically 2
+  /*bullet_size*/20, //typically 20
   /*bullet_speed*/4, //typically 4
   /*bullet_health/pentration/damage*/1,//typically 1
   /*bullet_frequency*/36, //typically 36
@@ -40,13 +43,13 @@ void setup()
   /*spawn_y*/500);
   
   myTank.updateCollisionPermissions(
-  /*player_shot_collision_with_body allowed*/ true, 
+  /*player_shot_collision_with_body allowed*/ false, 
   /*enemy_shot_collision_with_body allowed*/ true, 
   /*player_bullet_collide allowed*/ false, 
   /*enemy_bullet_collide allowed*/ true,
   /*collision_bullet_with_wall_allowed*/ true);
   
-  //myTank.setBulletSpawnFromLength(14);//add extra distance
+  //Only turn on if self-damage is on //myTank.setBulletSpawnFromLength(14);//add or subtract extra distance
 }  
   
 void draw() 

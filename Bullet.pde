@@ -187,7 +187,7 @@ class Bullet
     return number_of_collisions;
   }
 
-  public PVector getPosition()
+  public PVector getRealLocation()
   {
     PVector realLocation = new PVector(location.x + turret_length * sin(-bullet_direction), location.y + turret_length * cos(bullet_direction));
     return realLocation;
