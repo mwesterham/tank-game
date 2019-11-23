@@ -58,7 +58,7 @@ class World
   public void generateTestGrounds()
   {
     myUI.resetGame();
-    this.num_of_walls = 4;
+    this.num_of_walls = 5;
     float[][] walls = new float[num_of_walls][4]; 
     this.walls = walls;
     
@@ -106,8 +106,22 @@ class World
       walls[i][3] = height * wall_height / 1080;//length
     }
     
+    {i = 4; //bottom border
+    wall_x = 400;
+    wall_y = 500;
+    wall_width = 100; //max is 1920
+    wall_height = 100; //max is 1080
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080;//y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+    
     myTank.setSpawn(950, 450);
     enemyController.addDummyEnemy(550, 500);
+    //enemyController.addBossEnemy2(850, 500);
+    //enemyController.addBossEnemy1(850, 500);
+    //enemyController.addDummyEnemy(950, 150);
     //enemyController.addDummyEnemy(600, 500);
     //enemyController.addDummyEnemy(650, 500);
     //enemyController.addDummyEnemy(700, 500);

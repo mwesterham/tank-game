@@ -4,11 +4,10 @@
   private String path;  
   SoundFile background_music;
   SoundFile shot_sound;
-  */
+  //*/
   
   private UI myUI;
   private boolean runGame = false;
-  //private boolean pauseGame = false;
   private boolean displayGameOver = false;
   private boolean displayYouWon = false;
   private boolean displayHome = true;
@@ -41,9 +40,10 @@ void setup()
   path = sketchPath("Audio Files/Shot_Sound.mp3"); 
   shot_sound = new SoundFile(this, path); //in playertank and enemy tank shoot() methods, be sure to comment out if you do not have the library installed
   
-  */
+  //*/
   
   //game setup
+  //size(1900, 900); //for testing game breaking stuff
   fullScreen();
   frameRate(80); //60fps for testing, 80fps for gameplay, 120fps for fast speed, 240fps for insane speed
   
@@ -65,7 +65,8 @@ void setup()
   /*enemy_shot_collision_with_body allowed*/ true, 
   /*player_bullet_collide allowed*/ false, 
   /*enemy_bullet_collide allowed*/ true,
-  /*collision_bullet_with_wall_allowed*/ true);
+  /*collision_bullet_with_wall_allowed*/ true,
+  /*collision_body_with_wall_allowed*/ true);
   
   //Only turn on if self-damage is on: //myTank.setBulletSpawnFromLength(14);//add or subtract extra distance from turret length
 }  
@@ -75,7 +76,7 @@ void draw()
   background(130, 130, 130);
   if(!runGame)
   {
-    //System.out.println(myUI.trigger_text);
+    //System.out.println(myUI.trigger_text); //for testing the UI
     if(displayHome)//displays the screen indicated
       myUI.displayHome();
     if(displayAbout)
@@ -90,7 +91,7 @@ void draw()
       myUI.displayYouWon();
   }
 
-  if(runGame) //runs the game
+  if(runGame)
   {  
     myUI.runGame();
     myUI.endGameCheck();//if player health reaches zero or num of enemies reach zero, resets the game
@@ -130,7 +131,7 @@ void mousePressed()
     shoot_input = true;
   if(!runGame)
   {
-    //now displaying none of the pages
+    //on click: sets everything to not displaying
     displayHome = false;
     displayAbout = false;
     displayControls = false;
@@ -139,7 +140,7 @@ void mousePressed()
     displayYouWon = false;
     runGame = false;
     
-    switch (myUI.trigger_text)//navigates to a screen using the click placement
+    switch (myUI.trigger_text)//navigates to a new screen using the click placement
     {
       case "Home Page":
         displayHome = true;
@@ -161,7 +162,7 @@ void mousePressed()
         break;
     }
     
-    switch (myUI.trigger_int)//navigates to a screen using the click placement and int associated with it
+    switch (myUI.trigger_int)//navigates to a new game using the click placement and int associated with it
     {
       case -2:
         myWorld.generateTestGrounds();

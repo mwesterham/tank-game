@@ -45,6 +45,7 @@ class PlayerTank
   private boolean player_bullet_collide_allowed = true; 
   private boolean enemy_bullet_collide_allowed = false;
   private boolean collision_bullet_with_wall_allowed = true;
+  private boolean collision_body_with_wall_allowed = true;
   private int tempTickCount = 0;
   
   public PlayerTank(
@@ -96,53 +97,65 @@ class PlayerTank
   private void collisionCheck()
   {
     //do not do World myWorld = new World(6) here, it already sees it from the TankGame file
-    for(int i = 0; i < myWorld.getNumWalls(); i++) //loops through all of the walls
+    if(collision_body_with_wall_allowed)
     {
-    //vertical wall check right_collision
-      if ((myWorld.getWalls()[i][0]) - (location.x + right_collision_dist) <= 0 //scans if the collision box overlaps with a rectangle along a vertical line
-      && (myWorld.getWalls()[i][0]) - (location.x) >= 0 //Makes sure that this collision box does not affect the other side of the box
-      && (location.y - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 //makes sure that the tank is within the right vertical segment of the rectangle
-      && (location.y + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0 //makes sure that the tank is within the right vertical segment of the rectangle
-      || (width) - (location.x + right_collision_dist / 2) <= 0) //makes sure the tank cannot go off-screen
+      for(int i = 0; i < myWorld.getNumWalls(); i++) //loops through all of the walls
+      {
+      //vertical wall check right_collision
+        if ((myWorld.getWalls()[i][0]) - (location.x + right_collision_dist) <= 0 //scans if the collision box overlaps with a rectangle along a vertical line
+        && (myWorld.getWalls()[i][0]) - (location.x) >= 0 //Makes sure that this collision box does not affect the other side of the box
+        && (location.y - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 //makes sure that the tank is within the right vertical segment of the rectangle
+        && (location.y + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0 //makes sure that the tank is within the right vertical segment of the rectangle
+        || (width) - (location.x + right_collision_dist / 2) <= 0) //makes sure the tank cannot go off-screen
+          right_collision = true;
+      
+      //vertical wall check left_collision
+        if ((myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (location.x - left_collision_dist) >= 0 
+        && (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (location.x) <= 0
+        && (location.y - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 
+        && (location.y + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0
+        || (location.x - left_collision_dist / 2) <= 0)
+          left_collision = true;
+      
+      //horizontal wall check above_collision
+        if ((myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (location.y - above_collision_dist) >= 0 
+        && (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (location.y) <= 0
+        && (location.x - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
+        && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
+        || (location.y - tank_height / 2) <= 0)
+          above_collision = true;
+      
+      //horizontal wall check below_collision
+        if ((myWorld.getWalls()[i][1]) - (location.y + below_collision_dist) <= 0 
+        && (myWorld.getWalls()[i][1]) - (location.y) >= 0
+        && (location.x - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
+        && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
+        || (height) - (location.y + tank_height / 2) <= 0)
+          below_collision = true;
+      }
+      
+      for(int i = 0; i < enemyController.enemies.size(); i++)
+      {
+        //draws a vector between each tank and other tanks
+        PVector between_vector = new PVector(location.x - enemyController.getEList().get(i).location.x, location.y - enemyController.getEList().get(i).location.y);
+        between_vector.normalize();
+        between_vector.x *= tank_speed;
+        between_vector.y *= tank_speed;
+        
+        if(dist(location.x, location.y, enemyController.getEList().get(i).location.x, enemyController.getEList().get(i).location.y) < tank_width)
+          location.add(between_vector); //if the tanks' centers are within the range the size of tank_width, add opposing velocity
+      }
+    }
+    {
+      if((width) - (location.x + right_collision_dist / 2) <= 0)
         right_collision = true;
-    
-    //vertical wall check left_collision
-      if ((myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (location.x - left_collision_dist) >= 0 
-      && (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) - (location.x) <= 0
-      && (location.y - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 
-      && (location.y + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0
-      || (location.x - left_collision_dist / 2) <= 0)
+      if((location.x - left_collision_dist / 2) <= 0)
         left_collision = true;
-    
-    //horizontal wall check above_collision
-      if ((myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (location.y - above_collision_dist) >= 0 
-      && (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (location.y) <= 0
-      && (location.x - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
-      && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
-      || (location.y - tank_height / 2) <= 0)
+      if((location.y - tank_height / 2) <= 0)
         above_collision = true;
-    
-    //horizontal wall check below_collision
-      if ((myWorld.getWalls()[i][1]) - (location.y + below_collision_dist) <= 0 
-      && (myWorld.getWalls()[i][1]) - (location.y) >= 0
-      && (location.x - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
-      && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
-      || (height) - (location.y + tank_height / 2) <= 0)
+      if((height) - (location.y + tank_height / 2) <= 0)
         below_collision = true;
     }
-    
-    for(int i = 0; i < enemyController.enemies.size(); i++)
-    {
-      //draws a vector between each tank and other tanks
-      PVector between_vector = new PVector(location.x - enemyController.getEList().get(i).location.x, location.y - enemyController.getEList().get(i).location.y);
-      between_vector.normalize();
-      between_vector.x *= tank_speed;
-      between_vector.y *= tank_speed;
-      
-      if(dist(location.x, location.y, enemyController.getEList().get(i).location.x, enemyController.getEList().get(i).location.y) < tank_width)
-        location.add(between_vector); //if the tanks' centers are within the range the size of tank_width, add opposing velocity
-    }
-    
     if(right_collision)
     {
       location.x -= tank_speed;
@@ -307,13 +320,14 @@ class PlayerTank
     //shot_sound.play();
   }
   
-  public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e)
+  public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e, boolean f)
   {
     player_shot_collision_with_body_allowed = a;
     enemy_shot_collision_with_body_allowed = b;
     player_bullet_collide_allowed = c;
     enemy_bullet_collide_allowed = d;
     collision_bullet_with_wall_allowed = e;
+    collision_body_with_wall_allowed = f;
   }
   
   public void setTurretSize(float tank_width, float tank_height)

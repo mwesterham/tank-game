@@ -37,6 +37,7 @@ class EnemyTank
   private boolean player_bullet_collide_allowed = true; 
   private boolean enemy_bullet_collide_allowed = false;
   private boolean collision_bullet_with_wall_allowed = true;
+  private boolean collision_body_with_wall_allowed = true;
   
   private PVector aimLocation;
   private int AI_version = 1;
@@ -224,23 +225,19 @@ class EnemyTank
     this.velocity.y = newVelocityDirection.y * tank_speed;
   }
   
-  public void setNewAimLocation(PVector newAimLocation)
-  {
-    this.aimLocation = newAimLocation;
-  }
-  
   public void setAIVersion(int AIVersion)
   {
     AI_version = AIVersion;
   }
   
-  public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e)
+  public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e, boolean f)
   {
     player_shot_collision_with_body_allowed = a;
     enemy_shot_collision_with_body_allowed = b;
     player_bullet_collide_allowed = c;
     enemy_bullet_collide_allowed = d;
     collision_bullet_with_wall_allowed = e;
+    collision_body_with_wall_allowed = f;
   }
   
   public void setTurretSize(float tank_width, float tank_height)

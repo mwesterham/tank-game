@@ -4,28 +4,18 @@ class TankController
   private LinkedList<EnemyTank> enemies = new LinkedList<EnemyTank>();
   EnemyTank TempEnemyTank;
   EnemyAI AI;
-  //private int num_of_standard_enemies;
-  //private int num_of_slow_strong_enemies;
   
   public TankController(int num_of_stand_still_enemies, int num_of_standard_enemies, int num_of_slow_strong_enemies)
   {
     Random rand = new Random();
     for(int i = 0; i < num_of_stand_still_enemies; i++)
-    {
       addNoMovingEnemy(rand.nextInt(width), rand.nextInt(height));
-    }
     
-    //this.num_of_standard_enemies = num_of_standard_enemies;
     for(int i = 0; i < num_of_standard_enemies; i++)
-    {
       addStandardEnemy(rand.nextInt(width), rand.nextInt(height));
-    }
     
-    //this.num_of_slow_strong_enemies = num_of_slow_strong_enemies;
     for(int i = 0; i < num_of_slow_strong_enemies; i++)
-    {
       addSlowStrongEnemy(rand.nextInt(width), rand.nextInt(height));
-    }
   }
   
   public void update()
@@ -34,67 +24,58 @@ class TankController
     {
       Random rand = new Random();
       TempEnemyTank = enemies.get(i);
-      
-      if(TempEnemyTank.AI_version == 1)
-        AI = new EnemyAI(TempEnemyTank); //applies AI to the tank in the enemies list with new velocity
-      
+      AI = new EnemyAI(TempEnemyTank); //applies AI to the tank in the enemies list with new velocity
       
       if(tickCount % 64 == 0 && rand.nextInt(3) == 0) //every 64 ticks give it a 1/3 chance of changing direction
       {
-        int tank_direction_x = rand.nextInt();
-        int tank_direction_y = rand.nextInt();
-        
-        PVector velocity_direction = new PVector(tank_direction_x, tank_direction_y);
+        PVector velocity_direction = new PVector(rand.nextInt(), rand.nextInt());
         velocity_direction.normalize();
         TempEnemyTank.setNewVelocityDirection(velocity_direction);
       }
       
-      AI.shootCheck(); //checks if should shoot
+      AI.targetVisibleCheck(); //checks if should shoot
       AI.updateAimLocation(); //updates the aiming location
       AI.updateVelocity(); //updates where the tank is gonna move next
       AI.collisionCheck();
-      TempEnemyTank.update(); //implements all the updates
+      TempEnemyTank.update(); //only updates position and renders the tank
+      
       if(AI.target_visible)
         TempEnemyTank.local_tick_count++;
-      if(AI.canShoot() && TempEnemyTank.local_tick_count % TempEnemyTank.bullet_frequency == 0)
+      if(AI.target_visible && TempEnemyTank.local_tick_count % TempEnemyTank.bullet_frequency == 0)
         TempEnemyTank.shoot();
       if(TempEnemyTank.tank_health <= 0)
         removeEnemy(TempEnemyTank);
     }
-    
-    //for(int i = 0; i < enemies.size(); i++)
-    {
-      //TempEnemyTank = enemies.get(i);
-      //TempEnemyTank.renderTank();
-    }
   }
   
+  //STANDARD ENEMIES
   public void addDummyEnemy(float spawnX, float spawnY)
   {
     TempEnemyTank = new EnemyTank(
-    /*tank_width*/100, 
-    /*tank_height*/100, 
-    /*tank_speed*/.5, 
-    /*tank_health*/20,
-    /*bullet_size*/100, 
-    /*bullet_speed*/1, 
-    /*bullet_health/pentration/damage*/100,
-    /*bullet frequency measured in ticks per shot*/ 100,
-    /*number of times bullets bounce*/20,
+    /*tank_width*/75, 
+    /*tank_height*/75, 
+    /*tank_speed*/1, 
+    /*tank_health*/3,
+    /*bullet_size*/20, 
+    /*bullet_speed*/4, 
+    /*bullet_health/pentration/damage*/1,
+    /*bullet frequency measured in ticks per shot*/ 36,
+    /*number of times bullets bounce*/1,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.location.x, 
     /*target_location_y*/myTank.location.y,
-    /*Tank Color         r/g/b*/0, 255, 255,
+    /*Tank Color         r/g/b*/0, 123, 255,
     /*Turret Color       r/g/b*/255, 255, 255,
-    /*Tank Outline Color r/g/b*/255, 255, 255);
+    /*Tank Outline Color r/g/b*/255, 123, 255);
 
     TempEnemyTank.updateCollisionPermissions(
     /*player_shot_collision_with_body allowed*/ true, 
     /*enemy_shot_collision_with_body allowed*/ false, 
     /*player_bullet_collide allowed*/ true, 
     /*enemy_bullet_collide allowed*/ false,
-    /*collision_bullet_with_wall_allowed*/ false);
+    /*collision_bullet_with_wall_allowed*/ true,
+    /*collision_body_with_wall_allowed*/ true);
     
     TempEnemyTank.setAIVersion(1);
     
@@ -126,7 +107,8 @@ class TankController
     /*enemy_shot_collision_with_body allowed*/ false, 
     /*player_bullet_collide allowed*/ true, 
     /*enemy_bullet_collide allowed*/ false,
-    /*collision_bullet_with_wall_allowed*/ true);
+    /*collision_bullet_with_wall_allowed*/ true,
+    /*collision_body_with_wall_allowed*/ true);
     
     TempEnemyTank.setAIVersion(1);    
     
@@ -158,7 +140,8 @@ class TankController
     /*enemy_shot_collision_with_body allowed*/ false, 
     /*player_bullet_collide allowed*/ true, 
     /*enemy_bullet_collide allowed*/ false,
-    /*collision_bullet_with_wall_allowed*/ true);
+    /*collision_bullet_with_wall_allowed*/ true,
+    /*collision_body_with_wall_allowed*/ true);
     
     TempEnemyTank.setAIVersion(1);    
     
@@ -190,12 +173,85 @@ class TankController
     /*enemy_shot_collision_with_body allowed*/ false, 
     /*player_bullet_collide allowed*/ true, 
     /*enemy_bullet_collide allowed*/ false,
-    /*collision_bullet_with_wall_allowed*/ true);
+    /*collision_bullet_with_wall_allowed*/ true,
+    /*collision_body_with_wall_allowed*/ true);
     
     TempEnemyTank.setAIVersion(1);    
     
     enemies.add(TempEnemyTank);
   }
+  
+  
+  
+  
+  //BOSS ENEMIES
+  public void addBossEnemy1(float spawnX, float spawnY)
+  {
+    TempEnemyTank = new EnemyTank(
+    /*tank_width*/50, 
+    /*tank_height*/50, 
+    /*tank_speed*/4, 
+    /*tank_health*/1,
+    /*bullet_size*/10, 
+    /*bullet_speed*/5, 
+    /*bullet_health/pentration/damage*/.5,
+    /*bullet frequency measured in ticks per shot*/ 16,
+    /*number of times bullets bounce*/0,
+    /*spawn_x*/spawnX, 
+    /*spawn_y*/spawnY, 
+    /*target_location_x*/myTank.location.x, 
+    /*target_location_y*/myTank.location.y,
+    /*Tank Color         r/g/b*/0, 255, 255,
+    /*Turret Color       r/g/b*/255, 255, 255,
+    /*Tank Outline Color r/g/b*/255, 255, 255);
+
+    TempEnemyTank.updateCollisionPermissions(
+    /*player_shot_collision_with_body allowed*/ true, 
+    /*enemy_shot_collision_with_body allowed*/ false, 
+    /*player_bullet_collide allowed*/ true, 
+    /*enemy_bullet_collide allowed*/ false,
+    /*collision_bullet_with_wall_allowed*/ true,
+    /*collision_body_with_wall_allowed*/ true);
+    
+    TempEnemyTank.setAIVersion(2);
+    
+    enemies.add(TempEnemyTank);
+  }
+  
+  public void addBossEnemy2(float spawnX, float spawnY)
+  {
+    TempEnemyTank = new EnemyTank(
+    /*tank_width*/100, 
+    /*tank_height*/100, 
+    /*tank_speed*/.5, 
+    /*tank_health*/20,
+    /*bullet_size*/100, 
+    /*bullet_speed*/1, 
+    /*bullet_health/pentration/damage*/100,
+    /*bullet frequency measured in ticks per shot*/ 100,
+    /*number of times bullets bounce*/20,
+    /*spawn_x*/spawnX, 
+    /*spawn_y*/spawnY, 
+    /*target_location_x*/myTank.location.x, 
+    /*target_location_y*/myTank.location.y,
+    /*Tank Color         r/g/b*/0, 255, 255,
+    /*Turret Color       r/g/b*/255, 255, 255,
+    /*Tank Outline Color r/g/b*/255, 255, 255);
+
+    TempEnemyTank.updateCollisionPermissions(
+    /*player_shot_collision_with_body allowed*/ true, 
+    /*enemy_shot_collision_with_body allowed*/ false, 
+    /*player_bullet_collide allowed*/ true, 
+    /*enemy_bullet_collide allowed*/ false,
+    /*collision_bullet_with_wall_allowed*/ false,
+    /*collision_body_with_wall_allowed*/ false);
+    
+    TempEnemyTank.setAIVersion(1);
+    
+    enemies.add(TempEnemyTank);
+  }  
+  
+  
   
   public void addEnemy(EnemyTank enemyTank)
   {
