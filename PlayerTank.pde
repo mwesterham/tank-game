@@ -103,7 +103,7 @@ class PlayerTank
       && (myWorld.getWalls()[i][0]) - (location.x) >= 0 //Makes sure that this collision box does not affect the other side of the box
       && (location.y - above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 //makes sure that the tank is within the right vertical segment of the rectangle
       && (location.y + below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0 //makes sure that the tank is within the right vertical segment of the rectangle
-      || (1900) - (location.x + right_collision_dist / 2) <= 0) //makes sure the tank cannot go off-screen
+      || (width) - (location.x + right_collision_dist / 2) <= 0) //makes sure the tank cannot go off-screen
         right_collision = true;
     
     //vertical wall check left_collision
@@ -127,7 +127,7 @@ class PlayerTank
       && (myWorld.getWalls()[i][1]) - (location.y) >= 0
       && (location.x - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
       && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
-      || (900) - (location.y + tank_height / 2) <= 0)
+      || (height) - (location.y + tank_height / 2) <= 0)
         below_collision = true;
     }
     
@@ -303,6 +303,8 @@ class PlayerTank
     /*collision_bullet_with_wall_allowed*/ collision_bullet_with_wall_allowed,
     /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
     /*Bullet outline color...*/ tank_color[0], tank_color[1], tank_color[2]));
+    
+    //shot_sound.play();
   }
   
   public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e)

@@ -89,7 +89,7 @@ class EnemyAI
       && (myWorld.getWalls()[i][0]) - (enemyTank.location.x) >= 0 //Makes sure that this collision box does not affect the other side of the box
       && (enemyTank.location.y - enemyTank.above_collision_dist) - (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) <= 0 //makes sure that the tank is within the right vertical segment of the rectangle
       && (enemyTank.location.y + enemyTank.below_collision_dist) - (myWorld.getWalls()[i][1]) >= 0 //makes sure that the tank is within the right vertical segment of the rectangle
-      || (1900) - (enemyTank.location.x + enemyTank.right_collision_dist / 2) <= 0) //makes sure the tank cannot go off-screen
+      || (width) - (enemyTank.location.x + enemyTank.right_collision_dist / 2) <= 0) //makes sure the tank cannot go off-screen
         right_collision = true;
     
     //vertical wall check left_collision
@@ -113,7 +113,7 @@ class EnemyAI
       && (myWorld.getWalls()[i][1]) - (enemyTank.location.y) >= 0
       && (enemyTank.location.x - enemyTank.left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
       && (enemyTank.location.x + enemyTank.right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
-      || (900) - (enemyTank.location.y + enemyTank.tank_height / 2) <= 0)
+      || (height) - (enemyTank.location.y + enemyTank.tank_height / 2) <= 0)
         below_collision = true;
     }
     

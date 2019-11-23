@@ -65,7 +65,9 @@ class EnemyTank
     this.tank_health = tank_health;
     this.bullet_health = bullet_health;
     this.num_bullet_bounce = num_bullet_bounce;
-    velocity = new PVector(tank_speed, tank_speed);
+      Random rand = new Random();
+      velocity = new PVector(rand.nextInt(), rand.nextInt());
+      velocity.normalize();
     this.tank_speed = tank_speed;
     
     this.turret_cir_width = tank_width * 1/3;
@@ -80,7 +82,7 @@ class EnemyTank
     this.bullet_speed = bullet_speed;
     this.bullet_frequency = bullet_frequency;
     
-    aimLocation = new PVector(aim_x, aim_y);
+      aimLocation = new PVector(aim_x, aim_y);
     
     this.tank_color[0] = tank_color_red;
     this.tank_color[1] = tank_color_green;
@@ -192,6 +194,7 @@ class EnemyTank
   public void shoot()
   {
     bulletController.addBullet(getBullet());
+    //shot_sound.play();
   }
   
   public Bullet getBullet()

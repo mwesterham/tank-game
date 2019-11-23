@@ -8,10 +8,10 @@ class UI
   {
     trigger_int = a;
     //(where the button is (parent page), where the button goes (reference name), text in the button, locationX, locationY, sizeX, sizeY)
-    this.ButtonList[0] = new Button("Home Page", 1, "Start Game", 1900 / 2 - 530 / 2, 100, 530, 100); 
-    this.ButtonList[1] = new Button("Home Page", "Level Select", "Level Select", 1900 / 2 - 560 / 2, 300, 560, 100);
-    this.ButtonList[2] = new Button("Home Page", "Controls", " Controls", 1900 / 2 - 500 / 2, 500, 500, 100);
-    this.ButtonList[3] = new Button("Home Page", "About", "About this", 1900 / 2 - 500 / 2, 700, 500, 100);
+    this.ButtonList[0] = new Button("Home Page", 1, "Start Game", width / 2 - 530 / 2, 100, 530, 100); 
+    this.ButtonList[1] = new Button("Home Page", "Level Select", "Level Select", width / 2 - 560 / 2, 300, 560, 100);
+    this.ButtonList[2] = new Button("Home Page", "Controls", " Controls", width / 2 - 500 / 2, 500, 500, 100);
+    this.ButtonList[3] = new Button("Home Page", "About", "About this", width / 2 - 500 / 2, 700, 500, 100);
 
     
     this.ButtonList[4] = new Button("Controls", "Home Page", "Return to Home Page", 50, 50, 260, 25);
@@ -76,7 +76,14 @@ class UI
   {
     textSize(100);
     text("YOU WON", width / 2, 100);
-    updateButtonHover("You Won"); //yeah
+    updateButtonHover("You Won"); 
+  }
+  
+  public void LevelsComplete()
+  {
+    textSize(100);
+    text("LEVELS COMPLETE", width / 2, 100);
+    updateButtonHover("Levels Complete"); 
   }
   
   public void displayAbout()
@@ -97,9 +104,15 @@ class UI
     textSize(50);
     text("Controls", width / 2, 100);
     textSize(40);
-    text("Move with: WASD", 100, 300);
-    text("Aim and shoot with: mouse", 100, 350);
-    text("Quit the level with: p", 100, 400);
+    text("Movement", 100, 250);
+    text("    Up: W", 100, 300);
+    text("    Down: S", 100, 350);
+    text("    Left: A", 100, 400);
+    text("    Right: D", 100, 450);
+    text("Shooting/Aiming", 100, 550);
+    text("    Aim: mouse", 100, 600);
+    text("    Shoot: mouse click", 100, 650);
+    text("Quit the level with: p", 100, 750);
     updateButtonHover("Controls");
   }
   

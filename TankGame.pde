@@ -1,4 +1,12 @@
-  private UI myUI = new UI(0);
+  /*Sound Stuff
+  import processing.sound.*; //install the sound library from processing
+  private String background_path;
+  private String path;  
+  SoundFile background_music;
+  SoundFile shot_sound;
+  */
+  
+  private UI myUI;
   private boolean runGame = false;
   //private boolean pauseGame = false;
   private boolean displayGameOver = false;
@@ -15,22 +23,32 @@
   private boolean move_down = false;
   private boolean shoot_input = false;
 
-  private World myWorld = new World();//set how many walls spawn (need at least 1), they are randomly placed
+  private World myWorld = new World(); //just declares the world name, nothing else
   private BulletController bulletController = new BulletController();
-  private TankController enemyController = new TankController(0, 0); //set how many enemies spawn, they are randomly placed (standardEnemy, strongSlowEnemy) PS this is only used to instantiate
+  private TankController enemyController = new TankController(0, 0, 0); //set how many enemies spawn, they are randomly placed (standardEnemy, strongSlowEnemy) PS this is only used to instantiate
   
   public int tickCount = 0;
   
-  
-  //tanks can now collide with eachother
-  //moved 
 void setup() 
 {
-  size(1900, 900); //the width and height variables not working in tankcontroller for some reason /: BE SURE TO UPDATE IF CHANGING SIZE (typical is 1900, 900)
-  frameRate(60);
+  myUI = new UI(0); //instantiate it here so it can inherit the width and height
+  /*Sound Stuff
+
+  //Sound setup
+  //background_path = sketchPath("Audio Files/Raider_Anthem_BassAdjusted.mp3");
+  //background_music = new SoundFile(this, background_path);
+  //background_music.loop();
+  path = sketchPath("Audio Files/Shot_Sound.mp3"); 
+  shot_sound = new SoundFile(this, path); //in playertank and enemy tank shoot() methods, be sure to comment out if you do not have the library installed
+  
+  */
+  
+  //game setup
+  fullScreen();
+  frameRate(80); //60fps for testing, 80fps for gameplay, 120fps for fast speed, 240fps for insane speed
   
   myTank  = new PlayerTank(
-  /*tank_width*/75, 
+  /*tank_width*/75, //typically 75
   /*tank_height*/75, 
   /*tank_health*/4.1, //typically 4.1
   /*tank_speed*/2, //typically 2
@@ -49,7 +67,7 @@ void setup()
   /*enemy_bullet_collide allowed*/ true,
   /*collision_bullet_with_wall_allowed*/ true);
   
-  //Only turn on if self-damage is on //myTank.setBulletSpawnFromLength(14);//add or subtract extra distance
+  //Only turn on if self-damage is on: //myTank.setBulletSpawnFromLength(14);//add or subtract extra distance from turret length
 }  
   
 void draw() 
@@ -81,30 +99,28 @@ void draw()
 
 void keyReleased()
 {
-  if(key == 'a' || key == 'A')
+  if(key == 'a' || key == 'A' || keyCode == LEFT)
     move_left = false;
-  if (key == 'd' || key == 'D')
+  if (key == 'd' || key == 'D' || keyCode == RIGHT)
     move_right = false;
-  if(key == 'w' || key == 'W')
+  if(key == 'w' || key == 'W' || keyCode == UP)
     move_up = false;
-  if (key == 's' || key == 'S')
+  if (key == 's' || key == 'S' || keyCode == DOWN)
     move_down = false;
 }
 
 void keyPressed()
 {
-  if(key == 'a' || key == 'A')
+  if(key == 'a' || key == 'A' || keyCode == LEFT)
     move_left = true;
-  if (key == 'd' || key == 'D')
+  if (key == 'd' || key == 'D' || keyCode == RIGHT)
     move_right = true;
-  if(key == 'w' || key == 'W')
+  if(key == 'w' || key == 'W' || keyCode == UP)
     move_up = true;
-  if (key == 's' || key == 'S')
+  if (key == 's' || key == 'S' || keyCode == DOWN)
     move_down = true;
   if (key == 'p' || key == 'P' && runGame)
     myTank.setTankHealthZero();
-
-
 }
 
 
@@ -153,7 +169,7 @@ void mousePressed()
         runGame = true;
         break;
       case -1:
-        myWorld.generateRandomWorld(20, 3, 2); //(num_of_walls, num_of_regular enemies, num_of_slowstrong)
+        myWorld.generateRandomWorld(20, 0, 3, 2); //(num_of_walls, num_standstill_enemies, num_of_regular enemies, num_of_slowstrong)
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
@@ -176,7 +192,7 @@ void mousePressed()
         runGame = true;
         break;
       case 4:
-        myWorld.generateLevel3();
+        myWorld.generateLevel4();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
@@ -266,6 +282,16 @@ void mousePressed()
         runGame = true;
         break;
       case 22:
+        myWorld.generateLevel3();
+        myUI = new UI(myUI.trigger_int + 1);
+        runGame = true;
+        break;
+      case 23:
+        myWorld.generateLevel3();
+        myUI = new UI(myUI.trigger_int + 1);
+        runGame = true;
+        break;
+      case 24:
         myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;

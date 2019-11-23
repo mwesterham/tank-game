@@ -4,22 +4,27 @@ class TankController
   private LinkedList<EnemyTank> enemies = new LinkedList<EnemyTank>();
   EnemyTank TempEnemyTank;
   EnemyAI AI;
-  private int num_of_standard_enemies;
-  private int num_of_slow_strong_enemies;
+  //private int num_of_standard_enemies;
+  //private int num_of_slow_strong_enemies;
   
-  public TankController(int num_of_standard_enemies, int num_of_slow_strong_enemies)
+  public TankController(int num_of_stand_still_enemies, int num_of_standard_enemies, int num_of_slow_strong_enemies)
   {
     Random rand = new Random();
-    this.num_of_standard_enemies = num_of_standard_enemies;
-    for(int i = 0; i < this.num_of_standard_enemies; i++)
+    for(int i = 0; i < num_of_stand_still_enemies; i++)
     {
-      addStandardEnemy(rand.nextInt(1900), rand.nextInt(900));
+      addNoMovingEnemy(rand.nextInt(width), rand.nextInt(height));
     }
     
-    this.num_of_slow_strong_enemies = num_of_slow_strong_enemies;
-    for(int i = 0; i < this.num_of_slow_strong_enemies; i++)
+    //this.num_of_standard_enemies = num_of_standard_enemies;
+    for(int i = 0; i < num_of_standard_enemies; i++)
     {
-      addSlowStrongEnemy(rand.nextInt(1900), rand.nextInt(900));
+      addStandardEnemy(rand.nextInt(width), rand.nextInt(height));
+    }
+    
+    //this.num_of_slow_strong_enemies = num_of_slow_strong_enemies;
+    for(int i = 0; i < num_of_slow_strong_enemies; i++)
+    {
+      addSlowStrongEnemy(rand.nextInt(width), rand.nextInt(height));
     }
   }
   
@@ -69,18 +74,18 @@ class TankController
     TempEnemyTank = new EnemyTank(
     /*tank_width*/100, 
     /*tank_height*/100, 
-    /*tank_speed*/0, 
+    /*tank_speed*/.5, 
     /*tank_health*/20,
-    /*bullet_size*/0, 
-    /*bullet_speed*/0, 
-    /*bullet_health/pentration/damage*/0,
-    /*bullet frequency measured in ticks per shot*/ 10000,
-    /*number of times bullets bounce*/0,
+    /*bullet_size*/100, 
+    /*bullet_speed*/1, 
+    /*bullet_health/pentration/damage*/100,
+    /*bullet frequency measured in ticks per shot*/ 100,
+    /*number of times bullets bounce*/20,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.location.x, 
     /*target_location_y*/myTank.location.y,
-    /*Tank Color         r/g/b*/255, 255, 255,
+    /*Tank Color         r/g/b*/0, 255, 255,
     /*Turret Color       r/g/b*/255, 255, 255,
     /*Tank Outline Color r/g/b*/255, 255, 255);
 
@@ -107,7 +112,7 @@ class TankController
     /*bullet_speed*/4, 
     /*bullet_health/pentration/damage*/.8,
     /*bullet frequency measured in ticks per shot*/ 100,
-    /*number of times bullets bounce*/0,
+    /*number of times bullets bounce*/1,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.location.x, 
@@ -171,7 +176,7 @@ class TankController
     /*bullet_speed*/2, 
     /*bullet_health/pentration/damage*/3,
     /*bullet frequency measured in ticks per shot*/ 100,
-    /*number of times bullets bounce*/1,
+    /*number of times bullets bounce*/0,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.location.x, 
