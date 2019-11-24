@@ -112,8 +112,8 @@ class Bullet
       velocity.x *= -1;
     if(above_wall_collision || below_wall_collision)
       velocity.y *= -1;
-    if(number_of_collisions > this.num_bullet_bounce)
-      prepDelete(); //makes the velocity zero so it can be deleted in the controller class
+    //if(number_of_collisions > this.num_bullet_bounce)
+      //prepDelete(); //makes the velocity zero so it can be deleted in the controller class
   }
   
   public void updateBulletSpeed(int speed)

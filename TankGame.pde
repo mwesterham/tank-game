@@ -50,7 +50,7 @@ void setup()
   myTank  = new PlayerTank(
   /*tank_width*/75, //typically 75
   /*tank_height*/75, 
-  /*tank_health*/400.1, //typically 4.1
+  /*tank_health*/4.1, //typically 4.1
   /*tank_speed*/2, //typically 2
   /*bullet_size*/20, //typically 20
   /*bullet_speed*/4, //typically 4
@@ -171,7 +171,7 @@ void mousePressed()
         runGame = true;
         break;
       case -1:
-        myWorld.generateRandomWorld(20, 0, 10, 2, 0, 0); //(num_of_walls, standstill, regular enemies, slowstrong, boss1, boss2)
+        myWorld.generateRandomWorld(20, 0, 3, 2, 0, 0); //(num_of_walls, standstill, regular enemies, slowstrong, boss1, boss2)
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;

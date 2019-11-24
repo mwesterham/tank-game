@@ -4,6 +4,7 @@ class TankController
   private LinkedList<EnemyTank> enemies = new LinkedList<EnemyTank>();
   EnemyTank TempEnemyTank;
   EnemyAI AI;
+
   
   public TankController(int num_of_stand_still_enemies, int num_of_standard_enemies, int num_of_slow_strong_enemies, int num_boss1_enemies, int num_boss2_enemies)
   {

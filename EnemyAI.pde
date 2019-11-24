@@ -7,7 +7,7 @@ class EnemyAI
   private PVector between_vector;
   Bullet sudoBullet;
   private boolean target_visible = false; //if it is visible, tank will shoot
-  
+
   public EnemyAI(EnemyTank enemy)
   {
     this.enemyTank = enemy;
@@ -97,17 +97,28 @@ class EnemyAI
   private void targetVisibleCheck() //creates a sudobullet and spawns a given number of iterations of it in a seperate bulletController, if intersects woth tank, shoot
   {
     sudoBullet = enemyTank.getBullet();
+    float number_of_iterations =  2 / (1 * sudoBullet.velocity.mag()) * 80; //slowstrong enemy does 2 / 4 * 80 = 40 iterations, boss2 does 2 / 2 * 80 = 80 iterations
+    if(enemyTank.AI_version == 2) //if AI version2: double the viewing range
+      number_of_iterations =  4 / (1 * sudoBullet.velocity.mag()) * 80; //boss1 does 2 / 5 * 80 = 26 iterations
     sudoBullet.updateBulletSpeed(35); //sudo bullet goes way faster to do less calculations
+    
+    
     BulletController sudoBulletController = new BulletController();
     sudoBulletController.addBullet(sudoBullet);
     
-    for(int i = 0; i < 40; i++) //calculates 40 iterations of the sudobullet
+    
+
+    
+    for(int i = 0; i < number_of_iterations; i++) //calculates 40 iterations of the sudobullet
     {      
       //STANDARD VISIBILITY DETECTION, ALL TANKS HAVE THIS: IF SUDO BULLET INTERSECTS PLAYER TANK THEN SHOOT
       sudoBulletController.sudoUpdate();
       if(dist(sudoBullet.getRealLocation().x, sudoBullet.getRealLocation().y, myTank.location.x, myTank.location.y) <= sudoBullet.bullet_width * Math.sqrt(2) / 4 + myTank.tank_width * Math.sqrt(2) / 4)
         target_visible = true;
-      
+      if(sudoBullet.number_of_collisions > sudoBullet.num_bullet_bounce 
+      || sudoBullet.number_of_collisions > 0 && !sudoBullet.collision_bullet_with_wall_allowed) //if it is done bouncing, kill the loop, accounts for any tank bullet who go through walls
+        break;
+
       //AI LEVEL 2 VISIBLITY DETECTION: IF BULLET OF OPPOSING TEAM INTERSECTS SUDO BULLET THEN SHOOT
       if(enemyTank.AI_version == 2) //if the enemyTankAI is 2 run this as well //if sudo bullet is colliding with real bullet target visible
         if(bulletController.getBList().size() > 0)
@@ -118,7 +129,9 @@ class EnemyAI
               target_visible = true;
       //target_visible = false; //turn off shooting
       //sudoBullet.renderBullet(); //helpful for debugging
+      
     }
+
   }  
 
   public void collisionCheck()

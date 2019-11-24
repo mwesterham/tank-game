@@ -19,11 +19,13 @@ class BulletController
       TempPos = i;
       TempBullet = b.get(i);
       TempBullet.updatePosition();
-      collisionBulletBulletCheck();
+      //collisionBulletBulletCheck();
       collisionBulletOuterWallCheck();
       if(TempBullet.collision_bullet_with_wall_allowed)
         collisionBulletWallCheck();
-
+      if(TempBullet.number_of_collisions > TempBullet.num_bullet_bounce)
+        TempBullet.prepDelete(); //makes the velocity zero so it can be deleted in the controller class and health zero
+        
       if (TempBullet.velocity.mag() == 0)//  || TempBullet.bullet_health <= 0)//if the bullet collides more than twice vel = 0 and removed, if health reaches 0, it is removed
         bulletController.removeBullet(b.get(i));
       //TempBullet.renderBullet();
@@ -37,7 +39,7 @@ class BulletController
       TempBullet = b.get(i);
       TempBullet.has_been_scanned = false;
     }
-    
+
     //sorts it into 8 sections horizontally accross the screen, 3 sections vertically, then checks the bullets in their respective sections
     for(int section_x = -10; section_x < width; section_x += width / 8) //-10 because it detects the bullet a little behind the wall and updates it even if it is behind
       for(int section_y = -10; section_y < height; section_y += height / 3)
@@ -47,8 +49,8 @@ class BulletController
           screen_section_y = section_y;
           TempPos = i;
           TempBullet = b.get(i);
-          if(screen_section_x < TempBullet.getRealLocation().x && TempBullet.getRealLocation().x < screen_section_x + width / 8
-          && screen_section_y < TempBullet.getRealLocation().y && TempBullet.getRealLocation().y < screen_section_y + height / 3
+          if(screen_section_y <= TempBullet.getRealLocation().y && TempBullet.getRealLocation().y <= screen_section_y + height / 3
+          && screen_section_x <= TempBullet.getRealLocation().x && TempBullet.getRealLocation().x <= screen_section_x + width / 8
           && !TempBullet.has_been_scanned) //so that it does not double scan bullets
           {
             TempBullet.has_been_scanned = true;
@@ -57,6 +59,8 @@ class BulletController
             collisionBulletOuterWallCheck();
             if(TempBullet.collision_bullet_with_wall_allowed)
               collisionBulletWallCheck();
+            if(TempBullet.number_of_collisions > TempBullet.num_bullet_bounce)
+              TempBullet.prepDelete(); //makes the velocity zero so it can be deleted in the controller class and health zero
           }
           if (TempBullet.bullet_health <= 0)// || TempBullet.number_of_collisions == 0)//if the bullet health reaches 0 or below, it is removed
             bulletController.removeBullet(b.get(i));
@@ -73,8 +77,8 @@ class BulletController
   {
     for(int a = TempPos + 1; a < getBList().size(); a++) //cycles through the bullets in front of i bullet in the list
     {  
-      if(screen_section_x < getBList().get(a).getRealLocation().x && getBList().get(a).getRealLocation().x < screen_section_x + width / 8
-      && screen_section_y < getBList().get(a).getRealLocation().y && getBList().get(a).getRealLocation().y < screen_section_y + height / 3)
+      if(screen_section_y <= getBList().get(a).getRealLocation().y && getBList().get(a).getRealLocation().y <= screen_section_y + height / 3
+      && screen_section_x <= getBList().get(a).getRealLocation().x && getBList().get(a).getRealLocation().x <= screen_section_x + width / 8)
         if(dist(getBList().get(a).getRealLocation().x, getBList().get(a).getRealLocation().y, TempBullet.getRealLocation().x, TempBullet.getRealLocation().y)
         <= getBList().get(a).bullet_width / 2 + TempBullet.bullet_width / 2)//checks if the bullets are within range of eachother, divide by 3 if want to look realistic, divide by 2 to be logically accurate
         {
