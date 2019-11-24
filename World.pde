@@ -58,10 +58,10 @@ class World
   public void generateTestGrounds()
   {
     myUI.resetGame();
-    this.num_of_walls = 5;
+    this.num_of_walls = 0;
     float[][] walls = new float[num_of_walls][4]; 
     this.walls = walls;
-    
+    /*
     {i = 0; //left border
     wall_x = 0;
     wall_y = 0;
@@ -116,11 +116,11 @@ class World
       walls[i][2] = width *  wall_width / 1920;//width
       walls[i][3] = height * wall_height / 1080;//length
     }
-    
+    */
     myTank.setSpawn(950, 450);
-    enemyController.addDummyEnemy(550, 500);
+    //enemyController.addDummyEnemy(550, 500);
     //enemyController.addBossEnemy2(850, 500);
-    //enemyController.addBossEnemy1(850, 500);
+    enemyController.addBossEnemy1(200, 550);
     //enemyController.addDummyEnemy(950, 150);
     //enemyController.addDummyEnemy(600, 500);
     //enemyController.addDummyEnemy(650, 500);
@@ -128,7 +128,7 @@ class World
     bulletController = new BulletController(); //MUST reinstantiate the bullet controller, not entirely sure why though...
   }  
   
-  public void generateRandomWorld(int number_of_walls, int num_standstill_enemies, int num_regular_enemies, int num_slowstrong_enemies)
+  public void generateRandomWorld(int number_of_walls, int num_standstill_enemies, int num_regular_enemies, int num_slowstrong_enemies, int num_boss1_enemy, int num_boss2_enemy)
   {
     myUI.resetGame();
     this.num_of_walls = number_of_walls;
@@ -145,7 +145,7 @@ class World
         walls[i][3] = rand.nextInt(100) + 50; //length will be between 50 and 150 px
     }
     myTank.setSpawn(rand.nextInt(width), rand.nextInt(height));
-    enemyController = new TankController(num_standstill_enemies, num_regular_enemies, num_slowstrong_enemies);
+    enemyController = new TankController(num_standstill_enemies, num_regular_enemies, num_slowstrong_enemies, num_boss1_enemy, num_boss2_enemy);
     //enemyController.addDummyEnemy(500, 500);
     bulletController = new BulletController(); //MUST reinstantiate the bullet controller, not entirely sure why though...
   }

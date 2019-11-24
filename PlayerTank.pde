@@ -181,10 +181,10 @@ class PlayerTank
     for(int i = 0; i < bulletController.getBList().size(); i++)
     {
       if(dist(location.x, location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y) 
-      <= tank_width / 2 + bulletController.getBList().get(i).getSize() / 2
-      && bulletController.getBList().get(i).playerCollision())
+      <= tank_width / 2 + bulletController.getBList().get(i).bullet_width / 2
+      && bulletController.getBList().get(i).player_bullet_collide_allowed)
       {
-        this.tank_health -= bulletController.getBList().get(i).getHealth();
+        this.tank_health -= bulletController.getBList().get(i).bullet_health;
         bulletController.removeBullet(bulletController.getBList().get(i));
       }
     }

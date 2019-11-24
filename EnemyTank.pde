@@ -98,6 +98,7 @@ class EnemyTank
   
   public void update()
   {
+    tickCount++;
     updatePosition();
     renderTank();
   }

@@ -27,6 +27,8 @@ class Bullet
   
   private int number_of_collisions;
   
+  private boolean has_been_scanned = false;
+  
   public Bullet(
   int number_of_collisions, 
   float size, 
@@ -101,7 +103,6 @@ class Bullet
   
   public void updatePosition()
   {
-    //velocity = new PVector(bullet_speed * sin(-bullet_direction), bullet_speed * cos(bullet_direction));
     location.add(velocity);
   }
   
@@ -121,56 +122,6 @@ class Bullet
     velocity = new PVector(bullet_speed * sin(-bullet_direction), bullet_speed * cos(bullet_direction));
   }
   
-  public void rightWallCollisionTrue()
-  {
-      right_wall_collision = true;
-  }
-  
-  public void rightWallCollisionFalse()
-  {
-      right_wall_collision = false;
-  }
-  
-  public void aboveWallCollisionTrue()
-  {
-      above_wall_collision = true;
-  }
-  
-  public void aboveWallCollisionFalse()
-  {
-      above_wall_collision = false;
-  }
-  
-  public void leftWallCollisionTrue()
-  {
-      left_wall_collision = true;
-  }
-  
-  public void leftWallCollisionFalse()
-  {
-      left_wall_collision = false;
-  }
-  
-  public void belowWallCollisionTrue()
-  {
-      below_wall_collision = true;
-  }
-  
-  public void belowWallCollisionFalse()
-  {
-      below_wall_collision = false;
-  }
-  
-  public void addCollisionToCount()
-  {
-    number_of_collisions += 1;
-  }
-  
-  public void subtractCollisionFromCount()
-  {
-    number_of_collisions -= 1;
-  }
-  
   public void bulletHealthMinus(float damage)
   {
     bullet_health -= damage;
@@ -182,49 +133,9 @@ class Bullet
     this.bullet_health = 0;
   }
   
-  public int getNumOfCollisions()
-  {
-    return number_of_collisions;
-  }
-
   public PVector getRealLocation()
   {
     PVector realLocation = new PVector(location.x + turret_length * sin(-bullet_direction), location.y + turret_length * cos(bullet_direction));
     return realLocation;
-  }
-  
-  public boolean playerCollision()
-  {
-    return player_collision_allowed;
-  }
-
-  public boolean enemyCollision()
-  {
-    return enemy_collision_allowed;
-  }
-  
-  public boolean playerBulletCollision()
-  {
-    return player_bullet_collide_allowed;
-  }
-  
-  public boolean enemyBulletCollision()
-  {
-    return enemy_bullet_collide_allowed;
-  }
-  
-  public float getSize()
-  {
-    return bullet_width;
-  }
-  
-  public PVector getVelocity()
-  {
-     return velocity;
-  }
-  
-  public float getHealth()
-  {
-    return bullet_health;
   }
 }

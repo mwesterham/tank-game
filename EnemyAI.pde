@@ -23,42 +23,53 @@ class EnemyAI
 
     //STANDARD MOVEMENT, ALL TANKS HAVE THIS: DESCRIPTIONS GIVEN BELOW
     
-    //if target is visible, move towards
-    if(target_visible) 
-    {
-      current_move_direction_x = -sin(enemyTank.getTowardMoveDirection());
-      current_move_direction_y = cos(enemyTank.getTowardMoveDirection());
-      velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
-    }
+    //if target is visible, move towards tank, also this means that they move towards the tank when they see bullets
+    if(target_visible)
+      if (dist(location.x, location.y, myTank.location.x, myTank.location.y) >= 200) 
+      {
+        current_move_direction_x = -sin(enemyTank.getTowardMoveDirection());
+        current_move_direction_y = cos(enemyTank.getTowardMoveDirection());
+        velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
+      }
+      else  //if distance between enemy and you is less than 200 move away from them
+      {
+        current_move_direction_x = sin(enemyTank.getTowardMoveDirection());
+        current_move_direction_y = -cos(enemyTank.getTowardMoveDirection());
+        velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
+      }
     else
       velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
     velocity_direction.normalize();
-    
+   
     //if tank is within 200 px move backwards
-    if(dist(location.x, location.y, myTank.location.x, myTank.location.y) < 200) //if distance between enemy and you is less than 400 move away from them
-    {
-      velocity_direction.x *= -1;
-      velocity_direction.y *= -1;
-    }
+    //if(dist(location.x, location.y, myTank.location.x, myTank.location.y) < 200) //if distance between enemy and you is less than 400 move away from them
+    //{
+    //  velocity_direction.x *= -1;
+    //  velocity_direction.y *= -1;
+    //}
     
     //draws a vector between each tank and other tanks //if the tanks are within 50 px, add opposing velocity in direction of between vector
     for(int i = 0; i < enemyController.enemies.size(); i++)
     {
-      between_vector = new PVector(location.x - enemyController.getEList().get(i).location.x, location.y - enemyController.getEList().get(i).location.y);
       if(dist(location.x, location.y, enemyController.getEList().get(i).location.x, enemyController.getEList().get(i).location.y) < 50
       && dist(location.x, location.y, enemyController.getEList().get(i).location.x, enemyController.getEList().get(i).location.y) > 0)
+      {
+        between_vector = new PVector(location.x - enemyController.getEList().get(i).location.x, location.y - enemyController.getEList().get(i).location.y);
         velocity_direction.add(between_vector); 
+      }
     }
     
     //bullet reaction: move away from the bullet if bullet is within 50px of size
     for(int i = 0; i < bulletController.getBList().size(); i++)
     {
-      between_vector = new PVector(location.x - bulletController.getBList().get(i).location.x, location.y - bulletController.getBList().get(i).location.y); 
-      if(dist(location.x, location.y, bulletController.getBList().get(i).location.x, bulletController.getBList().get(i).location.y) <= enemyTank.tank_width + 50
-      && bulletController.getBList().get(i).enemy_collision_allowed)
+      if(bulletController.getBList().get(i).enemy_collision_allowed
+      && dist(location.x, location.y, bulletController.getBList().get(i).location.x, bulletController.getBList().get(i).location.y) <= enemyTank.tank_width + 50)
+      {  
+        between_vector = new PVector(location.x - bulletController.getBList().get(i).location.x, location.y - bulletController.getBList().get(i).location.y);
         velocity_direction.add(between_vector);
+      }
     }
-    
+ 
 
     velocity_direction.normalize();
     enemyTank.setNewVelocityDirection(velocity_direction);
@@ -75,12 +86,10 @@ class EnemyAI
     if(enemyTank.AI_version == 2)
       for(int i = 0; i < bulletController.getBList().size(); i++)
       {
-        //if bullet is within 15px of size, set the new aim location
+        //if bullet is within 20px of size, set the new aim location
         if(bulletController.getBList().get(i).enemy_collision_allowed
-        && dist(location.x, location.y, bulletController.getBList().get(i).location.x, bulletController.getBList().get(i).location.y) <= 15 + enemyTank.tank_width + bulletController.getBList().get(i).bullet_width)
-        {  
+        && dist(location.x, location.y, bulletController.getBList().get(i).location.x, bulletController.getBList().get(i).location.y) <= 20 + enemyTank.tank_width + bulletController.getBList().get(i).bullet_width)
           aim_location = bulletController.getBList().get(i).getRealLocation(); //forcibly overwrites the default aim direction
-        }
       }
     enemyTank.aimLocation = aim_location;
   }
@@ -107,6 +116,7 @@ class EnemyAI
             && dist(bulletController.getBList().get(a).getRealLocation().x, bulletController.getBList().get(a).getRealLocation().y, sudoBullet.getRealLocation().x, sudoBullet.getRealLocation().y) 
                     <= sudoBullet.bullet_width + bulletController.getBList().get(a).bullet_width)
               target_visible = true;
+      //target_visible = false; //turn off shooting
       //sudoBullet.renderBullet(); //helpful for debugging
     }
   }  
@@ -181,12 +191,14 @@ class EnemyAI
     //bullet collision with tank check
     for(int i = 0; i < bulletController.getBList().size(); i++)
     {
-      if(dist(location.x, location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y) 
-      <= enemyTank.tank_width / 2 + bulletController.getBList().get(i).getSize() / 2
-      && bulletController.getBList().get(i).enemyCollision())
+      if(bulletController.getBList().get(i).enemy_bullet_collide_allowed
+      && dist(location.x, location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y) 
+      <= enemyTank.tank_width / 2 + bulletController.getBList().get(i).bullet_width / 2)
       {  
-        enemyTank.tank_health -= bulletController.getBList().get(i).getHealth();
-        bulletController.removeBullet(bulletController.getBList().get(i));
+        float damage = enemyTank.tank_health;
+        enemyTank.tank_health -= bulletController.getBList().get(i).bullet_health;
+        bulletController.getBList().get(i).bullet_health -= damage;
+        //bulletController.removeBullet(bulletController.getBList().get(i));
       }
     }
   }

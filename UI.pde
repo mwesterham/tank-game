@@ -139,7 +139,6 @@ class UI
   
   public void runGame()
   {
-    tickCount++;
     myWorld.displayWorld();
     enemyController.update();
     bulletController.update();//updates the bullets and checks for bullet collisions

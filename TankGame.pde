@@ -24,7 +24,7 @@
 
   private World myWorld = new World(); //just declares the world name, nothing else
   private BulletController bulletController = new BulletController();
-  private TankController enemyController = new TankController(0, 0, 0); //set how many enemies spawn, they are randomly placed (standardEnemy, strongSlowEnemy) PS this is only used to instantiate
+  private TankController enemyController = new TankController(); //set how many enemies spawn, they are randomly placed (standardEnemy, strongSlowEnemy) PS this is only used to instantiate
   
   public int tickCount = 0;
   
@@ -34,9 +34,9 @@ void setup()
   /*Sound Stuff
 
   //Sound setup
-  //background_path = sketchPath("Audio Files/Raider_Anthem_BassAdjusted.mp3");
-  //background_music = new SoundFile(this, background_path);
-  //background_music.loop();
+  background_path = sketchPath("Audio Files/Raider_Anthem_BassAdjusted.mp3");
+  background_music = new SoundFile(this, background_path);
+  background_music.loop();
   path = sketchPath("Audio Files/Shot_Sound.mp3"); 
   shot_sound = new SoundFile(this, path); //in playertank and enemy tank shoot() methods, be sure to comment out if you do not have the library installed
   
@@ -50,7 +50,7 @@ void setup()
   myTank  = new PlayerTank(
   /*tank_width*/75, //typically 75
   /*tank_height*/75, 
-  /*tank_health*/4.1, //typically 4.1
+  /*tank_health*/400.1, //typically 4.1
   /*tank_speed*/2, //typically 2
   /*bullet_size*/20, //typically 20
   /*bullet_speed*/4, //typically 4
@@ -122,6 +122,7 @@ void keyPressed()
     move_down = true;
   if (key == 'p' || key == 'P' && runGame)
     myTank.setTankHealthZero();
+  //System.out.println(frameCount);
 }
 
 
@@ -170,7 +171,7 @@ void mousePressed()
         runGame = true;
         break;
       case -1:
-        myWorld.generateRandomWorld(20, 0, 3, 2); //(num_of_walls, num_standstill_enemies, num_of_regular enemies, num_of_slowstrong)
+        myWorld.generateRandomWorld(20, 0, 10, 2, 0, 0); //(num_of_walls, standstill, regular enemies, slowstrong, boss1, boss2)
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;

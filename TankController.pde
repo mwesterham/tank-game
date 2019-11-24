@@ -5,7 +5,7 @@ class TankController
   EnemyTank TempEnemyTank;
   EnemyAI AI;
   
-  public TankController(int num_of_stand_still_enemies, int num_of_standard_enemies, int num_of_slow_strong_enemies)
+  public TankController(int num_of_stand_still_enemies, int num_of_standard_enemies, int num_of_slow_strong_enemies, int num_boss1_enemies, int num_boss2_enemies)
   {
     Random rand = new Random();
     for(int i = 0; i < num_of_stand_still_enemies; i++)
@@ -16,6 +16,17 @@ class TankController
     
     for(int i = 0; i < num_of_slow_strong_enemies; i++)
       addSlowStrongEnemy(rand.nextInt(width), rand.nextInt(height));
+      
+    for(int i = 0; i < num_boss1_enemies; i++)
+      addBossEnemy1(rand.nextInt(width), rand.nextInt(height));
+      
+    for(int i = 0; i < num_boss2_enemies; i++)
+      addBossEnemy2(rand.nextInt(width), rand.nextInt(height));
+  }
+  
+  public TankController()
+  {
+    //doesn't spawn anything
   }
   
   public void update()
@@ -190,12 +201,12 @@ class TankController
     TempEnemyTank = new EnemyTank(
     /*tank_width*/50, 
     /*tank_height*/50, 
-    /*tank_speed*/4, 
-    /*tank_health*/1,
+    /*tank_speed*/4.5, //your bullet speed is 4
+    /*tank_health*/.5,
     /*bullet_size*/10, 
     /*bullet_speed*/5, 
-    /*bullet_health/pentration/damage*/.5,
-    /*bullet frequency measured in ticks per shot*/ 16,
+    /*bullet_health/pentration/damage*/.30,
+    /*bullet frequency measured in ticks per shot*/ 8,
     /*number of times bullets bounce*/0,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
