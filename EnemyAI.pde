@@ -79,16 +79,24 @@ class EnemyAI
   
   public void updateAimLocation()
   {
+    //int bullets_within_range = 0;
+    float closest_distance = 1000;
     //STANDARD AIM LOCATION, ALL TANKS START WITH THIS: AIM AT PLAYER
     aim_location = myTank.location;
     
-    //AI LEVEL 2 AIMING: IF AN OPPOSING TEAM BULLET IS WITHIN 15 PX OF SIZE, AIM THERE
+    //AI LEVEL 2 AIMING: IF AN OPPOSING TEAM BULLET IS WITHIN 20 PX OF SIZE, AIM AT THE CLOSEST ONE
     if(enemyTank.AI_version == 2)
       for(int i = 0; i < bulletController.getBList().size(); i++)
       {
+        if(dist(enemyTank.location.x, enemyTank.location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y) <= closest_distance
+        && bulletController.getBList().get(i).enemy_collision_allowed
+        && dist(enemyTank.location.x, enemyTank.location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y) <= 20 + enemyTank.tank_width / 2 + bulletController.getBList().get(i).bullet_width / 2)
+          closest_distance = dist(enemyTank.location.x, enemyTank.location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y);
+        
         //if bullet is within 20px of size, set the new aim location
         if(bulletController.getBList().get(i).enemy_collision_allowed
-        && dist(location.x, location.y, bulletController.getBList().get(i).location.x, bulletController.getBList().get(i).location.y) <= 20 + enemyTank.tank_width + bulletController.getBList().get(i).bullet_width)
+        && dist(enemyTank.location.x, enemyTank.location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y) == closest_distance
+        && dist(enemyTank.location.x, enemyTank.location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y) <= 20 + enemyTank.tank_width / 2 + bulletController.getBList().get(i).bullet_width / 2)
           aim_location = bulletController.getBList().get(i).getRealLocation(); //forcibly overwrites the default aim direction
       }
     enemyTank.aimLocation = aim_location;
@@ -99,7 +107,7 @@ class EnemyAI
     sudoBullet = enemyTank.getBullet();
     float number_of_iterations =  2 / (1 * sudoBullet.velocity.mag()) * 80; //slowstrong enemy does 2 / 4 * 80 = 40 iterations, boss2 does 2 / 2 * 80 = 80 iterations
     if(enemyTank.AI_version == 2) //if AI version2: double the viewing range
-      number_of_iterations =  4 / (1 * sudoBullet.velocity.mag()) * 80; //boss1 does 2 / 5 * 80 = 26 iterations
+      number_of_iterations =  4 / (1 * sudoBullet.velocity.mag()) * 80; //boss1 does 4 / 5 * 80 = 64 iterations
     sudoBullet.updateBulletSpeed(35); //sudo bullet goes way faster to do less calculations
     
     

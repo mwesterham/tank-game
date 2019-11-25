@@ -24,9 +24,12 @@ class PlayerTank
   private float turret_cir_height;
   private float turret_rec_width;
   private float turret_rec_height;
-  private int[] tank_color = {0, 0, 255};
-  private int[] turret_color = {255, 0, 0};
+  private int[] tank_color = {0, 255, 0};
   private int[] tank_outline_color = {0, 0, 0};
+  private int tank_stroke_weight = 1;
+  private int[] turret_color = {0, 0, 0};
+  private int[] turret_outline_color = {0, 0, 0};
+  private int turret_stroke_weight = 1;
   
   private float right_collision_dist;
   private float left_collision_dist;
@@ -58,7 +61,13 @@ class PlayerTank
   float bullet_health, 
   int bullet_frequency, 
   int num_bullet_bounce, 
-  float spawnX, float spawnY)
+  float spawnX, float spawnY,
+  int tank_color_red, int tank_color_green, int tank_color_blue,
+  int tank_outline_red, int tank_outline_green, int tank_outline_blue,
+  int tank_stroke_weight,
+  int turret_color_red, int turret_color_green, int turret_color_blue,
+  int turret_outline_red, int turret_outline_green, int turret_outline_blue,
+  int turret_stroke_weight)
   {
     location = new PVector(spawnX, spawnY);
     this.spawn_x = spawnX;
@@ -83,6 +92,22 @@ class PlayerTank
     this.bullet_speed = bullet_speed;
     this.bullet_frequency = bullet_frequency;
     this.num_bullet_bounce = num_bullet_bounce;
+    
+    this.tank_color[0] = tank_color_red;
+    this.tank_color[1] = tank_color_green;
+    this.tank_color[2] = tank_color_blue;
+    this.tank_outline_color[0] = tank_outline_red;
+    this.tank_outline_color[1] = tank_outline_green;
+    this.tank_outline_color[2] = tank_outline_blue;
+    this.tank_stroke_weight = tank_stroke_weight;
+    
+    this.turret_color[0] = turret_color_red;
+    this.turret_color[1] = turret_color_green;
+    this.turret_color[2] = turret_color_blue;
+    this.turret_outline_color[0] = turret_outline_red;
+    this.turret_outline_color[1] = turret_outline_green;
+    this.turret_outline_color[2] = turret_outline_blue;
+    this.turret_stroke_weight = turret_stroke_weight;
   }
   
   public void update()
@@ -204,7 +229,6 @@ class PlayerTank
   
   public void renderTank()
   {
-    stroke(tank_outline_color[0],tank_outline_color[1], tank_outline_color[0]);
     renderBody();
     renderTurret();
     renderHealthBar();
@@ -253,9 +277,10 @@ class PlayerTank
       rotate(atan2(-1, 1));
     if(orientation_upleft)
       rotate(atan2(1, 1));
-    fill(tank_color[0], tank_color[1], tank_color[2]);
-    stroke(0, 0, 0);
-    ellipse(0, 0, tank_width, tank_height);
+    fill(this.tank_color[0], this.tank_color[1], this.tank_color[2]);
+    stroke(this.tank_outline_color[0], this.tank_outline_color[1], this.tank_outline_color[2]);
+    strokeWeight(this.tank_stroke_weight);
+    ellipse(0, 0, this.tank_width, this.tank_height);
     popMatrix();
   }
   
@@ -265,7 +290,9 @@ class PlayerTank
     pushMatrix();
     translate(location.x, location.y);
     rotate(atan2(mouseY - location.y, mouseX - location.x));
-    fill(turret_color[0], turret_color[1], turret_color[2]);
+    fill(this.turret_color[0], this.turret_color[1], this.turret_color[2]);
+    stroke(this.turret_outline_color[0], this.turret_outline_color[1], this.turret_outline_color[2]);
+    strokeWeight(this.turret_stroke_weight);
     rect(0,0 - (turret_cir_height) * 1/2, turret_rec_width, turret_rec_height);
     ellipse(0, 0, turret_cir_width, turret_cir_height);
     popMatrix();
@@ -276,11 +303,12 @@ class PlayerTank
     pushMatrix();
     translate(location.x, location.y);
     stroke(0, 0, 0);
-    fill(255, 0, 0);
+    fill(0, 0, 0);
+    strokeWeight(5);
     rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width, 10);//renders the red bar first
     fill(0, 255, 0);
     stroke(0, 0, 0, 0); //4th parameter sets opacity at 0
-    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width * (tank_health / original_tank_health), 10);//renders the red bar and overlaps
+    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width * (tank_health / original_tank_health), 10);//renders the green bar and overlaps
     popMatrix();
   }
   
@@ -314,10 +342,10 @@ class PlayerTank
     /*player_bullet_collide allowed*/ player_bullet_collide_allowed, 
     /*enemy_bullet_collide allowed*/ enemy_bullet_collide_allowed, 
     /*collision_bullet_with_wall_allowed*/ collision_bullet_with_wall_allowed,
-    /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
-    /*Bullet outline color...*/ tank_color[0], tank_color[1], tank_color[2]));
+    /*Bullet color...*/ this.tank_color[0], this.tank_color[1], this.tank_color[2],
+    /*Bullet outline color...*/ this.turret_color[0], this.turret_color[1], this.turret_color[2]));
     
-    //shot_sound.play();
+    shot_sound.play();
   }
   
   public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e, boolean f)
@@ -336,20 +364,6 @@ class PlayerTank
     this.turret_cir_height = tank_height * 1/3;
     this.turret_rec_width = tank_width * 2/5 ;
     this.turret_rec_height = tank_height * 1/3;
-  }
-  
-  public void setTankColor(int red, int green, int blue)
-  {
-    this.tank_color[0] = red;
-    this.tank_color[1] = green;
-    this.tank_color[2] = blue;
-  }
-  
-  public void setTurretColor(int red, int green, int blue)
-  {
-    this.turret_color[0] = red;
-    this.turret_color[1] = green;
-    this.turret_color[2] = blue;
   }
   
   public void setSpawn(float spawnX, float spawnY)
@@ -373,8 +387,6 @@ class PlayerTank
     bullet_spawn_from_length = extra_distance;
   }
   
-
-  
   public float getDirection()
   {
     return atan2(mouseY - location.y, mouseX - location.x) - (float)Math.PI / 2;
@@ -389,5 +401,37 @@ class PlayerTank
   public float getTurretLength()
   {
     return turret_rec_width;
+  }
+  
+  
+  
+  public void addHealth(float health)
+  {
+    tank_health += health;
+  }
+  
+  public void addTankSpeed(float speed)
+  {
+    tank_speed += speed;
+  }
+  
+  public void addBulletPenetration(float health)
+  {
+    bullet_health += health;
+  }
+  
+  public void addBulletSpeed(int speed)
+  {
+    bullet_speed += speed;
+  }
+  
+  public void addBulletSize(float size)
+  {
+    bullet_size += size;
+  }
+  
+  public void increaseBulletFrequency(int ticks)
+  {
+    bullet_frequency -= ticks;
   }
 }

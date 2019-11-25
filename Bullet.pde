@@ -83,7 +83,9 @@ class Bullet
   {
     //bullet rendering
     fill(bullet_color[0], bullet_color[1], bullet_color[2]);
-    stroke(bullet_outline_color[0], bullet_outline_color[1], bullet_outline_color[2]);
+    //stroke(bullet_outline_color[0], bullet_outline_color[1], bullet_outline_color[2]);
+    stroke(0, 0, 0);
+    strokeWeight(3);
     ellipse(location.x + turret_length * sin(-bullet_direction), location.y + turret_length * cos(bullet_direction), bullet_width, bullet_height);
     //renderHealthBar(); //used for debugging
   }

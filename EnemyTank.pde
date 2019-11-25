@@ -18,8 +18,11 @@ class EnemyTank
   private float turret_rec_width;
   private float turret_rec_height;
   private int[] tank_color = {0, 0, 0};
+  private int[] tank_outline_color_body = {0, 0, 0};
+  private int body_stroke_weight;
   private int[] turret_color = {0, 0, 0};
-  private int[] tank_outline_color = {0, 0, 0};
+  private int[] tank_outline_color_turret = {0, 0, 0};
+  private int turret_stroke_weight;
   
   private float right_collision_dist;
   private float left_collision_dist;
@@ -56,8 +59,11 @@ class EnemyTank
   float spawnX, float spawnY, 
   float aim_x, float aim_y,
   int tank_color_red, int tank_color_green, int tank_color_blue,
+  int body_outline_red, int body_outline_green, int body_outline_blue,
+  int body_stroke_weight,
   int turret_color_red, int turret_color_green, int turret_color_blue,
-  int tank_outline_red, int tank_outline_green, int tank_outline_blue)
+  int turret_outline_red, int turret_outline_green, int turret_outline_blue,
+  int turret_stroke_weight)
   {
     location = new PVector(spawnX, spawnY);
     this.tank_width = tank_width;
@@ -88,12 +94,18 @@ class EnemyTank
     this.tank_color[0] = tank_color_red;
     this.tank_color[1] = tank_color_green;
     this.tank_color[2] = tank_color_blue;
+    this.tank_outline_color_body[0] = body_outline_red;
+    this.tank_outline_color_body[1] = body_outline_green;
+    this.tank_outline_color_body[2] = body_outline_blue;
+    this.body_stroke_weight = body_stroke_weight;
+    
     this.turret_color[0] = turret_color_red;
     this.turret_color[1] = turret_color_green;
     this.turret_color[2] = turret_color_blue;
-    this.tank_outline_color[0] = tank_outline_red;
-    this.tank_outline_color[1] = tank_outline_green;
-    this.tank_outline_color[2] = tank_outline_blue;
+    this.tank_outline_color_turret[0] = turret_outline_red;
+    this.tank_outline_color_turret[1] = turret_outline_green;
+    this.tank_outline_color_turret[2] = turret_outline_blue;
+    this.turret_stroke_weight = turret_stroke_weight;
   }
   
   public void update()
@@ -110,8 +122,12 @@ class EnemyTank
   
   public void renderTank()
   {
-    stroke(tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
+    stroke(tank_outline_color_body[0], tank_outline_color_body[1], tank_outline_color_body[2]);
+    //strokeWeight(5);
     renderBody();
+    
+    stroke(tank_outline_color_turret[0], tank_outline_color_turret[1], tank_outline_color_turret[2]);
+    //strokeWeight(0);
     renderTurret();
     renderHealthBar();
   }
@@ -161,7 +177,8 @@ class EnemyTank
       rotate(atan2(1, 1));
     */
     fill(tank_color[0], tank_color[1], tank_color[2]);
-    stroke(tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
+    stroke(tank_outline_color_body[0], tank_outline_color_body[1], tank_outline_color_body[2]);
+    strokeWeight(body_stroke_weight);
     ellipse(0, 0, tank_width, tank_height);
     popMatrix();
   }
@@ -174,7 +191,8 @@ class EnemyTank
     translate(location.x, location.y);
     rotate(atan2(aimLocation.y - location.y, aimLocation.x - location.x));
     fill(turret_color[0], turret_color[1], turret_color[2]);
-    stroke(tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
+    stroke(tank_outline_color_turret[0], tank_outline_color_turret[1], tank_outline_color_turret[2]);
+    strokeWeight(turret_stroke_weight);
     rect(0,0 - (turret_cir_height) * 1/2, turret_rec_width, turret_rec_height);
     ellipse(0, 0, turret_cir_width, turret_cir_height);
     popMatrix();
@@ -185,7 +203,8 @@ class EnemyTank
     pushMatrix();
     translate(location.x, location.y);
     stroke(0, 0, 0);
-    fill(255, 0, 0);
+    fill(0, 0, 0);
+    strokeWeight(5);
     rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width, 10);//renders the red bar first
     fill(0, 255, 0);
     stroke(0, 0, 0, 0); //4th parameter sets opacity at 0
@@ -217,7 +236,7 @@ class EnemyTank
     /*enemy_bullet_collide allowed*/ enemy_bullet_collide_allowed, 
     /*collision_bullet_with_wall_allowed*/ collision_bullet_with_wall_allowed,
     /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
-    /*Bullet outline color...*/ tank_outline_color[0], tank_outline_color[1], tank_outline_color[2]);
+    /*Bullet outline color...*/ tank_outline_color_body[0], tank_outline_color_body[1], tank_outline_color_body[2]);
   }  
 
   public void setNewVelocityDirection(PVector newVelocityDirection)

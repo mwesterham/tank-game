@@ -20,6 +20,10 @@ class UI
     
     this.ButtonList[6] = new Button("Game Over", "Home Page", "Return to Home Page", 50, 50, 260, 25);
     this.ButtonList[7] = new Button("Game Over", trigger_int - 1, "Retry", 900, 500, 260, 100);
+    
+    //this.ButtonList[8] = new Button("Upgrades", "Home Page", "Return to Home Page", 50, 50, 260, 25);
+    
+    
     this.ButtonList[8] = new Button("You Won", "Home Page", "Return to Home Page", 50, 50, 260, 25);
     this.ButtonList[9] = new Button("You Won", trigger_int - 1, "Retry", 300, 500, 260, 100);
     this.ButtonList[10] = new Button("You Won", trigger_int, "Next Level:  " + trigger_int, 900, 500, 540, 100);
@@ -77,6 +81,13 @@ class UI
     textSize(100);
     text("YOU WON", width / 2, 100);
     updateButtonHover("You Won"); 
+  }
+  
+  public void displayUpgrades()
+  {
+    textSize(100);
+    text("UPGRADE?", width / 2, 100);
+    updateButtonHover("Upgrades"); 
   }
   
   public void LevelsComplete()
@@ -144,10 +155,7 @@ class UI
     bulletController.update();//updates the bullets and checks for bullet collisions
     
     myTank.update();
-
     myTank.renderTank();
-    myTank.setTankColor(255, 50, 50);
-    myTank.setTurretColor(0, 50, 50);
   }
   
   public void endGameCheck()
@@ -158,6 +166,7 @@ class UI
       myUI.resetGame(); //resets the game ditto ^
       displayYouWon = true;
       trigger_text = "You Won";
+      start_home_music = true;
     }
     else if(myTank.tank_health <= 0)
     {
@@ -165,7 +174,18 @@ class UI
       myUI.resetGame(); //resets the game by restoring player health and deleting all remaining enemies
       displayGameOver = true;
       trigger_text = "Game Over";
-    }    
+      start_home_music = true;
+    }
+    if(!runGame)
+    {
+      ///*SoundStuff
+      level_background_music1.stop();
+      level_background_music2.stop();
+      level_background_music3.stop();
+      level_background_music4.stop();
+      background_music.stop();
+      //*/
+    }
   }
   
   private void resetGame()

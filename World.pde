@@ -110,7 +110,7 @@ class World
     wall_x = 400;
     wall_y = 0;
     wall_width = 100; //max is 1920
-    wall_height = 780; //max is 1080
+    wall_height = 100; //max is 1080
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
       walls[i][2] = width *  wall_width / 1920;//width
@@ -120,9 +120,9 @@ class World
     myTank.setSpawn(950, 450);
 
     //for(int i = 0; i < 30; i++) //used for lag testing
-    enemyController.addDummyEnemy(550, 500);
+    //enemyController.addDummyEnemy(550, 500);
     //enemyController.addBossEnemy2(850, 500);
-    //enemyController.addBossEnemy1(150, 550);
+    enemyController.addBossEnemy1(150, 550);
     //enemyController.addSlowStrongEnemy(150, 550);
     bulletController = new BulletController(); //MUST reinstantiate the bullet controller, not entirely sure why though...
   }  
@@ -155,7 +155,11 @@ class World
     this.num_of_walls = 6;
     float[][] walls = new float[num_of_walls][4]; 
     this.walls = walls;
-
+    background_color[0] = 30;
+    background_color[1] = 60;
+    background_color[2] = 30;
+    level_background_music1.loop();
+    
     {i = 0; //left border
     wall_x = 0;
     wall_y = 0;
@@ -229,6 +233,9 @@ class World
     spawn_x = 950;
     spawn_y = 450;
       enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+    spawn_x = width / 2;
+    spawn_y = 150;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
   }    
   
   public void generateLevel2()
@@ -237,6 +244,10 @@ class World
     this.num_of_walls = 12;
     float[][] walls = new float[num_of_walls][4]; 
     this.walls = walls;
+    background_color[0] = 30;
+    background_color[1] = 60;
+    background_color[2] = 30;
+    level_background_music2.loop();
     
     {i = 0; //left border
     wall_x = 0;
@@ -394,6 +405,10 @@ class World
     this.num_of_walls = 8;
     float[][] walls = new float[num_of_walls][4]; 
     this.walls = walls;
+    background_color[0] = 30;
+    background_color[1] = 60;
+    background_color[2] = 30;
+    level_background_music3.loop();
     
     {i = 0; //left border
     wall_x = 0;
@@ -506,6 +521,10 @@ class World
     this.num_of_walls = 9;
     float[][] walls = new float[num_of_walls][4]; 
     this.walls = walls;
+    background_color[0] = 30;
+    background_color[1] = 60;
+    background_color[2] = 30;
+    level_background_music4.loop();
     
     {i = 0; //left border
     wall_x = 0;
