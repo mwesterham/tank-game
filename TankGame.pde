@@ -1,4 +1,4 @@
-  ///*Sound Stuff
+  /*Sound Stuff
   import processing.sound.*; //install the sound library from processing
   private String path;
   SoundFile background_music;
@@ -14,6 +14,7 @@
   private UI myUI;
   private boolean runGame = false;
   private boolean displayGameOver = false;
+  private boolean displayUpgrades = false;
   private boolean displayYouWon = false;
   private boolean displayHome = true;
   private boolean displayLevelSelect = false;
@@ -33,12 +34,13 @@
   
   private int[] background_color = {50, 50, 50};
   private boolean start_home_music = true;
+  private boolean upgrades_on;
   public int tickCount = 0;
   
 void setup() 
 {
   myUI = new UI(0); //instantiate it here so it can inherit the width and height
-  ///*Sound Stuff
+  /*Sound Stuff
 
   //Sound setup
   path = sketchPath("Audio Files/TankHomeMusic.mp3");
@@ -97,8 +99,8 @@ void draw()
   background(background_color[0], background_color[1], background_color[2]);
   if(!runGame)
   {
-    if(start_home_music)
-      background_music.loop();
+    //if(start_home_music)
+    //  background_music.loop();
     start_home_music = false;
     //System.out.println(myUI.trigger_text); //for testing the UI
     if(displayHome)//displays the screen indicated
@@ -111,14 +113,20 @@ void draw()
       myUI.displayLevelSelect();
     if(displayGameOver)
       myUI.displayGameOver();
+    if(displayUpgrades)
+      myUI.displayUpgrades();
     if(displayYouWon)
       myUI.displayYouWon();
+
   }
 
   if(runGame)
   {  
-    if(!(myUI.trigger_int == -1) && !(myUI.trigger_int == 0)) //discludes random world and test grounds
-      background_music.stop();
+
+    //if(!(myUI.trigger_int == -1) && !(myUI.trigger_int == 0)) //discludes random world and test grounds
+    //  background_music.stop();
+    
+    upgrades_on = true;
     myUI.runGame();
     myUI.endGameCheck();//if player health reaches zero or num of enemies reach zero, resets the game
   }
@@ -158,12 +166,81 @@ void mousePressed()
     shoot_input = true;
   if(!runGame)
   {
+    if(upgrades_on)
+    {
+      switch (myUI.upgrade_text)
+      {
+        case "Return to Home Page":
+          myTank  = new PlayerTank(
+          /*tank_width*/75, //typically 75
+          /*tank_height*/75, 
+          /*tank_health*/4.1, //typically 4.1
+          /*tank_speed*/2, //typically 2
+          /*bullet_size*/20, //typically 20
+          /*bullet_speed*/4, //typically 4
+          /*bullet_health/pentration/damage*/1,//typically 1
+          /*bullet_frequency*/36, //typically 36
+          /*number of times bullets bounce*/1,
+          /*spawn_x*/600, 
+          /*spawn_y*/500,
+          /*Tank Color           r/g/b*/8, 247, 254,
+          /*Tank Outline Color   r/g/b*/0, 0, 0,
+          /*Tank Stroke Weight*/5,
+          /*Turret Color         r/g/b*/0, 0, 0,
+          /*Turret Outline Color r/g/b*/0, 0, 0,
+          /*Turret Stroke Weight*/3);
+          
+          myTank.updateCollisionPermissions(
+          /*player_shot_collision_with_body allowed*/ false, 
+          /*enemy_shot_collision_with_body allowed*/ true, 
+          /*player_bullet_collide allowed*/ false, 
+          /*enemy_bullet_collide allowed*/ true,
+          /*collision_bullet_with_wall_allowed*/ true,
+          /*collision_body_with_wall_allowed*/ true);
+          
+          //Only turn on if self-damage is on: //myTank.setBulletSpawnFromLength(14);//add or subtract extra distance from turret length
+          break;
+        case "No Upgrade":
+          break;
+        case "TankSpeed +10":
+          myTank.addTankSpeed(.2); //increase 10 percent of original
+          break;
+        case "TankHealth +10":
+          myTank.addTankHealth(.41); //increase 10 percent of original
+          break;
+        case "BulletSpeed +10":
+          myTank.addBulletSpeed(.4); //increases 10 percent of original
+          break;
+        case "BulletDamage +10":
+          myTank.addBulletPenetration(.1); //increases 10 percent of original
+          break;
+        case "BulletSize +10":
+          myTank.addBulletSize(4); //increases 20 percent of original
+          break;
+        case "BulletFrequency -2 tick/shot":
+          myTank.increaseBulletFrequency(2); //reduce by 2 tick, original 36, cannot go below 8
+          break;
+        case "BulletBounce +1 (-40% everything else)":
+          myTank.addBulletBounce(1);
+          myTank.addTankSpeed(-.8); //decreases 40 percent of original
+          myTank.addTankHealth(-1.64); //decreases 40 percent of original
+          myTank.addBulletSpeed(-1.6); //decreases 40 percent of original
+          myTank.addBulletPenetration(-.4); //decreases 40 percent of original
+          myTank.addBulletSize(-2); //decreases by 10 percent
+          myTank.increaseBulletFrequency(-8); //increases by 8 ticks per shot
+          break;
+      }
+      if(myTank.bullet_frequency < 8) //prevents lagging
+        myTank.bullet_frequency = 8;
+    }
+    
     //on click: sets everything to not displaying
     displayHome = false;
     displayAbout = false;
     displayControls = false;
     displayLevelSelect = false;
     displayGameOver = false;
+    displayUpgrades = false;
     displayYouWon = false;
     runGame = false;
     
@@ -183,6 +260,9 @@ void mousePressed()
         break;
       case "Game Over":
         displayGameOver = true;
+        break;
+      case "Upgrades":
+        displayUpgrades = true;
         break;
       case "You Won":
         displayYouWon = true;

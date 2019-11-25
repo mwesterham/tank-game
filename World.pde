@@ -122,7 +122,7 @@ class World
     //for(int i = 0; i < 30; i++) //used for lag testing
     //enemyController.addDummyEnemy(550, 500);
     //enemyController.addBossEnemy2(850, 500);
-    enemyController.addBossEnemy1(150, 550);
+    //enemyController.addBossEnemy1(150, 550);
     //enemyController.addSlowStrongEnemy(150, 550);
     bulletController = new BulletController(); //MUST reinstantiate the bullet controller, not entirely sure why though...
   }  
@@ -158,7 +158,7 @@ class World
     background_color[0] = 30;
     background_color[1] = 60;
     background_color[2] = 30;
-    level_background_music1.loop();
+    //level_background_music1.loop();
     
     {i = 0; //left border
     wall_x = 0;
@@ -247,7 +247,7 @@ class World
     background_color[0] = 30;
     background_color[1] = 60;
     background_color[2] = 30;
-    level_background_music2.loop();
+    //level_background_music2.loop();
     
     {i = 0; //left border
     wall_x = 0;
@@ -296,7 +296,7 @@ class World
     {i = 4;
     wall_x = 200;
     wall_y = 200;
-    wall_width = 710; //max is 1920, with border 1720
+    wall_width = 610; //max is 1920, with border 1720
     wall_height = 100; //max is 1080, with border 880
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
@@ -305,9 +305,9 @@ class World
     }
     
     {i = 5;
-    wall_x = 200 + 710 + 100;
+    wall_x = 200 + 810 + 100;
     wall_y = 200;
-    wall_width = 710; //max is 1920, with border 1720
+    wall_width = 610; //max is 1920, with border 1720
     wall_height = 100; //max is 1080, with border 880
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
@@ -319,7 +319,7 @@ class World
     {i = 6;
     wall_x = 200;
     wall_y = 780;
-    wall_width = 710; //max is 1920, with border 1720
+    wall_width = 610; //max is 1920, with border 1720
     wall_height = 100; //max is 1080, with border 880
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
@@ -328,9 +328,9 @@ class World
     }
     
     {i = 7;
-    wall_x = 200 + 710 + 100;
+    wall_x = 200 + 810 + 100;
     wall_y = 780;
-    wall_width = 710; //max is 1920, with border 1720
+    wall_width = 610; //max is 1920, with border 1720
     wall_height = 100; //max is 1080, with border 880
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
@@ -340,9 +340,9 @@ class World
     
     {i = 8;
     wall_x = 200 + 710 - 100;
-    wall_y = 200 + 100;
+    wall_y = 200;
     wall_width = 100; //max is 1920, with border 1720
-    wall_height = 150; //max is 1080, with border 880
+    wall_height = 250; //max is 1080, with border 880
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
       walls[i][2] = width *  wall_width / 1920;//width
@@ -351,9 +351,9 @@ class World
     
     {i = 9;
     wall_x = 200 + 710 + 100;
-    wall_y = 200 + 100;
+    wall_y = 200;
     wall_width = 100; //max is 1920, with border 1720
-    wall_height = 150; //max is 1080, with border 880
+    wall_height = 250; //max is 1080, with border 880
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
       walls[i][2] = width *  wall_width / 1920;//width
@@ -364,7 +364,7 @@ class World
     wall_x = 200 + 710 + 100;
     wall_y = 780 - 150;
     wall_width = 100; //max is 1920, with border 1720
-    wall_height = 150; //max is 1080, with border 880
+    wall_height = 250; //max is 1080, with border 880
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
       walls[i][2] = width *  wall_width / 1920;//width
@@ -375,7 +375,7 @@ class World
     wall_x = 200 + 710 - 100;
     wall_y = 780 - 150;
     wall_width = 100; //max is 1920, with border 1720
-    wall_height = 150; //max is 1080, with border 880
+    wall_height = 250; //max is 1080, with border 880
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
       walls[i][2] = width *  wall_width / 1920;//width
@@ -408,7 +408,7 @@ class World
     background_color[0] = 30;
     background_color[1] = 60;
     background_color[2] = 30;
-    level_background_music3.loop();
+    //level_background_music3.loop();
     
     {i = 0; //left border
     wall_x = 0;
@@ -524,7 +524,7 @@ class World
     background_color[0] = 30;
     background_color[1] = 60;
     background_color[2] = 30;
-    level_background_music4.loop();
+    //level_background_music4.loop();
     
     {i = 0; //left border
     wall_x = 0;

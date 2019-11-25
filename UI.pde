@@ -1,8 +1,9 @@
 class UI
 {
-  private Button[] ButtonList = new Button[38];
+  private Button[] ButtonList = new Button[46];
   private String trigger_text = "Home Page";
   private int trigger_int = 0;
+  private String upgrade_text = "";
   
   public UI(int a)
   {
@@ -21,11 +22,17 @@ class UI
     this.ButtonList[6] = new Button("Game Over", "Home Page", "Return to Home Page", 50, 50, 260, 25);
     this.ButtonList[7] = new Button("Game Over", trigger_int - 1, "Retry", 900, 500, 260, 100);
     
-    //this.ButtonList[8] = new Button("Upgrades", "Home Page", "Return to Home Page", 50, 50, 260, 25);
-    
+    this.ButtonList[38] = new Button("Upgrades", "Home Page", "Return to Home Page", 50, 50, 260, 25);
+    this.ButtonList[39] = new Button("Upgrades", "You Won", "TankSpeed +10%", 300, 100, 900, 50);
+    this.ButtonList[40] = new Button("Upgrades", "You Won", "TankHealth +10%", 300, 200, 900, 50);
+    this.ButtonList[41] = new Button("Upgrades", "You Won", "BulletSpeed +10%", 300, 300, 900, 50);
+    this.ButtonList[42] = new Button("Upgrades", "You Won", "BulletDamage +10%", 300, 400, 900, 50);
+    this.ButtonList[43] = new Button("Upgrades", "You Won", "BulletSize +10%", 300, 500, 900, 50);
+    this.ButtonList[44] = new Button("Upgrades", "You Won", "BulletFrequency -2 tick/shot", 300, 600, 900, 50);
+    this.ButtonList[45] = new Button("Upgrades", "You Won", "BulletBounce +1 (-40% everything else)", 300, 700, 1000, 50);
+    this.ButtonList[9] = new Button("Upgrades", "You Won", "No Upgrade", 1400, 500, 350, 50);
     
     this.ButtonList[8] = new Button("You Won", "Home Page", "Return to Home Page", 50, 50, 260, 25);
-    this.ButtonList[9] = new Button("You Won", trigger_int - 1, "Retry", 300, 500, 260, 100);
     this.ButtonList[10] = new Button("You Won", trigger_int, "Next Level:  " + trigger_int, 900, 500, 540, 100);
     
     
@@ -139,12 +146,14 @@ class UI
         {  
           trigger_text = ButtonList[i].button_reference_name;
           trigger_int = ButtonList[i].button_reference_int;
+          upgrade_text = ButtonList[i].button_text;
           break;
         }
         else
         {
           trigger_text = ButtonList[i].button_parent_name;
           trigger_int = 0;
+          upgrade_text = "";
         }
   }
   
@@ -164,7 +173,10 @@ class UI
     {
       runGame = false;
       myUI.resetGame(); //resets the game ditto ^
-      displayYouWon = true;
+      if(upgrades_on)// && trigger_int - 1 <= 20) //max number of upgrades is 20
+        displayUpgrades = true;
+      else
+        displayYouWon = true;
       trigger_text = "You Won";
       start_home_music = true;
     }
@@ -178,7 +190,7 @@ class UI
     }
     if(!runGame)
     {
-      ///*SoundStuff
+      /*SoundStuff
       level_background_music1.stop();
       level_background_music2.stop();
       level_background_music3.stop();

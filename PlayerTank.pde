@@ -345,7 +345,7 @@ class PlayerTank
     /*Bullet color...*/ this.tank_color[0], this.tank_color[1], this.tank_color[2],
     /*Bullet outline color...*/ this.turret_color[0], this.turret_color[1], this.turret_color[2]));
     
-    shot_sound.play();
+    //shot_sound.play();
   }
   
   public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e, boolean f)
@@ -393,11 +393,6 @@ class PlayerTank
 
   }
   
-  public float getSpeed()
-  {
-    return tank_speed; 
-  }
-  
   public float getTurretLength()
   {
     return turret_rec_width;
@@ -405,14 +400,15 @@ class PlayerTank
   
   
   
-  public void addHealth(float health)
+  public void addTankHealth(float health)
   {
-    tank_health += health;
+    original_tank_health += health;
   }
   
   public void addTankSpeed(float speed)
   {
     tank_speed += speed;
+    velocity = new PVector(tank_speed, tank_speed);
   }
   
   public void addBulletPenetration(float health)
@@ -420,7 +416,7 @@ class PlayerTank
     bullet_health += health;
   }
   
-  public void addBulletSpeed(int speed)
+  public void addBulletSpeed(float speed)
   {
     bullet_speed += speed;
   }
@@ -433,5 +429,10 @@ class PlayerTank
   public void increaseBulletFrequency(int ticks)
   {
     bullet_frequency -= ticks;
+  }
+  
+  public void addBulletBounce(int num_bullet_bounce)
+  {
+    this.num_bullet_bounce += num_bullet_bounce;
   }
 }
