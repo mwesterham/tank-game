@@ -235,7 +235,7 @@ class EnemyTank
     /*player_bullet_collide allowed*/ player_bullet_collide_allowed, 
     /*enemy_bullet_collide allowed*/ enemy_bullet_collide_allowed, 
     /*collision_bullet_with_wall_allowed*/ collision_bullet_with_wall_allowed,
-    /*Bullet color...*/ turret_color[0], turret_color[1], turret_color[2], 
+    /*Bullet color...*/ tank_color[0], tank_color[1], tank_color[2], 
     /*Bullet outline color...*/ tank_outline_color_body[0], tank_outline_color_body[1], tank_outline_color_body[2]);
   }  
 

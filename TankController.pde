@@ -116,7 +116,7 @@ class TankController
     /*Tank Color           r/g/b*/254, 107, 53,
     /*Tank Outline Color   r/g/b*/0, 0, 0,
     /*Tank Stroke Weight*/3,
-    /*Turret Color         r/g/b*/254, 57, 03,
+    /*Turret Color         r/g/b*/0, 0, 0,//254, 57, 03,
     /*Turret Outline Color r/g/b*/0, 0, 0,
     /*Turret Stroke Weight*/2);
 
@@ -152,7 +152,7 @@ class TankController
     /*Tank Color           r/g/b*/254, 107, 53,
     /*Tank Outline Color   r/g/b*/0, 0, 0,
     /*Tank Stroke Weight*/3,
-    /*Turret Color         r/g/b*/254, 57, 03,
+    /*Turret Color         r/g/b*/0, 0, 0, //254, 57, 03,
     /*Turret Outline Color r/g/b*/0, 0, 0,
     /*Turret Stroke Weight*/2);
     
@@ -188,7 +188,7 @@ class TankController
     /*Tank Color           r/g/b*/242, 26, 29,
     /*Tank Outline Color   r/g/b*/0, 0, 0,
     /*Tank Stroke Weight*/5,
-    /*Turret Color         r/g/b*/212, 26, 29,
+    /*Turret Color         r/g/b*/0, 0, 0,//212, 26, 29,
     /*Turret Outline Color r/g/b*/0, 0, 0,
     /*Turret Stroke Weight*/5);
     
