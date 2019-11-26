@@ -7,10 +7,18 @@ int wall_index = 3;
 
 int my_spawn_x;
 int my_spawn_y;
-int[][] tanks;
+int[][][] tanks;
 int spawn_x;
 int spawn_y;
-int tank_index = 0;
+int tank_index1 = 0;
+int tank_index2 = 0;
+int tank_index3 = 0;
+int tank_index4 = 0;
+int tank_index5 = 0;
+int tank_index6 = 0;
+int tank_index7 = 0;
+int tank_index8 = 0;
+int tank_index9 = 0;
 
 void setup()
 {
@@ -39,14 +47,15 @@ void setup()
   my_spawn_x = 100;
   my_spawn_y = 100;
   
-  tanks = new int[500][2];
-  tanks[0][0] = my_spawn_x;
-  tanks[0][1] = my_spawn_y;
+  tanks = new int[9][20][2]; //there are 9 types of tanks discluding the player, 20 max of each tank, 
+  //tanks[0][0][0] = my_spawn_x;
+  //tanks[0][0][1] = my_spawn_y;
 }
 
 void draw()
 {
-  background(130, 130, 130);
+  background(130, 130, 130);  
+  fill(255, 255, 255);
   for(int i = 0; i < walls.length; i++)
     rect(walls[i][0], walls[i][1], walls[i][2], walls[i][3]);
   
@@ -54,9 +63,58 @@ void draw()
   fill(255, 0, 0);
   ellipse(my_spawn_x, my_spawn_y, 75, 75);
   fill(240, 240, 240);
-  for(int i = 1; i < tanks.length; i++)
-    ellipse(tanks[i][0], tanks[i][1], 75, 75);
+  for(int i = 0; i < tanks[0].length; i++)
+    ellipse(tanks[0][i][0], tanks[0][i][1], 75, 75); //first tank type
 
+  fill(140, 140, 140);
+  for(int i = 0; i < tanks[1].length; i++)
+    ellipse(tanks[1][i][0], tanks[1][i][1], 75, 75); //second tank type
+
+  fill(40, 40, 40);
+  for(int i = 0; i < tanks[2].length; i++)
+    ellipse(tanks[2][i][0], tanks[2][i][1], 100, 100); //third tank type
+   
+  fill(0, 240, 240);
+  for(int i = 0; i < tanks[3].length; i++)
+    ellipse(tanks[3][i][0], tanks[3][i][1], 75, 75); //4th tank type
+    
+  fill(0, 140, 140);
+  for(int i = 0; i < tanks[4].length; i++)
+    ellipse(tanks[4][i][0], tanks[4][i][1], 75, 75); //5th tank type
+
+  fill(0, 40, 40);
+  for(int i = 0; i < tanks[5].length; i++)
+    ellipse(tanks[5][i][0], tanks[5][i][1], 75, 75); //6th tank type
+
+  fill(240, 0, 240);
+  for(int i = 0; i < tanks[6].length; i++)
+    ellipse(tanks[6][i][0], tanks[6][i][1], 75, 75); //7th tank type
+   
+  fill(140, 0, 140);
+  for(int i = 0; i < tanks[7].length; i++)
+    ellipse(tanks[7][i][0], tanks[7][i][1], 75, 75); //8th tank type
+    
+  fill(40, 0, 40);
+  for(int i = 0; i < tanks[8].length; i++)
+    ellipse(tanks[8][i][0], tanks[8][i][1], 75, 75); //9th tank type
+
+
+  textSize(25);
+  fill(0, 0, 0);
+  text("Add Controls:", 300, 25);
+  textSize(10);
+  text("Drag Mouse: add wall", 500, 20);
+  text("1: set player spawn", 650, 20);
+  text("2-9 and 0: add enemy", 650, 40);
+  
+  
+  
+  textSize(25);
+  fill(0, 0, 0);
+  text("Delete Controls:", 1000, 25);
+  textSize(10);
+  text("D: delete wall (last placed)", 1000, 50);
+  text("W-P: delete enemy (last placed)", 1000, 75);
 }
 
 void mousePressed()
@@ -68,13 +126,37 @@ void mousePressed()
 void mouseReleased()
 {
   wall_index++; //originally 3
+  
+  //organizes the points and lengths so that they can be stored without negatives
+  if(wall_x > wall_x2 && wall_y < wall_y2
+  || wall_x < wall_x2 && wall_y > wall_y2)
+  {
+    int placeholder;
+    placeholder = wall_y;
+    wall_y = wall_y2;
+    wall_y2 = placeholder;
+  }
+  
+  if(wall_x > wall_x2 && wall_y > wall_y2)
+  {
+    int placeholder;
+    placeholder = wall_x;
+    wall_x = wall_x2;
+    wall_x2 = placeholder;    
+    
+    placeholder = wall_y;
+    wall_y = wall_y2;
+    wall_y2 = placeholder;
+  }
+    
+    
   walls[wall_index][0] = wall_x;
   walls[wall_index][1] = wall_y;
   walls[wall_index][2] = wall_x2 - wall_x;
   walls[wall_index][3] = wall_y2 - wall_y;
   
   
-  System.out.println("-------------------------------------------------------------");
+  System.out.println("//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
   System.out.printf("" + "\n" +
   "  public void generateLevel#()" + "\n" +
   "  {" + "\n");
@@ -105,13 +187,62 @@ void mouseReleased()
   "    spawn_y = " + my_spawn_y + ";" + "\n" +
   "      myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
   
-  for(int i = 1; i <= tank_index; i++)
+  for(int i = 1; i <= tank_index1; i++)
     System.out.printf("" + "\n" + 
-    "    spawn_x = " + tanks[i][0] + ";" + "\n" +
-    "    spawn_y = " + tanks[i][1] + ";" + "\n" +
+    "    spawn_x = " + tanks[0][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[0][i][1] + ";" + "\n" +
+    "      enemyController.addNoMoving(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index2; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[1][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[1][i][1] + ";" + "\n" +
     "      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index3; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[2][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[2][i][1] + ";" + "\n" +
+    "      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index4; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[3][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[3][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index5; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[4][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[4][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index6; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[5][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[5][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index7; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[6][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[6][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index8; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[7][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[7][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index9; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[8][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[8][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
   
   System.out.println("  }");
+  
 }
 
 void keyPressed()
@@ -126,12 +257,76 @@ void keyPressed()
       wall_index--;
   }
   
+  if(key == 'w' || key == 'W')
+  {
+    tanks[0][tank_index1][0] = 0;
+    tanks[0][tank_index1][1] = 0;
+    if(tank_index1 + 1 > 1)
+      tank_index1--;
+  }
+  
   if(key == 'e' || key == 'E')
   {
-    tanks[tank_index][0] = 0;
-    tanks[tank_index][1] = 0;
-    if(tank_index + 1 > 1)
-      tank_index--;
+    tanks[1][tank_index2][0] = 0;
+    tanks[1][tank_index2][1] = 0;
+    if(tank_index2 + 1 > 1)
+      tank_index2--;
+  }
+  
+  if(key == 'r' || key == 'R')
+  {
+    tanks[2][tank_index3][0] = 0;
+    tanks[2][tank_index3][1] = 0;
+    if(tank_index3 + 1 > 1)
+      tank_index3--;
+  }
+  
+  if(key == 't' || key == 'T')
+  {
+    tanks[3][tank_index4][0] = 0;
+    tanks[3][tank_index4][1] = 0;
+    if(tank_index4 + 1 > 1)
+      tank_index4--;
+  }
+  
+  if(key == 'y' || key == 'Y')
+  {
+    tanks[4][tank_index5][0] = 0;
+    tanks[4][tank_index5][1] = 0;
+    if(tank_index5 + 1 > 1)
+      tank_index5--;
+  }
+  
+  if(key == 'u' || key == 'U')
+  {
+    tanks[5][tank_index6][0] = 0;
+    tanks[5][tank_index6][1] = 0;
+    if(tank_index6 + 1 > 1)
+      tank_index6--;
+  }
+  
+  if(key == 'i' || key == 'I')
+  {
+    tanks[6][tank_index7][0] = 0;
+    tanks[6][tank_index7][1] = 0;
+    if(tank_index7 + 1 > 1)
+      tank_index7--;
+  }
+  
+  if(key == 'o' || key == 'O')
+  {
+    tanks[7][tank_index8][0] = 0;
+    tanks[7][tank_index8][1] = 0;
+    if(tank_index8 + 1 > 1)
+      tank_index8--;
+  }
+  
+  if(key == 'p' || key == 'P')
+  {
+    tanks[8][tank_index9][0] = 0;
+    tanks[8][tank_index9][1] = 0;
+    if(tank_index9 + 1 > 1)
+      tank_index9--;
   }
   
   if(key == '1')
@@ -144,12 +339,85 @@ void keyPressed()
   {
     spawn_x = mouseX;
     spawn_y = mouseY;
-    tank_index++;
-    tanks[tank_index][0] = spawn_x;
-    tanks[tank_index][1] = spawn_y;
+    tank_index1++;
+    tanks[0][tank_index1][0] = spawn_x;
+    tanks[0][tank_index1][1] = spawn_y;
   }
   
-  System.out.println("-------------------------------------------------------------");
+  if(key == '3')
+  {
+    spawn_x = mouseX;
+    spawn_y = mouseY;
+    tank_index2++;
+    tanks[1][tank_index2][0] = spawn_x;
+    tanks[1][tank_index2][1] = spawn_y;
+  }
+
+  if(key == '4')
+  {
+    spawn_x = mouseX;
+    spawn_y = mouseY;
+    tank_index3++;
+    tanks[2][tank_index3][0] = spawn_x;
+    tanks[2][tank_index3][1] = spawn_y;
+  }
+  
+  if(key == '5')
+  {
+    spawn_x = mouseX;
+    spawn_y = mouseY;
+    tank_index4++;
+    tanks[3][tank_index4][0] = spawn_x;
+    tanks[3][tank_index4][1] = spawn_y;
+  }
+  
+  if(key == '6')
+  {
+    spawn_x = mouseX;
+    spawn_y = mouseY;
+    tank_index5++;
+    tanks[4][tank_index5][0] = spawn_x;
+    tanks[4][tank_index5][1] = spawn_y;
+  }
+  
+  if(key == '7')
+  {
+    spawn_x = mouseX;
+    spawn_y = mouseY;
+    tank_index6++;
+    tanks[5][tank_index6][0] = spawn_x;
+    tanks[5][tank_index6][1] = spawn_y;
+  }
+  
+  if(key == '8')
+  {
+    spawn_x = mouseX;
+    spawn_y = mouseY;
+    tank_index7++;
+    tanks[6][tank_index7][0] = spawn_x;
+    tanks[6][tank_index7][1] = spawn_y;
+  }
+  
+  if(key == '9')
+  {
+    spawn_x = mouseX;
+    spawn_y = mouseY;
+    tank_index8++;
+    tanks[7][tank_index8][0] = spawn_x;
+    tanks[7][tank_index8][1] = spawn_y;
+  }
+  
+  if(key == '0')
+  {
+    spawn_x = mouseX;
+    spawn_y = mouseY;
+    tank_index9++;
+    tanks[8][tank_index9][0] = spawn_x;
+    tanks[8][tank_index9][1] = spawn_y;
+  }
+  
+  //prints the code to copy
+  System.out.println("//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
   System.out.printf("" + "\n" +
   "  public void generateLevel#()" + "\n" +
   "  {" + "\n");
@@ -180,13 +448,62 @@ void keyPressed()
   "    spawn_y = " + my_spawn_y + ";" + "\n" +
   "      myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
   
-  for(int i = 1; i <= tank_index; i++)
+  for(int i = 1; i <= tank_index1; i++)
     System.out.printf("" + "\n" + 
-    "    spawn_x = " + tanks[i][0] + ";" + "\n" +
-    "    spawn_y = " + tanks[i][1] + ";" + "\n" +
+    "    spawn_x = " + tanks[0][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[0][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index2; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[1][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[1][i][1] + ";" + "\n" +
     "      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index3; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[2][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[2][i][1] + ";" + "\n" +
+    "      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index4; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[3][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[3][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index5; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[4][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[4][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index6; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[5][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[5][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index7; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[6][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[6][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index8; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[7][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[7][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    
+  for(int i = 1; i <= tank_index9; i++)
+    System.out.printf("" + "\n" + 
+    "    spawn_x = " + tanks[8][i][0] + ";" + "\n" +
+    "    spawn_y = " + tanks[8][i][1] + ";" + "\n" +
+    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
   
   System.out.println("  }");
+
 }
 
 void mouseDragged()

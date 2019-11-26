@@ -217,7 +217,8 @@ class EnemyAI
       <= enemyTank.tank_width / 2 + bulletController.getBList().get(i).bullet_width / 2)
       {  
         float damage = enemyTank.tank_health;
-        enemyTank.tank_health -= bulletController.getBList().get(i).bullet_health;
+        if(bulletController.getBList().get(i).bullet_health > 0)
+          enemyTank.tank_health -= bulletController.getBList().get(i).bullet_health;
         bulletController.getBList().get(i).bullet_health -= damage;
         //bulletController.removeBullet(bulletController.getBList().get(i));
       }

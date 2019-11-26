@@ -72,7 +72,7 @@ void setup()
   /*bullet_size*/20, //typically 20
   /*bullet_speed*/4, //typically 4
   /*bullet_health/pentration/damage*/1,//typically 1
-  /*bullet_frequency*/36, //typically 36
+  /*bullet_frequency*/2, //typically 36
   /*number of times bullets bounce*/1,
   /*spawn_x*/600, 
   /*spawn_y*/500,
@@ -346,17 +346,17 @@ void mousePressed()
         runGame = true;
         break;
       case 10:
-        myWorld.generateLevel3();
+        myWorld.generateLevel10();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 11:
-        myWorld.generateLevel3();
+        myWorld.generateLevel11();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 12:
-        myWorld.generateLevel3();
+        myWorld.generateLevel12();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
