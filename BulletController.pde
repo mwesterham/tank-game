@@ -41,8 +41,8 @@ class BulletController
     }
 
     //sorts it into 8 sections horizontally accross the screen, 3 sections vertically, then checks the bullets in their respective sections
-    for(int section_x = -10; section_x < width; section_x += width / 8) //-100 because it detects the bullet a little behind the wall and updates it even if it is behind so its like 36 calculations not 24
-      for(int section_y = -10; section_y < height; section_y += height / 3)
+    for(int section_x = -50; section_x < width; section_x += width / 8) //-100 because it detects the bullet a little behind the wall and updates it even if it is behind so its like 36 calculations not 24
+      for(int section_y = -50; section_y < height; section_y += height / 3)
         for(int i = 0; i < b.size(); i++) //updates position, checks for collisions and deletes accordingly
         {
           screen_section_x = section_x;

@@ -46,8 +46,8 @@ class Bullet
   int bullet_color_red, int bullet_color_green, int bullet_color_blue, 
   int outline_color_red, int outline_color_green, int outline_color_blue)
   {
-    this.bullet_width = size;
-    this.bullet_height = size;
+    this.bullet_width = width * size /1920;
+    this.bullet_height = height * size / 1080;
     this.original_bullet_health = bullet_health;
     this.bullet_health = bullet_health;
     this.num_bullet_bounce = num_bullet_bounce;
@@ -58,9 +58,9 @@ class Bullet
     this.bullet_outline_color[1] = outline_color_green;
     this.bullet_outline_color[2] = outline_color_blue;
     
-    this.bullet_speed = speed;
+    this.bullet_speed = speed * 80 / framerate;
     //this.bullet_direction = direction;
-    velocity = new PVector(bullet_speed * sin(-direction), bullet_speed * cos(direction));
+    velocity = new PVector(width * bullet_speed / 1920 * sin(-direction), height * bullet_speed / 1080 * cos(direction));
     location = new PVector(spawn_x, spawn_y);
     this.turret_length = turret_length;
     
@@ -86,7 +86,7 @@ class Bullet
     //stroke(bullet_outline_color[0], bullet_outline_color[1], bullet_outline_color[2]);
     stroke(0, 0, 0);
     strokeWeight(3);
-    ellipse(location.x + turret_length * sin(-bullet_direction), location.y + turret_length * cos(bullet_direction), bullet_width, bullet_height);
+    ellipse(location.x + width * turret_length / 1920 * sin(-bullet_direction), location.y + height * turret_length / 1080 * cos(bullet_direction), bullet_width, bullet_height);
     //renderHealthBar(); //used for debugging
   }
   
@@ -121,7 +121,7 @@ class Bullet
   public void updateBulletSpeed(int speed)
   {
     this.bullet_speed = speed;
-    velocity = new PVector(bullet_speed * sin(-bullet_direction), bullet_speed * cos(bullet_direction));
+    velocity = new PVector(width * bullet_speed / 1920 * sin(-bullet_direction), height * bullet_speed / 1080 * cos(bullet_direction));
   }
   
   public void bulletHealthMinus(float damage)
@@ -137,7 +137,7 @@ class Bullet
   
   public PVector getRealLocation()
   {
-    PVector realLocation = new PVector(location.x + turret_length * sin(-bullet_direction), location.y + turret_length * cos(bullet_direction));
+    PVector realLocation = new PVector(location.x + width * turret_length / 1920 * sin(-bullet_direction), location.y + height * turret_length / 1080 * cos(bullet_direction));
     return realLocation;
   }
 }

@@ -66,8 +66,8 @@ class EnemyTank
   int turret_stroke_weight)
   {
     location = new PVector(spawnX, spawnY);
-    this.tank_width = tank_width;
-    this.tank_height = tank_height;
+    this.tank_width = width * tank_width / 1920;
+    this.tank_height = height * tank_height / 1080;
     this.original_tank_health = tank_health;
     this.tank_health = tank_health;
     this.bullet_health = bullet_health;
@@ -75,16 +75,16 @@ class EnemyTank
       Random rand = new Random();
       velocity = new PVector(rand.nextInt(), rand.nextInt());
       velocity.normalize();
-    this.tank_speed = tank_speed;
+    this.tank_speed = tank_speed * 80 / framerate;
     
-    this.turret_cir_width = tank_width * 1/3;
-    this.turret_cir_height = tank_height * 1/3;
-    this.turret_rec_width = tank_width * 2/5 ;
-    this.turret_rec_height = tank_height * 1/3;
-    this.right_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to the right 
-    this.left_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to the left
-    this.above_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to above
-    this.below_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to below
+    this.turret_cir_width = this.tank_width * 1/3;
+    this.turret_cir_height = this.tank_height * 1/3;
+    this.turret_rec_width = this.tank_width * 2/5 ;
+    this.turret_rec_height = this.tank_height * 1/3;
+    this.right_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to the right 
+    this.left_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to the left
+    this.above_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to above
+    this.below_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to below
     this.bullet_size = bullet_size;
     this.bullet_speed = bullet_speed;
     this.bullet_frequency = bullet_frequency;
@@ -179,7 +179,7 @@ class EnemyTank
     fill(tank_color[0], tank_color[1], tank_color[2]);
     stroke(tank_outline_color_body[0], tank_outline_color_body[1], tank_outline_color_body[2]);
     strokeWeight(body_stroke_weight);
-    ellipse(0, 0, tank_width, tank_height);
+    ellipse(0, 0, this.tank_width, this.tank_height);
     popMatrix();
   }
   
@@ -205,10 +205,10 @@ class EnemyTank
     stroke(0, 0, 0);
     fill(0, 0, 0);
     strokeWeight(5);
-    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width, 10);//renders the red bar first
+    rect( -(this.tank_width) * 1/2, -(this.tank_height) * 2/3, this.tank_width, 10);//renders the red bar first
     fill(0, 255, 0);
     stroke(0, 0, 0, 0); //4th parameter sets opacity at 0
-    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width * (tank_health / original_tank_health), 10);//renders the green bar and overlaps
+    rect( -(this.tank_width) * 1/2, -(this.tank_height) * 2/3, tank_width * (tank_health / original_tank_health), 10);//renders the green bar and overlaps
     popMatrix();
   }
   
@@ -241,8 +241,8 @@ class EnemyTank
 
   public void setNewVelocityDirection(PVector newVelocityDirection)
   {
-    this.velocity.x = newVelocityDirection.x * tank_speed;
-    this.velocity.y = newVelocityDirection.y * tank_speed;
+    this.velocity.x = newVelocityDirection.x * width * tank_speed / 1920;
+    this.velocity.y = newVelocityDirection.y * height * tank_speed / 1080;
   }
   
   public void setAIVersion(int AIVersion)
@@ -262,10 +262,10 @@ class EnemyTank
   
   public void setTurretSize(float tank_width, float tank_height)
   {
-    this.turret_cir_width = tank_width * 1/3;
-    this.turret_cir_height = tank_height * 1/3;
-    this.turret_rec_width = tank_width * 2/5 ;
-    this.turret_rec_height = tank_height * 1/3;
+    this.turret_cir_width = width * tank_width / 1920 * 1/3;
+    this.turret_cir_height = height * tank_height / 1080 * 1/3;
+    this.turret_rec_width = width * tank_width / 1920 * 2/5 ;
+    this.turret_rec_height = height * tank_height / 1080 * 1/3;
   }
   
   public void setBulletSpawnFromLength(int extra_distance)

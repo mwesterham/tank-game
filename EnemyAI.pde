@@ -31,10 +31,16 @@ class EnemyAI
         current_move_direction_y = cos(enemyTank.getTowardMoveDirection());
         velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
       }
-      else  //if distance between enemy and you is less than 200 move away from them
+      else if (dist(location.x, location.y, myTank.location.x, myTank.location.y) < 150)  //if distance between enemy and you is less than 150 move away from them
       {
         current_move_direction_x = sin(enemyTank.getTowardMoveDirection());
         current_move_direction_y = -cos(enemyTank.getTowardMoveDirection());
+        velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
+      }
+      else //if inbetween 150 and 200, stay still
+      {
+        current_move_direction_x = 0;
+        current_move_direction_y = 0;
         velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
       }
     else
@@ -105,9 +111,9 @@ class EnemyAI
   private void targetVisibleCheck() //creates a sudobullet and spawns a given number of iterations of it in a seperate bulletController, if intersects woth tank, shoot
   {
     sudoBullet = enemyTank.getBullet();
-    float number_of_iterations =  2 / (1 * sudoBullet.velocity.mag()) * 80; //slowstrong enemy does 2 / 4 * 80 = 40 iterations, boss2 does 2 / 2 * 80 = 80 iterations
+    float number_of_iterations =  2 / (1 * sudoBullet.bullet_speed * framerate / 80) * 80; //slowstrong enemy does 2 / 4 * 80 = 40 iterations, boss2 does 2 / 2 * 80 = 80 iterations
     if(enemyTank.AI_version == 2) //if AI version2: double the viewing range
-      number_of_iterations =  4 / (1 * sudoBullet.velocity.mag()) * 80; //boss1 does 4 / 5 * 80 = 64 iterations
+      number_of_iterations =  4 / (1 * sudoBullet.bullet_speed * framerate / 80) * 80; //boss1 does 4 / 5 * 80 = 64 iterations
     sudoBullet.updateBulletSpeed(35); //sudo bullet goes way faster to do less calculations
     
     

@@ -38,7 +38,7 @@ class TankController
       TempEnemyTank = enemies.get(i);
       AI = new EnemyAI(TempEnemyTank); //applies AI to the tank in the enemies list with new velocity
       
-      if(tickCount % 64 == 0 && rand.nextInt(3) == 0) //every 64 ticks give it a 1/3 chance of changing direction
+      if(tickCount % (int)(64 * framerate / 80) == 0 && rand.nextInt(3) == 0) //every 64 ticks give it a 1/3 chance of changing direction
       {
         PVector velocity_direction = new PVector(rand.nextInt(), rand.nextInt());
         velocity_direction.normalize();
@@ -53,7 +53,7 @@ class TankController
       
       if(AI.target_visible)
         TempEnemyTank.local_tick_count++;
-      if(AI.target_visible && TempEnemyTank.local_tick_count % TempEnemyTank.bullet_frequency == 0)
+      if(AI.target_visible && TempEnemyTank.local_tick_count % (int)(TempEnemyTank.bullet_frequency * framerate / 80) == 0)
         TempEnemyTank.shoot();
       if(TempEnemyTank.tank_health <= 0)
         removeEnemy(TempEnemyTank);
@@ -64,7 +64,7 @@ class TankController
   public void addDummyEnemy(float spawnX, float spawnY)
   {
     TempEnemyTank = new EnemyTank(
-    /*tank_width*/100, 
+    /*tank_width*/100, //ratioed to screen resolution
     /*tank_height*/100, 
     /*tank_speed*/1, 
     /*tank_health*/3,
@@ -113,7 +113,7 @@ class TankController
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.location.x, 
     /*target_location_y*/myTank.location.y,
-    /*Tank Color           r/g/b*/254, 107, 53,
+    /*Tank Color           r/g/b*/204, 57, 3,
     /*Tank Outline Color   r/g/b*/0, 0, 0,
     /*Tank Stroke Weight*/3,
     /*Turret Color         r/g/b*/0, 0, 0,//254, 57, 03,
@@ -149,7 +149,7 @@ class TankController
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.location.x, 
     /*target_location_y*/myTank.location.y,
-    /*Tank Color           r/g/b*/254, 107, 53,
+    /*Tank Color           r/g/b*/254, 117, 33,
     /*Tank Outline Color   r/g/b*/0, 0, 0,
     /*Tank Stroke Weight*/3,
     /*Turret Color         r/g/b*/0, 0, 0, //254, 57, 03,

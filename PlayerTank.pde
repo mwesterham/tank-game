@@ -72,22 +72,22 @@ class PlayerTank
     location = new PVector(spawnX, spawnY);
     this.spawn_x = spawnX;
     this.spawn_y = spawnY;
-    this.tank_width = tank_width;
-    this.tank_height = tank_height;
+    this.tank_width = width * tank_width / 1920;
+    this.tank_height = height * tank_height / 1080;
     this.original_tank_health = tank_health;
     this.tank_health = tank_health;
     this.bullet_health = bullet_health;
-    velocity = new PVector(tank_speed, tank_speed);
-    this.tank_speed = tank_speed;
+    velocity = new PVector(tank_speed  * 80 / framerate, tank_speed  * 80 / framerate);
+    this.tank_speed = tank_speed * 80 / framerate;
     
-    this.turret_cir_width = tank_width * 1/3;
-    this.turret_cir_height = tank_height * 1/3;
-    this.turret_rec_width = tank_width * 2/5 ;
-    this.turret_rec_height = tank_height * 1/3;
-    this.right_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to the right 
-    this.left_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to the left
-    this.above_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to above
-    this.below_collision_dist = tank_width * sqrt(2) / 4; //distance from middle of tank to below
+    this.turret_cir_width = this.tank_width * 1/3;
+    this.turret_cir_height = this.tank_height * 1/3;
+    this.turret_rec_width = this.tank_width * 2/5 ;
+    this.turret_rec_height = this.tank_height * 1/3;
+    this.right_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to the right 
+    this.left_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to the left
+    this.above_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to above
+    this.below_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to below
     this.bullet_size = bullet_size;
     this.bullet_speed = bullet_speed;
     this.bullet_frequency = bullet_frequency;
@@ -147,7 +147,7 @@ class PlayerTank
         && (myWorld.getWalls()[i][1] + myWorld.getWalls()[i][3]) - (location.y) <= 0
         && (location.x - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
         && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
-        || (location.y - tank_height / 2) <= 0)
+        || (location.y - this.tank_height / 2) <= 0)
           above_collision = true;
       
       //horizontal wall check below_collision
@@ -155,7 +155,7 @@ class PlayerTank
         && (myWorld.getWalls()[i][1]) - (location.y) >= 0
         && (location.x - left_collision_dist) - (myWorld.getWalls()[i][0] + myWorld.getWalls()[i][2]) <= 0 
         && (location.x + right_collision_dist) - (myWorld.getWalls()[i][0]) >= 0
-        || (height) - (location.y + tank_height / 2) <= 0)
+        || (height) - (location.y + this.tank_height / 2) <= 0)
           below_collision = true;
       }
       
@@ -164,10 +164,10 @@ class PlayerTank
         //draws a vector between each tank and other tanks
         PVector between_vector = new PVector(location.x - enemyController.getEList().get(i).location.x, location.y - enemyController.getEList().get(i).location.y);
         between_vector.normalize();
-        between_vector.x *= tank_speed;
-        between_vector.y *= tank_speed;
+        between_vector.x *= this.tank_speed;
+        between_vector.y *= this.tank_speed;
         
-        if(dist(location.x, location.y, enemyController.getEList().get(i).location.x, enemyController.getEList().get(i).location.y) < tank_width)
+        if(dist(location.x, location.y, enemyController.getEList().get(i).location.x, enemyController.getEList().get(i).location.y) < this.tank_width)
           location.add(between_vector); //if the tanks' centers are within the range the size of tank_width, add opposing velocity
       }
     }
@@ -176,29 +176,29 @@ class PlayerTank
         right_collision = true;
       if((location.x - left_collision_dist / 2) <= 0)
         left_collision = true;
-      if((location.y - tank_height / 2) <= 0)
+      if((location.y - this.tank_height / 2) <= 0)
         above_collision = true;
-      if((height) - (location.y + tank_height / 2) <= 0)
+      if((height) - (location.y + this.tank_height / 2) <= 0)
         below_collision = true;
     }
     if(right_collision)
     {
-      location.x -= tank_speed;
+      location.x -= this.tank_speed;
       right_collision = false;
     }
     if(left_collision)
     {
-      location.x += tank_speed;
+      location.x += this.tank_speed;
       left_collision = false;
     }
     if(above_collision)
     {
-      location.y += tank_speed;
+      location.y += this.tank_speed;
       above_collision = false;
     }
     if(below_collision)
     {
-      location.y -= tank_speed;
+      location.y -= this.tank_speed;
       below_collision = false;
     }
 
@@ -206,7 +206,7 @@ class PlayerTank
     for(int i = 0; i < bulletController.getBList().size(); i++)
     {
       if(dist(location.x, location.y, bulletController.getBList().get(i).getRealLocation().x, bulletController.getBList().get(i).getRealLocation().y) 
-      <= tank_width / 2 + bulletController.getBList().get(i).bullet_width / 2
+      <= this.tank_width / 2 + bulletController.getBList().get(i).bullet_width / 2
       && bulletController.getBList().get(i).player_bullet_collide_allowed)
       {
         this.tank_health -= bulletController.getBList().get(i).bullet_health;
@@ -217,14 +217,19 @@ class PlayerTank
   
   public void updatePosition()
   {
+     //velocity = new PVector(tank_speed, tank_speed);
+     PVector direction = new PVector(0, 0);
     if(move_left)
-      location.x -= velocity.x;
+      direction.x = -1;
     if(move_right)
-      location.x += velocity.x;
+      direction.x = 1;
     if(move_up)
-      location.y -= velocity.y;
+      direction.y = -1;
     if(move_down)
-      location.y += velocity.y;
+      direction.y = 1;
+ 
+    velocity = new PVector(this.tank_speed * direction.x, this.tank_speed * direction.y);  
+      location.add(velocity);
   }
   
   public void renderTank()
@@ -305,19 +310,19 @@ class PlayerTank
     stroke(0, 0, 0);
     fill(0, 0, 0);
     strokeWeight(5);
-    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width, 10);//renders the red bar first
+    rect( -(this.tank_width) * 1/2, -(this.tank_height) * 2/3, this.tank_width, 10);//renders the red bar first
     fill(0, 255, 0);
     stroke(0, 0, 0, 0); //4th parameter sets opacity at 0
-    rect( -(tank_width) * 1/2, -(tank_height) * 2/3, tank_width * (tank_health / original_tank_health), 10);//renders the green bar and overlaps
+    rect( -(this.tank_width) * 1/2, -(this.tank_height) * 2/3, this.tank_width * (tank_health / original_tank_health), 10);//renders the green bar and overlaps
     popMatrix();
   }
   
   public void shootCheck()
   {
-    if(tempTickCount % bullet_frequency == 0 && shoot_input)//regulates how fast player can shoot
+    if(tempTickCount % (int)(bullet_frequency * framerate / 80) == 0 && shoot_input)//regulates how fast player can shoot
       {
           myTank.shoot();
-          shot_cool_down = bullet_frequency;
+          shot_cool_down = (int)(bullet_frequency * framerate / 80);
       }
     if(shot_cool_down > 0)//counts the counter down for a "reload" of the next shot
       shot_cool_down--;
@@ -360,10 +365,10 @@ class PlayerTank
   
   public void setTurretSize(float tank_width, float tank_height)
   {
-    this.turret_cir_width = tank_width * 1/3;
-    this.turret_cir_height = tank_height * 1/3;
-    this.turret_rec_width = tank_width * 2/5 ;
-    this.turret_rec_height = tank_height * 1/3;
+    this.turret_cir_width = width * tank_width / 1920 * 1/3;
+    this.turret_cir_height = height * tank_height / 1080 * 1/3;
+    this.turret_rec_width = width * tank_width / 1920 * 2/5 ;
+    this.turret_rec_height = height * tank_height / 1080 * 1/3;
   }
   
   public void setSpawn(float spawnX, float spawnY)
@@ -400,35 +405,35 @@ class PlayerTank
   
   
   
-  public void addTankHealth(float health)
+  public void addTankSpeed(float percent_speed_increase)
   {
-    original_tank_health += health;
+    tank_speed *= 1 + percent_speed_increase / 100;
+    velocity = new PVector(width * tank_speed / 1920, height * tank_speed / 1080);
+  }  
+  
+  public void addTankHealth(float percent_health_increase)
+  {
+    original_tank_health *= 1 + percent_health_increase / 100;
   }
   
-  public void addTankSpeed(float speed)
+  public void addBulletSpeed(float percent_speed_increase)
   {
-    tank_speed += speed;
-    velocity = new PVector(tank_speed, tank_speed);
+    bullet_speed *= 1 + percent_speed_increase / 100;
   }
   
-  public void addBulletPenetration(float health)
+  public void addBulletPenetration(float percent_health_increase)
   {
-    bullet_health += health;
+    bullet_health *= 1 + percent_health_increase / 100;
   }
   
-  public void addBulletSpeed(float speed)
+  public void addBulletSize(float percent_size_increase)
   {
-    bullet_speed += speed;
-  }
-  
-  public void addBulletSize(float size)
-  {
-    bullet_size += size;
+    bullet_size *= 1 + percent_size_increase / 100;
   }
   
   public void increaseBulletFrequency(int ticks)
   {
-    bullet_frequency -= ticks;
+    bullet_frequency += ticks;
   }
   
   public void addBulletBounce(int num_bullet_bounce)

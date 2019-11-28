@@ -36,6 +36,8 @@
   private boolean start_home_music = true;
   private boolean upgrades_on;
   public int tickCount = 0;
+  private int framerate;
+  private int FRAMERATE;
   
 void setup() 
 {
@@ -62,7 +64,11 @@ void setup()
   //GAME SETUP
   //size(1900, 900); //for testing game breaking stuff
   fullScreen();
-  frameRate(100); //60fps for testing, 80fps for gameplay, 120fps for fast speed, 240fps for insane speed
+  framerate = 30; // how many frames the game thinks the game is running at, cannot go below 3 since (int)(80 / framerate) = 0)
+  FRAMERATE = 30; //actual framerate of the game, base frame rate is 80 fps hence why everything is like 80 / framerate instead of  FRAMERATE / framerate
+  frameRate(FRAMERATE); 
+  //speed of the game is dependent on ratio between the two framerates: FRAMERATE / framerate = game speed
+  //but make sure your FRAMERATE is within your cpu's capabilities (ie. do not run at FRAMERATE = 100)
   
   myTank  = new PlayerTank(
   /*tank_width*/75, //typically 75
@@ -72,7 +78,7 @@ void setup()
   /*bullet_size*/20, //typically 20
   /*bullet_speed*/4, //typically 4
   /*bullet_health/pentration/damage*/1,//typically 1
-  /*bullet_frequency*/2, //typically 36
+  /*bullet_frequency*/36, //typically 36
   /*number of times bullets bounce*/1,
   /*spawn_x*/600, 
   /*spawn_y*/500,
@@ -203,51 +209,43 @@ void mousePressed()
         case "No Upgrade":
           break;
         case "TankSpeed +10%":
-          myTank.addTankSpeed(.2); //increase 10 percent of original
+          myTank.addTankSpeed(10); //increase 10 percent of original
           break;
         case "TankHealth +10%":
-          myTank.addTankHealth(.41); //increase 10 percent of original
+          myTank.addTankHealth(10); //increase 10 percent of original
           break;
         case "BulletSpeed +10%":
-          myTank.addBulletSpeed(.4); //increases 10 percent of original
+          myTank.addBulletSpeed(10); //increases 10 percent of original
           break;
         case "BulletDamage +10%":
-          myTank.addBulletPenetration(.1); //increases 10 percent of original
+          myTank.addBulletPenetration(10); //increases 10 percent of original
           break;
         case "BulletSize +10%":
-          myTank.addBulletSize(4); //increases 20 percent of original
+          myTank.addBulletSize(10); //increases 20 percent of original
           break;
         case "BulletSize -10%":
-          myTank.addBulletSize(-4); //decreases 20 percent of original
+          myTank.addBulletSize(-10); //decreases 20 percent of original
           break;
         case "BulletFrequency -2 tick/shot":
-          myTank.increaseBulletFrequency(2); //reduce by 2 tick, original 36, cannot go below 8
+          myTank.increaseBulletFrequency(-2); //reduce by 2 tick, original 36, cannot go below 8
           break;
         case "BulletBounce +1 (-40% everything else)":
           myTank.addBulletBounce(1);
-          myTank.addTankSpeed(-.8); //decreases 40 percent of original
-          myTank.addTankHealth(-1.64); //decreases 40 percent of original
-          myTank.addBulletSpeed(-1.6); //decreases 40 percent of original
-          myTank.addBulletPenetration(-.4); //decreases 40 percent of original
-          myTank.addBulletSize(-2); //decreases by 10 percent
-          myTank.increaseBulletFrequency(-8); //increases by 8 ticks per shot
+          myTank.addTankSpeed(-40); //decreases 40 percent of original
+          myTank.addTankHealth(-40); //decreases 40 percent of original
+          myTank.addBulletSpeed(-40); //decreases 40 percent of original
+          myTank.addBulletPenetration(-40); //decreases 40 percent of original
+          myTank.addBulletSize(-10); //decreases by 10 percent
+          myTank.increaseBulletFrequency(8); //increases by 8 ticks per shot
           break;
       }
-      if(myTank.original_tank_health > 10) //maximum is 15
-        myTank.original_tank_health = 10;
-      if(myTank.tank_speed > 6) //maximum is 6
-        myTank.velocity = new PVector(6, 6);
-      if(myTank.bullet_speed > 15)
-        myTank.bullet_speed = 15;
-      if(myTank.bullet_health > 3)
-        myTank.bullet_health = 3;
       if(myTank.bullet_frequency < 20) //minimum is 20
         myTank.bullet_frequency = 20;
       
     }
     
     
-
+  
     
     
     //on click: sets everything to not displaying
@@ -361,17 +359,17 @@ void mousePressed()
         runGame = true;
         break;
       case 13:
-        myWorld.generateLevel3();
+        myWorld.generateLevel13();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 14:
-        myWorld.generateLevel3();
+        myWorld.generateLevel14();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 15:
-        myWorld.generateLevel3();
+        myWorld.generateLevel15();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;

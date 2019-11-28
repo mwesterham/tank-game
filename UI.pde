@@ -96,7 +96,7 @@ class UI
     textSize(100);
     text("UPGRADE?", width / 2, 100);
     textSize(50);
-    text("TankSpeed: " + (int)(myTank.tank_speed * 10) + "\n"
+    text("TankSpeed: " + (int)(myTank.tank_speed * framerate / 80 * 10) + "\n"
       +  "Tank Health: " + (int)(myTank.tank_health * 10) + "\n"
       +  "Bullet Speed: " + (int)(myTank.bullet_speed * 10) + "\n"
       +  "Bullet Damage: " + (int)(myTank.bullet_health * 10) + "\n"
