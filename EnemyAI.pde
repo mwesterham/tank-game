@@ -6,7 +6,8 @@ class EnemyAI
   private PVector aim_location;
   private PVector between_vector;
   Bullet sudoBullet;
-  private boolean target_visible = false; //if it is visible, tank will shoot
+  private boolean target_visible = false; //if it is visible, tank will shoot, initially visible to start the AI
+  private boolean wall_collision_occured = false;
 
   public EnemyAI(EnemyTank enemy)
   {
@@ -207,14 +208,16 @@ class EnemyAI
     
     
     if(right_collision)
-      enemyTank.location.x -= enemyTank.tank_speed;
+      enemyTank.location.x -= enemyTank.velocity.x;//enemyTank.tank_speed * 80 / framerate;
     if(left_collision)
-      enemyTank.location.x += enemyTank.tank_speed;
+      enemyTank.location.x -= enemyTank.velocity.x;//enemyTank.tank_speed * 80 / framerate;
     if(above_collision)
-      enemyTank.location.y += enemyTank.tank_speed;
+      enemyTank.location.y -= enemyTank.velocity.y;//enemyTank.tank_speed * 80 / framerate;
     if(below_collision)
-      enemyTank.location.y -= enemyTank.tank_speed;
-    
+      enemyTank.location.y -= enemyTank.velocity.y;//enemyTank.tank_speed * 80 / framerate;
+    if(right_collision || left_collision || above_collision || below_collision)
+      wall_collision_occured = true;
+      
     //bullet collision with tank check
     for(int i = 0; i < bulletController.getBList().size(); i++)
     {

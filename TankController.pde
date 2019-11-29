@@ -48,8 +48,14 @@ class TankController
       AI.targetVisibleCheck(); //checks if should shoot
       AI.updateAimLocation(); //updates the aiming location
       AI.updateVelocity(); //updates where the tank is gonna move next
+
+      if (!AI.wall_collision_occured) //does not render the tank if it is inside of a wall
+        TempEnemyTank.renderTank();
+      TempEnemyTank.updatePosition(); //only updates position 
+      
       AI.collisionCheck();
-      TempEnemyTank.update(); //only updates position and renders the tank
+
+
       
       if(AI.target_visible)
         TempEnemyTank.local_tick_count++;
@@ -137,7 +143,7 @@ class TankController
   {
     TempEnemyTank = new EnemyTank(
     /*tank_width*/75, 
-    /*tank_height*/75, 
+    /*tank_height*/68, 
     /*tank_speed*/1, 
     /*tank_health*/3,
     /*bullet_size*/20, 

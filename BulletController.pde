@@ -19,7 +19,6 @@ class BulletController
       TempPos = i;
       TempBullet = b.get(i);
       TempBullet.updatePosition();
-      //collisionBulletBulletCheck();
       collisionBulletOuterWallCheck();
       if(TempBullet.collision_bullet_with_wall_allowed)
         collisionBulletWallCheck();
@@ -95,7 +94,7 @@ class BulletController
             float currentHealth = TempBullet.bullet_health;
             float currentHealthA = getBList().get(a).bullet_health;
             
-            TempBullet.bulletHealthMinus(currentHealthA);//getBList().get(a).bullet_health); //subtracts health of a from tempbullet
+            TempBullet.bulletHealthMinus(currentHealthA);//subtracts health of a from tempbullet
             if(TempBullet.bullet_health <= 0)
               TempBullet.prepDelete();//careful! if bullets overlap and one makes the health nagative, another bullet will gain health since it is subtracting the bullet with negative health
             

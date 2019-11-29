@@ -59,7 +59,6 @@ class Bullet
     this.bullet_outline_color[2] = outline_color_blue;
     
     this.bullet_speed = speed * 80 / framerate;
-    //this.bullet_direction = direction;
     velocity = new PVector(width * bullet_speed / 1920 * sin(-direction), height * bullet_speed / 1080 * cos(direction));
     location = new PVector(spawn_x, spawn_y);
     this.turret_length = turret_length;
@@ -83,7 +82,6 @@ class Bullet
   {
     //bullet rendering
     fill(bullet_color[0], bullet_color[1], bullet_color[2]);
-    //stroke(bullet_outline_color[0], bullet_outline_color[1], bullet_outline_color[2]);
     stroke(0, 0, 0);
     strokeWeight(3);
     ellipse(location.x + width * turret_length / 1920 * sin(-bullet_direction), location.y + height * turret_length / 1080 * cos(bullet_direction), bullet_width, bullet_height);
@@ -114,8 +112,6 @@ class Bullet
       velocity.x *= -1;
     if(above_wall_collision || below_wall_collision)
       velocity.y *= -1;
-    //if(number_of_collisions > this.num_bullet_bounce)
-      //prepDelete(); //makes the velocity zero so it can be deleted in the controller class
   }
   
   public void updateBulletSpeed(int speed)

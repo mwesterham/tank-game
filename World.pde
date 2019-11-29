@@ -217,9 +217,9 @@ class World
     
     {i = 5;
     wall_x = 700;
-    wall_y = 250;
+    wall_y = 300;
     wall_width = 100;
-    wall_height = 300;
+    wall_height = 250;
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080;//y cord
       walls[i][2] = width *  wall_width / 1920;//width
@@ -233,7 +233,7 @@ class World
     spawn_x = 950;
     spawn_y = 450;
       enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
-    spawn_x = width / 2;
+    spawn_x = 1920 / 2;
     spawn_y = 150;
       enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
   }    
@@ -385,11 +385,11 @@ class World
     spawn_x = 200;
     spawn_y = 450;
       myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
-    spawn_x = width / 2;
-    spawn_y = height / 4;
+    spawn_x = 1920 / 2;
+    spawn_y = 1080 / 4;
       enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
-    spawn_x = width / 2;
-    spawn_y = height * 3 / 4;
+    spawn_x = 1920 / 2;
+    spawn_y = 1080 * 3 / 4;
       enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
     spawn_x = 1000;
     spawn_y = 150;
@@ -2598,6 +2598,112 @@ class World
 
     spawn_x = 983;
     spawn_y = 799;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+  }
+  
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  public void generateLevel16()
+  {
+
+    myUI.resetGame();
+    this.num_of_walls = 6;
+    float[][] walls = new float[6][4];
+    this.walls = walls;
+
+
+    {i = 0;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 1;
+    wall_x = 1820;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 2;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 3;
+    wall_x = 0;
+    wall_y = 980;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 4;
+    wall_x = 389;
+    wall_y = 291;
+    wall_width = 111;
+    wall_height = 251;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 5;
+    wall_x = 500;
+    wall_y = 289;
+    wall_width = 544;
+    wall_height = 92;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    spawn_x = 311;
+    spawn_y = 407;
+      myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 832;
+    spawn_y = 456;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 699;
+    spawn_y = 465;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 787;
+    spawn_y = 542;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1470;
+    spawn_y = 238;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1451;
+    spawn_y = 768;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1635;
+    spawn_y = 501;
       enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
   }
 }

@@ -35,6 +35,7 @@
   private int[] background_color = {50, 50, 50};
   private boolean start_home_music = true;
   private boolean upgrades_on;
+  private boolean keep_upgrades;
   public int tickCount = 0;
   private int framerate;
   private int FRAMERATE;
@@ -72,13 +73,13 @@ void setup()
   
   myTank  = new PlayerTank(
   /*tank_width*/75, //typically 75
-  /*tank_height*/75, 
+  /*tank_height*/68, 
   /*tank_health*/4.1, //typically 4.1
   /*tank_speed*/2, //typically 2
   /*bullet_size*/20, //typically 20
   /*bullet_speed*/4, //typically 4
   /*bullet_health/pentration/damage*/1,//typically 1
-  /*bullet_frequency*/36, //typically 36
+  /*bullet_frequency*/36, //typically 36, cannot go below 3 since (int)(80 / framerate) = 0
   /*number of times bullets bounce*/1,
   /*spawn_x*/600, 
   /*spawn_y*/500,
@@ -102,6 +103,7 @@ void setup()
   
 void draw() 
 {
+  tickCount++;
   background(background_color[0], background_color[1], background_color[2]);
   if(!runGame)
   {
@@ -133,6 +135,7 @@ void draw()
     //  background_music.stop();
     
     upgrades_on = true;
+    keep_upgrades = true;
     myUI.runGame();
     myUI.endGameCheck();//if player health reaches zero or num of enemies reach zero, resets the game
   }
@@ -177,34 +180,37 @@ void mousePressed()
       switch (myUI.upgrade_text)
       {
         case "Return to Home Page":
-          myTank  = new PlayerTank(
-          /*tank_width*/75, //typically 75
-          /*tank_height*/75, 
-          /*tank_health*/4.1, //typically 4.1
-          /*tank_speed*/2, //typically 2
-          /*bullet_size*/20, //typically 20
-          /*bullet_speed*/4, //typically 4
-          /*bullet_health/pentration/damage*/1,//typically 1
-          /*bullet_frequency*/36, //typically 36
-          /*number of times bullets bounce*/1,
-          /*spawn_x*/600, 
-          /*spawn_y*/500,
-          /*Tank Color           r/g/b*/8, 247, 254,
-          /*Tank Outline Color   r/g/b*/0, 0, 0,
-          /*Tank Stroke Weight*/5,
-          /*Turret Color         r/g/b*/0, 0, 0,
-          /*Turret Outline Color r/g/b*/0, 0, 0,
-          /*Turret Stroke Weight*/3);
-          
-          myTank.updateCollisionPermissions(
-          /*player_shot_collision_with_body allowed*/ false, 
-          /*enemy_shot_collision_with_body allowed*/ true, 
-          /*player_bullet_collide allowed*/ false, 
-          /*enemy_bullet_collide allowed*/ true,
-          /*collision_bullet_with_wall_allowed*/ true,
-          /*collision_body_with_wall_allowed*/ true);
-          
-          //Only turn on if self-damage is on: //myTank.setBulletSpawnFromLength(14);//add or subtract extra distance from turret length
+          if (upgrades_on && !keep_upgrades) 
+          {
+            myTank  = new PlayerTank(
+            /*tank_width*/75, //typically 75
+            /*tank_height*/75, 
+            /*tank_health*/4.1, //typically 4.1
+            /*tank_speed*/2, //typically 2
+            /*bullet_size*/20, //typically 20
+            /*bullet_speed*/4, //typically 4
+            /*bullet_health/pentration/damage*/1,//typically 1
+            /*bullet_frequency*/36, //typically 36
+            /*number of times bullets bounce*/1,
+            /*spawn_x*/600, 
+            /*spawn_y*/500,
+            /*Tank Color           r/g/b*/8, 247, 254,
+            /*Tank Outline Color   r/g/b*/0, 0, 0,
+            /*Tank Stroke Weight*/5,
+            /*Turret Color         r/g/b*/0, 0, 0,
+            /*Turret Outline Color r/g/b*/0, 0, 0,
+            /*Turret Stroke Weight*/3);
+            
+            myTank.updateCollisionPermissions(
+            /*player_shot_collision_with_body allowed*/ false, 
+            /*enemy_shot_collision_with_body allowed*/ true, 
+            /*player_bullet_collide allowed*/ false, 
+            /*enemy_bullet_collide allowed*/ true,
+            /*collision_bullet_with_wall_allowed*/ true,
+            /*collision_body_with_wall_allowed*/ true);
+            
+            //Only turn on if self-damage is on: //myTank.setBulletSpawnFromLength(14);//add or subtract extra distance from turret length
+          }
           break;
         case "No Upgrade":
           break;
@@ -239,13 +245,9 @@ void mousePressed()
           myTank.increaseBulletFrequency(8); //increases by 8 ticks per shot
           break;
       }
-      if(myTank.bullet_frequency < 20) //minimum is 20
-        myTank.bullet_frequency = 20;
-      
+      if(myTank.bullet_frequency < 3) //minimum is 1
+        myTank.bullet_frequency = 3;
     }
-    
-    
-  
     
     
     //on click: sets everything to not displaying
@@ -374,7 +376,7 @@ void mousePressed()
         runGame = true;
         break;
       case 16:
-        myWorld.generateLevel3();
+        myWorld.generateLevel16();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;

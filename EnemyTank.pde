@@ -77,9 +77,9 @@ class EnemyTank
       velocity.normalize();
     this.tank_speed = tank_speed * 80 / framerate;
     
-    this.turret_cir_width = this.tank_width * 1/3;
+    this.turret_cir_width = this.tank_height * 1/3;
     this.turret_cir_height = this.tank_height * 1/3;
-    this.turret_rec_width = this.tank_width * 2/5 ;
+    this.turret_rec_width = this.tank_height * 2/5 ;
     this.turret_rec_height = this.tank_height * 1/3;
     this.right_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to the right 
     this.left_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to the left
@@ -108,26 +108,22 @@ class EnemyTank
     this.turret_stroke_weight = turret_stroke_weight;
   }
   
-  public void update()
-  {
-    tickCount++;
-    updatePosition();
-    renderTank();
-  }
-  
   public void updatePosition()
   {
     location.add(velocity);
   }
   
+  public void undoUpdatePosition()
+  {
+    location.sub(velocity);
+  }
+  
   public void renderTank()
   {
     stroke(tank_outline_color_body[0], tank_outline_color_body[1], tank_outline_color_body[2]);
-    //strokeWeight(5);
     renderBody();
     
     stroke(tank_outline_color_turret[0], tank_outline_color_turret[1], tank_outline_color_turret[2]);
-    //strokeWeight(0);
     renderTurret();
     renderHealthBar();
   }
@@ -137,45 +133,7 @@ class EnemyTank
     //body rendering
     pushMatrix();
     translate(location.x, location.y);
-    /*
-    if ((move_up || move_down) && !move_left && !move_right)
-    {
-      orientation_updown = true;
-      orientation_leftright = false;
-      orientation_upright = false;
-      orientation_upleft = false;
-    }
-    if ((move_left || move_right) && !move_up && !move_down)
-    {
-      orientation_updown = false;
-      orientation_leftright = true;
-      orientation_upright = false;
-      orientation_upleft = false;
-    }
-        if (move_up && move_right || move_down && move_left)
-    {
-      orientation_updown = false;
-      orientation_leftright = false;
-      orientation_upright = true;
-      orientation_upleft = false;
-    }
-    if (move_up && move_left || move_down && move_right)
-    {
-      orientation_updown = false;
-      orientation_leftright = false;
-      orientation_upright = false;
-      orientation_upleft = true;
-    }
-    
-    if(orientation_updown)
-      rotate(atan2(1, 0));
-    if(orientation_leftright)
-      rotate(atan2(0, 1));
-    if(orientation_upright)
-      rotate(atan2(-1, 1));
-    if(orientation_upleft)
-      rotate(atan2(1, 1));
-    */
+    rotate(atan2(velocity.y, velocity.x));
     fill(tank_color[0], tank_color[1], tank_color[2]);
     stroke(tank_outline_color_body[0], tank_outline_color_body[1], tank_outline_color_body[2]);
     strokeWeight(body_stroke_weight);
@@ -272,23 +230,6 @@ class EnemyTank
   {
     bullet_spawn_from_length = extra_distance;
   }
-
-  /*
-  public void setTankColor(int red, int green, int blue)
-  {
-    this.tank_color[0] = red;
-    this.tank_color[1] = green;
-    this.tank_color[2] = blue;
-  }
-  */
-  /*
-  public void setTurretColor(int red, int green, int blue)
-  {
-    this.turret_color[0] = red;
-    this.turret_color[1] = green;
-    this.turret_color[2] = blue;
-  }
-  */
   
   public float getTowardMoveDirection()
   {

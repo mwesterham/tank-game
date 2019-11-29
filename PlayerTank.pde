@@ -80,9 +80,9 @@ class PlayerTank
     velocity = new PVector(tank_speed  * 80 / framerate, tank_speed  * 80 / framerate);
     this.tank_speed = tank_speed * 80 / framerate;
     
-    this.turret_cir_width = this.tank_width * 1/3;
+    this.turret_cir_width = this.tank_height * 1/3;
     this.turret_cir_height = this.tank_height * 1/3;
-    this.turret_rec_width = this.tank_width * 2/5 ;
+    this.turret_rec_width = this.tank_height * 2/5 ;
     this.turret_rec_height = this.tank_height * 1/3;
     this.right_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to the right 
     this.left_collision_dist = this.tank_width * sqrt(2) / 4; //distance from middle of tank to the left
@@ -217,7 +217,6 @@ class PlayerTank
   
   public void updatePosition()
   {
-     //velocity = new PVector(tank_speed, tank_speed);
      PVector direction = new PVector(0, 0);
     if(move_left)
       direction.x = -1;
