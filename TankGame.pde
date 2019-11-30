@@ -1,15 +1,9 @@
-  /*Sound Stuff
+  ///*Sound Stuff
   import processing.sound.*; //install the sound library from processing
   private String path;
   SoundFile background_music;
   SoundFile shot_sound;
-  SoundFile level_background_music1;
-  SoundFile level_background_music2;
-  SoundFile level_background_music3;
-  SoundFile level_background_music4;
   //*/
-  
-  //updated AIv2 to only aim at the closest bullet within 20 px of size
   
   private UI myUI;
   private boolean runGame = false;
@@ -42,44 +36,40 @@
   
 void setup() 
 {
-  myUI = new UI(0); //instantiate it here so it can inherit the width and height
-  /*Sound Stuff
+  ///*Sound Stuff
 
   //Sound setup
-  path = sketchPath("Audio Files/TankHomeMusic.mp3");
+  path = sketchPath("Audio Files/TankGameBoringMusic_Trebel.mp3"); 
   background_music = new SoundFile(this, path);
-  path = sketchPath("Audio Files/TankLevelMusic1_edited.mp3");  
-  level_background_music1 = new SoundFile(this, path);
-  path = sketchPath("Audio Files/TankLevelMusic2_edited.mp3");
-  level_background_music2 = new SoundFile(this, path);
-  path = sketchPath("Audio Files/TankLevelMusic3_edited.mp3");
-  level_background_music3 = new SoundFile(this, path);
-  path = sketchPath("Audio Files/TankLevelMusic4_edited.mp3");
-  level_background_music4 = new SoundFile(this, path);
+  background_music.amp(.2);
   
   path = sketchPath("Audio Files/Shot_Sound.mp3"); 
   shot_sound = new SoundFile(this, path); //in playertank and enemy tank shoot() methods, be sure to comment out if you do not have the library installed
+  shot_sound.amp(1);
   
+  background_music.loop();
   //*/
-  
+
   //GAME SETUP
   //size(1900, 900); //for testing game breaking stuff
   fullScreen();
-  framerate = 30; // how many frames the game thinks the game is running at, cannot go below 3 since (int)(80 / framerate) = 0)
+  framerate = 25; // how many frames the game thinks the game is running at, cannot go below 3 since (int)(80 / framerate) = 0)
   FRAMERATE = 30; //actual framerate of the game, base frame rate is 80 fps hence why everything is like 80 / framerate instead of  FRAMERATE / framerate
   frameRate(FRAMERATE); 
   //speed of the game is dependent on ratio between the two framerates: FRAMERATE / framerate = game speed
   //but make sure your FRAMERATE is within your cpu's capabilities (ie. do not run at FRAMERATE = 100)
+ 
+  myUI = new UI(0); //instantiate it here so it can inherit the width and height
   
   myTank  = new PlayerTank(
   /*tank_width*/75, //typically 75
   /*tank_height*/68, 
-  /*tank_health*/4.1, //typically 4.1
+  /*tank_health*/3, //typically 3
   /*tank_speed*/2, //typically 2
   /*bullet_size*/20, //typically 20
   /*bullet_speed*/4, //typically 4
   /*bullet_health/pentration/damage*/1,//typically 1
-  /*bullet_frequency*/36, //typically 36, cannot go below 3 since (int)(80 / framerate) = 0
+  /*bullet_frequency*/40, //typically 40, cannot go below 3 since (int)(80 / framerate) = 0
   /*number of times bullets bounce*/1,
   /*spawn_x*/600, 
   /*spawn_y*/500,
@@ -109,7 +99,7 @@ void draw()
   {
     //if(start_home_music)
     //  background_music.loop();
-    start_home_music = false;
+    //start_home_music = false;
     //System.out.println(myUI.trigger_text); //for testing the UI
     if(displayHome)//displays the screen indicated
       myUI.displayHome();
@@ -165,7 +155,6 @@ void keyPressed()
     move_down = true;
   if (key == 'p' || key == 'P' && runGame)
     myTank.setTankHealthZero();
-  //System.out.println(frameCount);
 }
 
 
@@ -184,13 +173,13 @@ void mousePressed()
           {
             myTank  = new PlayerTank(
             /*tank_width*/75, //typically 75
-            /*tank_height*/75, 
-            /*tank_health*/4.1, //typically 4.1
+            /*tank_height*/68, 
+            /*tank_health*/3, //typically 3
             /*tank_speed*/2, //typically 2
             /*bullet_size*/20, //typically 20
             /*bullet_speed*/4, //typically 4
             /*bullet_health/pentration/damage*/1,//typically 1
-            /*bullet_frequency*/36, //typically 36
+            /*bullet_frequency*/40, //typically 40, cannot go below 3 since (int)(80 / framerate) = 0
             /*number of times bullets bounce*/1,
             /*spawn_x*/600, 
             /*spawn_y*/500,
@@ -331,52 +320,52 @@ void mousePressed()
         runGame = true;
         break;
       case 7:
-        myWorld.generateLevel7();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 8:
-        myWorld.generateLevel8();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 9:
-        myWorld.generateLevel9();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 10:
-        myWorld.generateLevel10();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 11:
-        myWorld.generateLevel11();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 12:
-        myWorld.generateLevel12();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 13:
-        myWorld.generateLevel13();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 14:
-        myWorld.generateLevel14();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 15:
-        myWorld.generateLevel15();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 16:
-        myWorld.generateLevel16();
+        myWorld.generateLevel3();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
@@ -420,6 +409,286 @@ void mousePressed()
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
+      case 25: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 26: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 27: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 28: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 29: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 30: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 31: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 32: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 33: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 34: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 35: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 36: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 37: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 38: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 39: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 40: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 41: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 42: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 43: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 44: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 45: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 46: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 47: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 48: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 49: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 50: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 51: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 52: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 53: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 54: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 55: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 56: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 57: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 58: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 59: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 60: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 61: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 62: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 63: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 64: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 65: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 66: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 67: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 68: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 69: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 70: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 71: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 72: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 73: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 74: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 75: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 76: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 77: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 78: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 79: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
+      case 80: 
+        myWorld.generateLevel3(); 
+        myUI = new UI(myUI.trigger_int + 1); 
+        runGame = true; 
+        break; 
     }
   }
 }

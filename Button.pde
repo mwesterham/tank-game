@@ -32,9 +32,9 @@ class Button
   public void renderButton()
   {
     fill(0, 0, 0);
-    rect(button_location[0], button_location[1], button_size[0], button_size[1]);
+    rect(width * button_location[0] / 1920, height * button_location[1] / 1080, width * button_size[0] / 1920, height * button_size[1] / 1080);
     fill(255, 255, 255);
     textSize(button_size[1]);
-    text(button_text, button_location[0], button_location[1] + button_size[1] * 8/9);
+    text(button_text, width * button_location[0] / 1920, height * button_location[1] / 1080 + height * button_size[1] / 1080 * 8/9);
   }
 }

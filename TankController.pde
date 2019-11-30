@@ -56,13 +56,30 @@ class TankController
       AI.collisionCheck();
 
 
-      
-      if(AI.target_visible)
-        TempEnemyTank.local_tick_count++;
-      if(AI.target_visible && TempEnemyTank.local_tick_count % (int)(TempEnemyTank.bullet_frequency * framerate / 80) == 0)
-        TempEnemyTank.shoot();
+      TempEnemyTank.shot_cooldown--;
+      if(AI.target_visible && TempEnemyTank.shot_cooldown <= 0)
+      {  
+        if(TempEnemyTank.AI_version == 1)
+        {
+          TempEnemyTank.pause--;
+          if(TempEnemyTank.pause <= 0)
+          {
+            TempEnemyTank.shoot();
+            TempEnemyTank.shot_cooldown = (int)(TempEnemyTank.bullet_frequency * framerate / 80);
+          }
+        }
+        if(TempEnemyTank.AI_version == 2) //AI versioin two does not have a pause
+        {
+          TempEnemyTank.shoot();
+          TempEnemyTank.shot_cooldown = (int)(TempEnemyTank.bullet_frequency * framerate / 80);
+        }
+      }
+      if(!AI.target_visible)
+        TempEnemyTank.pause = 6; //initial pause after seeing the target (hesitation), does not apply if target is in sight
       if(TempEnemyTank.tank_health <= 0)
+      {
         removeEnemy(TempEnemyTank);
+      }
     }
   }
   
@@ -111,8 +128,8 @@ class TankController
     /*tank_speed*/0, 
     /*tank_health*/3,
     /*bullet_size*/20, 
-    /*bullet_speed*/4, 
-    /*bullet_health/pentration/damage*/.8,
+    /*bullet_speed*/3, 
+    /*bullet_health/pentration/damage*/1.3,
     /*bullet frequency measured in ticks per shot*/ 100,
     /*number of times bullets bounce*/1,
     /*spawn_x*/spawnX, 
@@ -147,8 +164,8 @@ class TankController
     /*tank_speed*/1, 
     /*tank_health*/3,
     /*bullet_size*/20, 
-    /*bullet_speed*/4, 
-    /*bullet_health/pentration/damage*/.8,
+    /*bullet_speed*/3, 
+    /*bullet_health/pentration/damage*/1.1,
     /*bullet frequency measured in ticks per shot*/ 64,
     /*number of times bullets bounce*/1,
     /*spawn_x*/spawnX, 
@@ -184,7 +201,7 @@ class TankController
     /*tank_health*/5,
     /*bullet_size*/40, 
     /*bullet_speed*/2, 
-    /*bullet_health/pentration/damage*/3,
+    /*bullet_health/pentration/damage*/3.3,
     /*bullet frequency measured in ticks per shot*/ 100,
     /*number of times bullets bounce*/0,
     /*spawn_x*/spawnX, 
@@ -211,7 +228,42 @@ class TankController
     enemies.add(TempEnemyTank);
   }
   
-  
+  public void addSniperEnemy(float spawnX, float spawnY)
+  {
+    TempEnemyTank = new EnemyTank(
+    /*tank_width*/70, 
+    /*tank_height*/63, 
+    /*tank_speed*/.3, 
+    /*tank_health*/2,
+    /*bullet_size*/15, 
+    /*bullet_speed*/6, 
+    /*bullet_health/pentration/damage*/2.5,
+    /*bullet frequency measured in ticks per shot*/ 120,
+    /*number of times bullets bounce*/0,
+    /*spawn_x*/spawnX, 
+    /*spawn_y*/spawnY, 
+    /*target_location_x*/myTank.location.x, 
+    /*target_location_y*/myTank.location.y,
+    /*Tank Color           r/g/b*/255, 153, 255,
+    /*Tank Outline Color   r/g/b*/0, 0, 0,
+    /*Tank Stroke Weight*/3,
+    /*Turret Color         r/g/b*/0, 0, 0,
+    /*Turret Outline Color r/g/b*/0, 0, 0,
+    /*Turret Stroke Weight*/2);
+    
+    TempEnemyTank.updateCollisionPermissions(
+    /*player_shot_collision_with_body allowed*/ true, 
+    /*enemy_shot_collision_with_body allowed*/ false, 
+    /*player_bullet_collide allowed*/ true, 
+    /*enemy_bullet_collide allowed*/ false,
+    /*collision_bullet_with_wall_allowed*/ true,
+    /*collision_body_with_wall_allowed*/ true);
+    
+    TempEnemyTank.setAIVersion(2);    
+    //TempEnemyTank.setTurretSize(80, 63); //width, height
+    
+    enemies.add(TempEnemyTank);
+  }
   
   
   //BOSS ENEMIES

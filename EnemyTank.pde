@@ -44,7 +44,8 @@ class EnemyTank
   
   private PVector aimLocation;
   private int AI_version = 1;
-  private int local_tick_count = 0;
+  private int shot_cooldown = 0;
+  private int pause = 6;
   
   public EnemyTank(
   float tank_width, 

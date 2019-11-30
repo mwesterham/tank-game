@@ -349,7 +349,7 @@ class PlayerTank
     /*Bullet color...*/ this.tank_color[0], this.tank_color[1], this.tank_color[2],
     /*Bullet outline color...*/ this.turret_color[0], this.turret_color[1], this.turret_color[2]));
     
-    //shot_sound.play();
+    shot_sound.play();
   }
   
   public void updateCollisionPermissions(boolean a, boolean b, boolean c, boolean d, boolean e, boolean f)

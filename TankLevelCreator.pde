@@ -1,3 +1,5 @@
+private boolean mousepress = false;
+
 int[][] walls;
 int wall_x;
 int wall_x2;
@@ -56,6 +58,13 @@ void draw()
 {
   background(130, 130, 130);  
   fill(255, 255, 255);
+  
+  if(mousepress)
+  {
+    fill(255, 255, 255);
+    rect(wall_x, wall_y, wall_x2 - wall_x, wall_y2 - wall_y);
+  }
+  
   for(int i = 0; i < walls.length; i++)
     rect(walls[i][0], walls[i][1], walls[i][2], walls[i][3]);
   
@@ -121,10 +130,14 @@ void mousePressed()
 {
   wall_x = mouseX;
   wall_y = mouseY;
+  wall_x2 = wall_x; //prevents a visual glitch
+  wall_y2 = wall_y;  
+  mousepress = true;
 }
 
 void mouseReleased()
 {
+  mousepress = false;
   wall_index++; //originally 3
   
   //organizes the points and lengths so that they can be stored without negatives
@@ -209,7 +222,7 @@ void mouseReleased()
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[3][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[3][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.addSniperEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index5; i++)
     System.out.printf("" + "\n" + 
@@ -242,7 +255,6 @@ void mouseReleased()
     "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
   
   System.out.println("  }");
-  
 }
 
 void keyPressed()
@@ -470,7 +482,7 @@ void keyPressed()
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[3][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[3][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.addSniperEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index5; i++)
     System.out.printf("" + "\n" + 
@@ -503,13 +515,10 @@ void keyPressed()
     "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
   
   System.out.println("  }");
-
 }
 
 void mouseDragged()
 {
   wall_x2 = mouseX;
   wall_y2 = mouseY;
-  fill(255, 255, 255);
-  rect(wall_x, wall_y, wall_x2 - wall_x, wall_y2 - wall_y);
 }
