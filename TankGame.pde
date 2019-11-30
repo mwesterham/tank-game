@@ -1,4 +1,4 @@
-  ///*Sound Stuff
+  /*Sound Stuff
   import processing.sound.*; //install the sound library from processing
   private String path;
   SoundFile background_music;
@@ -27,7 +27,6 @@
   private TankController enemyController = new TankController(); //set how many enemies spawn, they are randomly placed (standardEnemy, strongSlowEnemy) PS this is only used to instantiate
   
   private int[] background_color = {50, 50, 50};
-  private boolean start_home_music = true;
   private boolean upgrades_on;
   private boolean keep_upgrades;
   public int tickCount = 0;
@@ -36,7 +35,7 @@
   
 void setup() 
 {
-  ///*Sound Stuff
+  /*Sound Stuff
 
   //Sound setup
   path = sketchPath("Audio Files/TankGameBoringMusic_Trebel.mp3"); 
@@ -64,12 +63,12 @@ void setup()
   myTank  = new PlayerTank(
   /*tank_width*/75, //typically 75
   /*tank_height*/68, 
-  /*tank_health*/3, //typically 3
-  /*tank_speed*/2, //typically 2
-  /*bullet_size*/20, //typically 20
-  /*bullet_speed*/4, //typically 4
-  /*bullet_health/pentration/damage*/1,//typically 1
-  /*bullet_frequency*/40, //typically 40, cannot go below 3 since (int)(80 / framerate) = 0
+  /*tank_health*/3 * (1 + .2 * (0)), //typically 3
+  /*tank_speed*/2 * (1 + .1 * (0)), //typically 2
+  /*bullet_size*/20 * (1 + .2 * (0)), //typically 20
+  /*bullet_speed*/4 * (1 + .2 * (0)), //typically 4
+  /*bullet_health/pentration/damage*/1 * (1 + .2 * (0)),//typically 1
+  /*bullet_frequency*/40 - 2 * (0), //typically 40, cannot go below 3 since (int)(80 / framerate) = 0
   /*number of times bullets bounce*/1,
   /*spawn_x*/600, 
   /*spawn_y*/500,
@@ -125,7 +124,7 @@ void draw()
     //  background_music.stop();
     
     upgrades_on = true;
-    keep_upgrades = true;
+    keep_upgrades = false;
     myUI.runGame();
     myUI.endGameCheck();//if player health reaches zero or num of enemies reach zero, resets the game
   }
@@ -204,34 +203,34 @@ void mousePressed()
         case "No Upgrade":
           break;
         case "TankSpeed +10%":
-          myTank.addTankSpeed(10); //increase 10 percent of original
+          myTank.addTankSpeed(10); //increase 20 percent of original
           break;
         case "TankHealth +10%":
-          myTank.addTankHealth(10); //increase 10 percent of original
+          myTank.addTankHealth(10); //increase 20 percent of original
           break;
         case "BulletSpeed +10%":
-          myTank.addBulletSpeed(10); //increases 10 percent of original
+          myTank.addBulletSpeed(10); //increases 20 percent of original
           break;
         case "BulletDamage +10%":
-          myTank.addBulletPenetration(10); //increases 10 percent of original
+          myTank.addBulletPenetration(10); //increases 20 percent of original
           break;
         case "BulletSize +10%":
-          myTank.addBulletSize(10); //increases 20 percent of original
+          myTank.addBulletSize(10); //increases 10 percent of original
           break;
         case "BulletSize -10%":
-          myTank.addBulletSize(-10); //decreases 20 percent of original
+          myTank.addBulletSize(-10); //decreases 10 percent of original
           break;
         case "BulletFrequency -2 tick/shot":
-          myTank.increaseBulletFrequency(-2); //reduce by 2 tick, original 36, cannot go below 8
+          myTank.increaseBulletFrequency(-2); //reduce by 2 tick, original 36, cannot go below 3
           break;
-        case "BulletBounce +1 (-40% everything else)":
+        case "BulletBounce +1 (-20% everything else)":
           myTank.addBulletBounce(1);
-          myTank.addTankSpeed(-40); //decreases 40 percent of original
-          myTank.addTankHealth(-40); //decreases 40 percent of original
-          myTank.addBulletSpeed(-40); //decreases 40 percent of original
-          myTank.addBulletPenetration(-40); //decreases 40 percent of original
+          myTank.addTankSpeed(-20); //decreases 40 percent of original
+          myTank.addTankHealth(-20); //decreases 40 percent of original
+          myTank.addBulletSpeed(-20); //decreases 40 percent of original
+          myTank.addBulletPenetration(-20); //decreases 40 percent of original
           myTank.addBulletSize(-10); //decreases by 10 percent
-          myTank.increaseBulletFrequency(8); //increases by 8 ticks per shot
+          myTank.increaseBulletFrequency(4); //increases by 8 ticks per shot
           break;
       }
       if(myTank.bullet_frequency < 3) //minimum is 1
@@ -320,22 +319,22 @@ void mousePressed()
         runGame = true;
         break;
       case 7:
-        myWorld.generateLevel3();
+        myWorld.generateLevel7();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 8:
-        myWorld.generateLevel3();
+        myWorld.generateLevel8();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 9:
-        myWorld.generateLevel3();
+        myWorld.generateLevel9();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;
       case 10:
-        myWorld.generateLevel3();
+        myWorld.generateLevel10();
         myUI = new UI(myUI.trigger_int + 1);
         runGame = true;
         break;

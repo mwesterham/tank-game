@@ -140,7 +140,8 @@ class EnemyAI
           for(int a = 0; a < bulletController.getBList().size(); a++)
             if(bulletController.getBList().get(a).enemy_collision_allowed
             && dist(bulletController.getBList().get(a).getRealLocation().x, bulletController.getBList().get(a).getRealLocation().y, sudoBullet.getRealLocation().x, sudoBullet.getRealLocation().y) 
-                    <= sudoBullet.bullet_width + bulletController.getBList().get(a).bullet_width)
+                    <= sudoBullet.bullet_width + bulletController.getBList().get(a).bullet_width
+            && dist(enemyTank.location.x, enemyTank.location.y, bulletController.getBList().get(a).getRealLocation().x, bulletController.getBList().get(a).getRealLocation().y) <= 30 + enemyTank.tank_width / 2 + bulletController.getBList().get(a).bullet_width / 2) //must be within 30px
               target_visible = true;
       //target_visible = false; //turn off shooting
       //sudoBullet.renderBullet(); //helpful for debugging

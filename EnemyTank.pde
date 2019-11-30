@@ -23,6 +23,7 @@ class EnemyTank
   private int[] turret_color = {0, 0, 0};
   private int[] tank_outline_color_turret = {0, 0, 0};
   private int turret_stroke_weight;
+  private int[] bullet_color = {0, 0, 0};
   
   private float right_collision_dist;
   private float left_collision_dist;
@@ -107,6 +108,10 @@ class EnemyTank
     this.tank_outline_color_turret[1] = turret_outline_green;
     this.tank_outline_color_turret[2] = turret_outline_blue;
     this.turret_stroke_weight = turret_stroke_weight;
+    
+    this.bullet_color[0] = tank_color_red;
+    this.bullet_color[1] = tank_color_green;
+    this.bullet_color[2] = tank_color_blue;
   }
   
   public void updatePosition()
@@ -194,9 +199,16 @@ class EnemyTank
     /*player_bullet_collide allowed*/ player_bullet_collide_allowed, 
     /*enemy_bullet_collide allowed*/ enemy_bullet_collide_allowed, 
     /*collision_bullet_with_wall_allowed*/ collision_bullet_with_wall_allowed,
-    /*Bullet color...*/ tank_color[0], tank_color[1], tank_color[2], 
+    /*Bullet color...*/ bullet_color[0], bullet_color[1], bullet_color[2], 
     /*Bullet outline color...*/ tank_outline_color_body[0], tank_outline_color_body[1], tank_outline_color_body[2]);
-  }  
+  }
+  
+  public void setBulletColor(int red, int green, int blue)
+  {
+    bullet_color[0] = red;
+    bullet_color[1] = green;
+    bullet_color[2] = blue;
+  }
 
   public void setNewVelocityDirection(PVector newVelocityDirection)
   {
