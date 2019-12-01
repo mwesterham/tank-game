@@ -22,6 +22,16 @@ int tank_index7 = 0;
 int tank_index8 = 0;
 int tank_index9 = 0;
 
+String num2KeyEnemy = "NoMovingEnemy";
+String num3KeyEnemy = "StandardEnemy";
+String num4KeyEnemy = "SlowStrongEnemy";
+String num5KeyEnemy = "SniperEnemy";
+String num6KeyEnemy = "MinionSpawnerEnemy";
+String num7KeyEnemy = "NoMovingEnemy";
+String num8KeyEnemy = "NoMovingEnemy";
+String num9KeyEnemy = "NoMovingEnemy";
+String num0KeyEnemy = "NoMovingEnemy";
+
 void setup()
 {
   fullScreen();
@@ -89,7 +99,7 @@ void draw()
     
   fill(0, 140, 140);
   for(int i = 0; i < tanks[4].length; i++)
-    ellipse(tanks[4][i][0], tanks[4][i][1], 75, 75); //5th tank type
+    ellipse(tanks[4][i][0], tanks[4][i][1], 130, 130); //5th tank type
 
   fill(0, 40, 40);
   for(int i = 0; i < tanks[5].length; i++)
@@ -204,55 +214,55 @@ void mouseReleased()
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[0][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[0][i][1] + ";" + "\n" +
-    "      enemyController.addNoMoving(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num2KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index2; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[1][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[1][i][1] + ";" + "\n" +
-    "      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num3KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index3; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[2][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[2][i][1] + ";" + "\n" +
-    "      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num4KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index4; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[3][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[3][i][1] + ";" + "\n" +
-    "      enemyController.addSniperEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num5KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index5; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[4][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[4][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num6KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index6; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[5][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[5][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num7KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index7; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[6][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[6][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num8KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index8; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[7][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[7][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num9KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index9; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[8][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[8][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num0KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
   
   System.out.println("  }");
 }
@@ -464,55 +474,55 @@ void keyPressed()
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[0][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[0][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num2KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index2; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[1][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[1][i][1] + ";" + "\n" +
-    "      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num3KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index3; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[2][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[2][i][1] + ";" + "\n" +
-    "      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num4KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index4; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[3][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[3][i][1] + ";" + "\n" +
-    "      enemyController.addSniperEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num5KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index5; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[4][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[4][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num6KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index6; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[5][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[5][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num7KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index7; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[6][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[6][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num8KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index8; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[7][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[7][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num9KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
     
   for(int i = 1; i <= tank_index9; i++)
     System.out.printf("" + "\n" + 
     "    spawn_x = " + tanks[8][i][0] + ";" + "\n" +
     "    spawn_y = " + tanks[8][i][1] + ";" + "\n" +
-    "      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
+    "      enemyController.add" + num0KeyEnemy + "(width * spawn_x / 1920, height * spawn_y / 1080);" + "\n");
   
   System.out.println("  }");
 }
