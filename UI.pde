@@ -23,12 +23,12 @@ class UI
     this.ButtonList[7] = new Button("Game Over", trigger_int - 1, "Retry", 900, 500, 260, 100);
     
     this.ButtonList[38] = new Button("Upgrades", "Home Page", "Return to Home Page", 50, 50, 260, 25);
-    this.ButtonList[39] = new Button("Upgrades", "You Won", "TankSpeed +10%", 800, 165, 600, 30);
-    this.ButtonList[40] = new Button("Upgrades", "You Won", "TankHealth +10%", 800, 165 + (75)*1, 600, 30);
-    this.ButtonList[41] = new Button("Upgrades", "You Won", "BulletSpeed +10%", 800, 165 + (75)*2, 600, 30);
-    this.ButtonList[42] = new Button("Upgrades", "You Won", "BulletDamage +10%", 800, 165 + (75)*3, 600, 30);
-    this.ButtonList[43] = new Button("Upgrades", "You Won", "BulletSize +10%", 800, 165 + (75)*4, 250, 30);
-    this.ButtonList[46] = new Button("Upgrades", "You Won", "BulletSize -10%", 1150, 165 + (75)*4, 250, 30);
+    this.ButtonList[39] = new Button("Upgrades", "You Won", "TankSpeed +2", 800, 165, 600, 30);
+    this.ButtonList[40] = new Button("Upgrades", "You Won", "TankHealth +3", 800, 165 + (75)*1, 600, 30);
+    this.ButtonList[41] = new Button("Upgrades", "You Won", "BulletSpeed +4", 800, 165 + (75)*2, 600, 30);
+    this.ButtonList[42] = new Button("Upgrades", "You Won", "BulletDamage +1", 800, 165 + (75)*3, 600, 30);
+    this.ButtonList[43] = new Button("Upgrades", "You Won", "BulletSize +2", 800, 165 + (75)*4, 250, 30);
+    this.ButtonList[46] = new Button("Upgrades", "You Won", "BulletSize -2", 1150, 165 + (75)*4, 250, 30);
     this.ButtonList[44] = new Button("Upgrades", "You Won", "BulletFrequency -2 tick/shot", 800, 165 + (75)*5, 600, 30);
     this.ButtonList[45] = new Button("Upgrades", "You Won", "BulletBounce +1 (-20% everything else)", 800, 165 + (75)*6, 600, 30);
     this.ButtonList[9] = new Button("Upgrades", "You Won", "No Upgrade", 1400, 165 + (75)*9, 300, 50);

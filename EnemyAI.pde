@@ -30,7 +30,7 @@ class EnemyAI
       {
         current_move_direction_x = -sin(enemyTank.getTowardMoveDirection());
         current_move_direction_y = cos(enemyTank.getTowardMoveDirection());
-        velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);
+        velocity_direction = new PVector(current_move_direction_x, current_move_direction_y);          
       }
       else if (dist(location.x, location.y, myTank.location.x, myTank.location.y) < 150)  //if distance between enemy and you is less than 150 move away from them
       {
@@ -67,17 +67,27 @@ class EnemyAI
     }
     
     //bullet reaction: move away from the bullet if bullet is within 50px of size
-    for(int i = 0; i < bulletController.getBList().size(); i++)
-    {
-      if(bulletController.getBList().get(i).enemy_collision_allowed
-      && dist(location.x, location.y, bulletController.getBList().get(i).location.x, bulletController.getBList().get(i).location.y) <= enemyTank.tank_width + 50)
-      {  
-        between_vector = new PVector(location.x - bulletController.getBList().get(i).location.x, location.y - bulletController.getBList().get(i).location.y);
-        velocity_direction.add(between_vector);
+    if(!(enemyTank.AI_version == 4))
+      for(int i = 0; i < bulletController.getBList().size(); i++)
+      {
+        if(bulletController.getBList().get(i).enemy_collision_allowed
+        && dist(location.x, location.y, bulletController.getBList().get(i).location.x, bulletController.getBList().get(i).location.y) <= enemyTank.tank_width + 50)
+        {  
+          between_vector = new PVector(location.x - bulletController.getBList().get(i).location.x, location.y - bulletController.getBList().get(i).location.y);
+          velocity_direction.add(between_vector);
+        }
       }
-    }
- 
-
+    if(enemyTank.AI_version == 4)
+      for(int i = bulletController.getBList().size() - 1; i >= 0; i--)
+        if(enemyTank.AI_version == 4)
+          if(bulletController.getBList().get(i).enemy_collision_allowed
+          && dist(location.x, location.y, bulletController.getBList().get(i).location.x, bulletController.getBList().get(i).location.y) <= enemyTank.tank_width + 200)
+          {  
+            between_vector = new PVector(location.x - bulletController.getBList().get(i).location.x, location.y - bulletController.getBList().get(i).location.y);
+            velocity_direction.sub(between_vector);
+            break;
+          }
+    
     velocity_direction.normalize();
     enemyTank.setNewVelocityDirection(velocity_direction);
   }
@@ -135,7 +145,7 @@ class EnemyAI
         break;
 
       //AI LEVEL 2 VISIBLITY DETECTION: IF BULLET OF OPPOSING TEAM INTERSECTS SUDO BULLET THEN SHOOT
-      if(enemyTank.AI_version == 2) //if the enemyTankAI is 2 run this as well //if sudo bullet is colliding with real bullet target visible
+      if(enemyTank.AI_version == 2 || enemyTank.AI_version == 3) //if the enemyTankAI is 2 run this as well //if sudo bullet is colliding with real bullet target visible
         if(bulletController.getBList().size() > 0)
           for(int a = 0; a < bulletController.getBList().size(); a++)
             if(bulletController.getBList().get(a).enemy_collision_allowed
@@ -233,5 +243,11 @@ class EnemyAI
         //bulletController.removeBullet(bulletController.getBList().get(i));
       }
     }
+    
+    //passive regeneration
+    if(enemyTank.tank_health < enemyTank.original_tank_health && tickCount % framerate == 0) //if below original health, regenerate specified amt every number of frames given by framecount
+      enemyTank.tank_health += enemyTank.tank_health_regeneration;
+    if(enemyTank.tank_health > enemyTank.original_tank_health)
+      enemyTank.tank_health = enemyTank.original_tank_health;
   }
 }

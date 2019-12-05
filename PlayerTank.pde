@@ -18,6 +18,7 @@ class PlayerTank
   
   private float original_tank_health;
   private float tank_health;
+  private float tank_health_regeneration;
   private float tank_width;
   private float tank_height;
   private float turret_cir_width;
@@ -55,6 +56,7 @@ class PlayerTank
   float tank_width, 
   float tank_height, 
   float tank_health,
+  float tank_health_regeneration,
   float tank_speed, 
   float bullet_size, 
   float bullet_speed, 
@@ -76,6 +78,7 @@ class PlayerTank
     this.tank_height = height * tank_height / 1080;
     this.original_tank_health = tank_health;
     this.tank_health = tank_health;
+    this.tank_health_regeneration = tank_health_regeneration;
     this.bullet_health = bullet_health;
     velocity = new PVector(tank_speed  * 80 / framerate, tank_speed  * 80 / framerate);
     this.tank_speed = tank_speed * 80 / framerate;
@@ -213,6 +216,12 @@ class PlayerTank
         bulletController.removeBullet(bulletController.getBList().get(i));
       }
     }
+    
+    //passive regeneration
+    if(tank_health < original_tank_health && tickCount % framerate == 0) //if below original health, regenerate specified amt every number of frames given by framecount
+      tank_health += tank_health_regeneration;
+    if(tank_health > original_tank_health)
+      tank_health = original_tank_health;
   }
   
   public void updatePosition()
@@ -410,24 +419,24 @@ class PlayerTank
     velocity = new PVector(width * tank_speed / 1920, height * tank_speed / 1080);
   }  
   
-  public void addTankHealth(float percent_health_increase)
+  public void addTankHealth(float health_increase)
   {
-    original_tank_health *= 1 + percent_health_increase / 100;
+    original_tank_health += health_increase;
   }
   
-  public void addBulletSpeed(float percent_speed_increase)
+  public void addBulletSpeed(float speed_increase)
   {
-    bullet_speed *= 1 + percent_speed_increase / 100;
+    bullet_speed += speed_increase;
   }
   
-  public void addBulletPenetration(float percent_health_increase)
+  public void addBulletPenetration(float health_increase)
   {
-    bullet_health *= 1 + percent_health_increase / 100;
+    bullet_health += health_increase;
   }
   
-  public void addBulletSize(float percent_size_increase)
+  public void addBulletSize(float size_increase)
   {
-    bullet_size *= 1 + percent_size_increase / 100;
+    bullet_size += size_increase;
   }
   
   public void increaseBulletFrequency(int ticks)

@@ -52,8 +52,8 @@ void setup()
   //GAME SETUP
   //size(1900, 900); //for testing game breaking stuff
   fullScreen();
-  framerate = 25; // how many frames the game thinks the game is running at, cannot go below 3 since (int)(80 / framerate) = 0)
-  FRAMERATE = 30; //actual framerate of the game, base frame rate is 80 fps hence why everything is like 80 / framerate instead of  FRAMERATE / framerate
+  framerate = 25; // 25, how many frames the game thinks the game is running at, cannot go below 3 since (int)(80 / framerate) = 0)
+  FRAMERATE = 30; //30, actual framerate of the game, base frame rate is 80 fps hence why everything is like 80 / framerate instead of  FRAMERATE / framerate
   frameRate(FRAMERATE); 
   //speed of the game is dependent on ratio between the two framerates: FRAMERATE / framerate = game speed
   //but make sure your FRAMERATE is within your cpu's capabilities (ie. do not run at FRAMERATE = 100)
@@ -63,12 +63,13 @@ void setup()
   myTank  = new PlayerTank(
   /*tank_width*/75, //typically 75
   /*tank_height*/68, 
-  /*tank_health*/3 * (1 + .2 * (0)), //typically 3
-  /*tank_speed*/2 * (1 + .1 * (0)), //typically 2
-  /*bullet_size*/20 * (1 + .2 * (0)), //typically 20
-  /*bullet_speed*/4 * (1 + .2 * (0)), //typically 4
-  /*bullet_health/pentration/damage*/1 * (1 + .2 * (0)),//typically 1
-  /*bullet_frequency*/40 - 2 * (0), //typically 40, cannot go below 3 since (int)(80 / framerate) = 0
+  /*tank_health*/3 + .3*(0), //typically 3, 0 intial upgrades
+  /*tank_health_regeneration*/0, //typically 0
+  /*tank_speed*/2 + .2*(0), //typically 2, 0 intial upgrades
+  /*bullet_size*/20 + 2*(0), //typically 20, 0 intial upgrades
+  /*bullet_speed*/4 + .4*(0), //typically 4, 0 intial upgrades
+  /*bullet_health/pentration/damage*/1 + .1*(0),//typically 1
+  /*bullet_frequency*/48 - 2 * (0), //typically 48, cannot go below 3 since (int)(80 / framerate) = 0
   /*number of times bullets bounce*/1,
   /*spawn_x*/600, 
   /*spawn_y*/500,
@@ -124,7 +125,7 @@ void draw()
     //  background_music.stop();
     
     upgrades_on = true;
-    keep_upgrades = false;
+    keep_upgrades = true;
     myUI.runGame();
     myUI.endGameCheck();//if player health reaches zero or num of enemies reach zero, resets the game
   }
@@ -152,7 +153,7 @@ void keyPressed()
     move_up = true;
   if (key == 's' || key == 'S' || keyCode == DOWN)
     move_down = true;
-  if (key == 'p' || key == 'P' && runGame)
+  if ((key == 'p' || key == 'P') && runGame)
     myTank.setTankHealthZero();
 }
 
@@ -173,12 +174,13 @@ void mousePressed()
             myTank  = new PlayerTank(
             /*tank_width*/75, //typically 75
             /*tank_height*/68, 
-            /*tank_health*/3, //typically 3
-            /*tank_speed*/2, //typically 2
-            /*bullet_size*/20, //typically 20
-            /*bullet_speed*/4, //typically 4
-            /*bullet_health/pentration/damage*/1,//typically 1
-            /*bullet_frequency*/40, //typically 40, cannot go below 3 since (int)(80 / framerate) = 0
+            /*tank_health*/3 + .3*(0), //typically 3, 0 intial upgrades
+            /*tank_health_regeneration*/0, //typically 0
+            /*tank_speed*/2 + .2*(0), //typically 2, 0 intial upgrades
+            /*bullet_size*/20 + 2*(0), //typically 20, 0 intial upgrades
+            /*bullet_speed*/4 + .4*(0), //typically 4, 0 intial upgrades
+            /*bullet_health/pentration/damage*/1 + .1*(0),//typically 1
+            /*bullet_frequency*/48 - 2 * (0), //typically 48, cannot go below 3 since (int)(80 / framerate) = 0
             /*number of times bullets bounce*/1,
             /*spawn_x*/600, 
             /*spawn_y*/500,
@@ -202,34 +204,34 @@ void mousePressed()
           break;
         case "No Upgrade":
           break;
-        case "TankSpeed +10%":
-          myTank.addTankSpeed(10); //increase 20 percent of original
+        case "TankSpeed +2":
+          myTank.addTankSpeed(.2);
           break;
-        case "TankHealth +10%":
-          myTank.addTankHealth(10); //increase 20 percent of original
+        case "TankHealth +3":
+          myTank.addTankHealth(.3); 
           break;
-        case "BulletSpeed +10%":
-          myTank.addBulletSpeed(10); //increases 20 percent of original
+        case "BulletSpeed +4":
+          myTank.addBulletSpeed(.4); 
           break;
-        case "BulletDamage +10%":
-          myTank.addBulletPenetration(10); //increases 20 percent of original
+        case "BulletDamage +1":
+          myTank.addBulletPenetration(.1); 
           break;
-        case "BulletSize +10%":
-          myTank.addBulletSize(10); //increases 10 percent of original
+        case "BulletSize +2":
+          myTank.addBulletSize(2); 
           break;
-        case "BulletSize -10%":
-          myTank.addBulletSize(-10); //decreases 10 percent of original
+        case "BulletSize -2":
+          myTank.addBulletSize(-2); 
           break;
         case "BulletFrequency -2 tick/shot":
           myTank.increaseBulletFrequency(-2); //reduce by 2 tick, original 36, cannot go below 3
           break;
         case "BulletBounce +1 (-20% everything else)":
           myTank.addBulletBounce(1);
-          myTank.addTankSpeed(-20); //decreases 40 percent of original
-          myTank.addTankHealth(-20); //decreases 40 percent of original
-          myTank.addBulletSpeed(-20); //decreases 40 percent of original
-          myTank.addBulletPenetration(-20); //decreases 40 percent of original
-          myTank.addBulletSize(-10); //decreases by 10 percent
+          myTank.addTankSpeed(-.4); //decreases 40 percent of original
+          myTank.addTankHealth(-.6); //decreases 40 percent of original
+          myTank.addBulletSpeed(-.8); //decreases 40 percent of original
+          myTank.addBulletPenetration(-.2); //decreases 40 percent of original
+          myTank.addBulletSize(-2); //decreases by 10 percent
           myTank.increaseBulletFrequency(4); //increases by 8 ticks per shot
           break;
       }
@@ -295,399 +297,34 @@ void mousePressed()
         break;
       case 2:
         myWorld.generateLevel2();
-        myUI = new UI(myUI.trigger_int + 1);
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
         runGame = true;
         break;
       case 3:
         myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
         runGame = true;
         break;
       case 4:
         myWorld.generateLevel4();
-        myUI = new UI(myUI.trigger_int + 1);
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
         runGame = true;
         break;
       case 5:
         myWorld.generateLevel5();
-        myUI = new UI(myUI.trigger_int + 1);
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
         runGame = true;
         break;
       case 6:
         myWorld.generateLevel6();
-        myUI = new UI(myUI.trigger_int + 1);
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
         runGame = true;
         break;
       case 7:
         myWorld.generateLevel7();
-        myUI = new UI(myUI.trigger_int + 1);
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
         runGame = true;
         break;
-      case 8:
-        myWorld.generateLevel8();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 9:
-        myWorld.generateLevel9();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 10:
-        myWorld.generateLevel10();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 11:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 12:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 13:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 14:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 15:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 16:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 17:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 18:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 19:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 20:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 21:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 22:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 23:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 24:
-        myWorld.generateLevel3();
-        myUI = new UI(myUI.trigger_int + 1);
-        runGame = true;
-        break;
-      case 25: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 26: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 27: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 28: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 29: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 30: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 31: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 32: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 33: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 34: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 35: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 36: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 37: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 38: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 39: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 40: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 41: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 42: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 43: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 44: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 45: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 46: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 47: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 48: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 49: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 50: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 51: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 52: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 53: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 54: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 55: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 56: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 57: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 58: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 59: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 60: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 61: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 62: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 63: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 64: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 65: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 66: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 67: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 68: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 69: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 70: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 71: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 72: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 73: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 74: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 75: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 76: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 77: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 78: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 79: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
-      case 80: 
-        myWorld.generateLevel3(); 
-        myUI = new UI(myUI.trigger_int + 1); 
-        runGame = true; 
-        break; 
     }
   }
 }

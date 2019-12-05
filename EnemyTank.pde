@@ -11,6 +11,7 @@ class EnemyTank
   
   private float original_tank_health;
   private float tank_health;
+  private float tank_health_regeneration;
   private float tank_width;
   private float tank_height;
   private float turret_cir_width;
@@ -47,12 +48,14 @@ class EnemyTank
   private int AI_version = 1;
   private int shot_cooldown = 0;
   private int pause = 6;
+  private int shot_counter = 0;
   
   public EnemyTank(
   float tank_width, 
   float tank_height, 
   float tank_speed, 
   float tank_health,
+  float tank_regeneration,
   float bullet_size, 
   float bullet_speed, 
   float bullet_health, 
@@ -72,6 +75,7 @@ class EnemyTank
     this.tank_height = height * tank_height / 1080;
     this.original_tank_health = tank_health;
     this.tank_health = tank_health;
+    this.tank_health_regeneration = tank_regeneration;
     this.bullet_health = bullet_health;
     this.num_bullet_bounce = num_bullet_bounce;
       Random rand = new Random();

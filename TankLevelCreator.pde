@@ -26,7 +26,7 @@ String num2KeyEnemy = "NoMovingEnemy";
 String num3KeyEnemy = "StandardEnemy";
 String num4KeyEnemy = "SlowStrongEnemy";
 String num5KeyEnemy = "SniperEnemy";
-String num6KeyEnemy = "MinionSpawnerEnemy";
+String num6KeyEnemy = "BurstShotEnemy";
 String num7KeyEnemy = "NoMovingEnemy";
 String num8KeyEnemy = "NoMovingEnemy";
 String num9KeyEnemy = "NoMovingEnemy";
@@ -81,41 +81,105 @@ void draw()
   
   fill(255, 0, 0);
   ellipse(my_spawn_x, my_spawn_y, 75, 75);
-  fill(240, 240, 240);
+  
   for(int i = 0; i < tanks[0].length; i++)
+  {
+    fill(240, 240, 240);
     ellipse(tanks[0][i][0], tanks[0][i][1], 75, 75); //first tank type
-
-  fill(140, 140, 140);
+    textSize(30);
+    fill(0, 0, 0);
+    text("2", tanks[0][i][0] - 10, tanks[0][i][1]);
+    textSize(9);
+    text(num2KeyEnemy, tanks[0][i][0] - 30, tanks[0][i][1] + 10);
+  }
+  
   for(int i = 0; i < tanks[1].length; i++)
+  {
+    fill(140, 140, 140);
     ellipse(tanks[1][i][0], tanks[1][i][1], 75, 75); //second tank type
+    textSize(30);
+    fill(0, 0, 0);
+    text("3", tanks[1][i][0] - 10, tanks[1][i][1]);
+    textSize(9);
+    text(num3KeyEnemy, tanks[1][i][0] - 30, tanks[1][i][1] + 10);
+  }
 
-  fill(40, 40, 40);
   for(int i = 0; i < tanks[2].length; i++)
+  {
+    fill(40, 40, 40);
     ellipse(tanks[2][i][0], tanks[2][i][1], 100, 100); //third tank type
+    textSize(30);
+    fill(255, 255, 255);
+    text("4", tanks[2][i][0] - 10, tanks[2][i][1]);
+    textSize(9);
+    text(num4KeyEnemy, tanks[2][i][0] - 30, tanks[2][i][1] + 10);
+  }
    
-  fill(0, 240, 240);
   for(int i = 0; i < tanks[3].length; i++)
+  {
+    fill(0, 240, 240);
     ellipse(tanks[3][i][0], tanks[3][i][1], 75, 75); //4th tank type
+    textSize(30);
+    fill(0, 0, 0);
+    text("5", tanks[3][i][0] - 10, tanks[3][i][1]);
+    textSize(9);
+    text(num5KeyEnemy, tanks[3][i][0] - 30, tanks[3][i][1] + 10);
+  }
     
-  fill(0, 140, 140);
   for(int i = 0; i < tanks[4].length; i++)
-    ellipse(tanks[4][i][0], tanks[4][i][1], 130, 130); //5th tank type
+  {
+    fill(0, 140, 140);
+    ellipse(tanks[4][i][0], tanks[4][i][1], 75, 75); //5th tank type
+    textSize(30);
+    fill(255, 255, 255);
+    text("6", tanks[4][i][0] - 10, tanks[4][i][1]);
+    textSize(9);
+    text(num6KeyEnemy, tanks[4][i][0] - 30, tanks[4][i][1] + 10);
+  }
 
-  fill(0, 40, 40);
   for(int i = 0; i < tanks[5].length; i++)
+  {
+    fill(0, 40, 40);
     ellipse(tanks[5][i][0], tanks[5][i][1], 75, 75); //6th tank type
+    textSize(30);
+    fill(255, 255, 255);
+    text("7", tanks[5][i][0] - 10, tanks[5][i][1]);
+    textSize(9);
+    text(num7KeyEnemy, tanks[5][i][0] - 30, tanks[5][i][1] + 10);
+  }
 
-  fill(240, 0, 240);
   for(int i = 0; i < tanks[6].length; i++)
+  {
+    fill(240, 0, 240);
     ellipse(tanks[6][i][0], tanks[6][i][1], 75, 75); //7th tank type
+    textSize(30);
+    fill(255, 255, 255);
+    text("8", tanks[6][i][0] - 10, tanks[6][i][1]);
+    textSize(9);
+    text(num8KeyEnemy, tanks[6][i][0] - 30, tanks[6][i][1] + 10);
+  }
    
-  fill(140, 0, 140);
   for(int i = 0; i < tanks[7].length; i++)
+  {
+    fill(140, 0, 140);
     ellipse(tanks[7][i][0], tanks[7][i][1], 75, 75); //8th tank type
+    textSize(30);
+    fill(255, 255, 255);
+    text("9", tanks[7][i][0] - 10, tanks[7][i][1]);
+    textSize(9);
+    text(num9KeyEnemy, tanks[7][i][0] - 30, tanks[7][i][1] + 10);
+  }
     
-  fill(40, 0, 40);
   for(int i = 0; i < tanks[8].length; i++)
+  {
+    fill(40, 0, 40);
     ellipse(tanks[8][i][0], tanks[8][i][1], 75, 75); //9th tank type
+    textSize(30);
+    fill(255, 255, 255);
+    text("0", tanks[8][i][0] - 10, tanks[8][i][1]);
+    textSize(9);
+    text(num0KeyEnemy, tanks[8][i][0] - 30, tanks[8][i][1] + 10);
+  }
 
 
   textSize(25);
@@ -124,16 +188,32 @@ void draw()
   textSize(10);
   text("Drag Mouse: add wall", 500, 20);
   text("1: set player spawn", 650, 20);
-  text("2-9 and 0: add enemy", 650, 40);
+  text("2: add no moving enemy", 650, 40);
+  text("3: add standard enemy", 650, 60);
+  text("4: add slow strong enemy", 650, 80);
+  text("5: add sniper enemy", 800, 20);
+  text("6: add burst shot enemy", 800, 40);
+  text("7: add no moving enemy", 800, 60);
+  text("8: add no moving enemy", 800, 80);
+  text("9: add no moving enemy", 950, 20);
+  text("0: add no moving enemy", 950, 40);
   
   
   
   textSize(25);
   fill(0, 0, 0);
-  text("Delete Controls:", 1000, 25);
+  text("Delete Controls:", 1100, 25);
   textSize(10);
-  text("D: delete wall (last placed)", 1000, 50);
-  text("W-P: delete enemy (last placed)", 1000, 75);
+  text("d: delete wall", 1350, 20);
+  text("w: delete no moving enemy", 1350, 40);
+  text("e: delete standard enemy", 1350, 60);
+  text("r: delete slow strong enemy", 1350, 80);
+  text("t: delete sniper enemy", 1500, 20);
+  text("y: delete burst shot enemy", 1500, 40);
+  text("u: delete no moving enemy", 1500, 60);
+  text("i: delete no moving enemy", 1500, 80);
+  text("o: delete no moving enemy", 1650, 20);
+  text("p: delete no moving enemy", 1650, 40);
 }
 
 void mousePressed()

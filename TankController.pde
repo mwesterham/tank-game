@@ -59,7 +59,7 @@ class TankController
       TempEnemyTank.shot_cooldown--;
       if(AI.target_visible && TempEnemyTank.shot_cooldown <= 0)
       {  
-        if(TempEnemyTank.AI_version == 1 || TempEnemyTank.AI_version == 3) //1, 3 have pause of 6 ticks
+        if(TempEnemyTank.AI_version == 1) //1, 4 have pause of 6 ticks
         {
           TempEnemyTank.pause--;
           if(TempEnemyTank.pause <= 0)
@@ -74,16 +74,43 @@ class TankController
           TempEnemyTank.shoot();
           TempEnemyTank.shot_cooldown = (int)(TempEnemyTank.bullet_frequency * framerate / 80);
         }
+        
+        if(TempEnemyTank.AI_version == 4) //1, 4 have pause of 6 ticks
+          if(tickCount % (int)(TempEnemyTank.bullet_frequency * framerate / 80) == 0 && rand.nextInt(3) == 0) //every amt of ticks give it a 1/3 chance of changing direction, no pause
+          {
+            TempEnemyTank.shoot();
+            TempEnemyTank.shot_cooldown = (int)(TempEnemyTank.bullet_frequency * framerate / 80);
+          }
       }
       
+      
+      //Special Abilities like spawning tanks or burst shot
+      if(AI.target_visible && TempEnemyTank.shot_cooldown <= 0) //Burst shot boi
+        if(TempEnemyTank.AI_version == 3)
+        {
+          TempEnemyTank.shoot();
+          TempEnemyTank.shot_cooldown = (int)(TempEnemyTank.bullet_frequency * framerate / 80) / 15;
+          TempEnemyTank.shot_counter++;
+        } 
+      
+      if(TempEnemyTank.shot_counter == 3) //burst shot implementation
+      {
+        TempEnemyTank.shot_cooldown = (int)(TempEnemyTank.bullet_frequency * framerate / 80);
+        TempEnemyTank.shot_counter = 0;
+      }
+      
+      
+      /*
       if(TempEnemyTank.AI_version == 3) //Spawner AI spawns every 600 ticks
       {
-        if((tickCount % (int)(2400 * framerate / 80) == 0))
+        if((tickCount % (int)(1200 * framerate / 80) == 0))
         {
+          enemyController.addMinionEnemy(TempEnemyTank.location.x, TempEnemyTank.location.y);
           enemyController.addMinionEnemy(TempEnemyTank.location.x, TempEnemyTank.location.y);
           enemyController.addMinionEnemy(TempEnemyTank.location.x, TempEnemyTank.location.y);
         }
       }
+      */
       
       if(!AI.target_visible)
         TempEnemyTank.pause = 6; //initial pause after seeing the target (hesitation), does not apply if target is in sight
@@ -102,16 +129,17 @@ class TankController
     /*tank_height*/100, 
     /*tank_speed*/1, 
     /*tank_health*/3,
+    /*tank_health_regeneration*/.05,
     /*bullet_size*/20, 
     /*bullet_speed*/4, 
     /*bullet_health/pentration/damage*/1,
-    /*bullet frequency measured in ticks per shot*/ 36,
+    /*bullet frequency measured in ticks per shot*/ 100,
     /*number of times bullets bounce*/1,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.location.x, 
     /*target_location_y*/myTank.location.y,
-    /*Tank Color           r/g/b*/0, 0, 0,
+    /*Tank Color           r/g/b*/111, 222, 0,
     /*Tank Outline Color   r/g/b*/50, 40, 30,
     /*Tank Stroke Weight*/1,
     /*Turret Color         r/g/b*/0,0, 0,
@@ -138,6 +166,7 @@ class TankController
     /*tank_height*/75, 
     /*tank_speed*/0, 
     /*tank_health*/3,
+    /*tank_health_regeneration*/0,
     /*bullet_size*/20, 
     /*bullet_speed*/3, 
     /*bullet_health/pentration/damage*/1.2,
@@ -174,6 +203,7 @@ class TankController
     /*tank_height*/68, 
     /*tank_speed*/1, 
     /*tank_health*/3,
+    /*tank_health_regeneration*/0,
     /*bullet_size*/20, 
     /*bullet_speed*/3, 
     /*bullet_health/pentration/damage*/1,
@@ -210,6 +240,7 @@ class TankController
     /*tank_height*/100, 
     /*tank_speed*/.5, 
     /*tank_health*/5,
+    /*tank_health_regeneration*/0,
     /*bullet_size*/40, 
     /*bullet_speed*/2, 
     /*bullet_health/pentration/damage*/4.5,
@@ -246,6 +277,7 @@ class TankController
     /*tank_height*/63, 
     /*tank_speed*/.3, 
     /*tank_health*/3,
+    /*tank_health_regeneration*/0,
     /*bullet_size*/15, 
     /*bullet_speed*/7, 
     /*bullet_health/pentration/damage*/4,
@@ -275,67 +307,30 @@ class TankController
     
     enemies.add(TempEnemyTank);
   }
-  
-  public void addMinionSpawnerEnemy(float spawnX, float spawnY)
-  {
-    TempEnemyTank = new EnemyTank(
-    /*tank_width*/130, 
-    /*tank_height*/130, 
-    /*tank_speed*/.25, 
-    /*tank_health*/40,
-    /*bullet_size*/30, 
-    /*bullet_speed*/4, 
-    /*bullet_health/pentration/damage*/4,
-    /*bullet frequency measured in ticks per shot*/ 300,
-    /*number of times bullets bounce*/0,
-    /*spawn_x*/spawnX, 
-    /*spawn_y*/spawnY, 
-    /*target_location_x*/myTank.location.x, 
-    /*target_location_y*/myTank.location.y,
-    /*Tank Color           r/g/b*/0, 0, 0,
-    /*Tank Outline Color   r/g/b*/200, 200, 200,
-    /*Tank Stroke Weight*/10,
-    /*Turret Color         r/g/b*/200, 200, 200,
-    /*Turret Outline Color r/g/b*/0, 0, 0,
-    /*Turret Stroke Weight*/5);
-    
-    TempEnemyTank.updateCollisionPermissions(
-    /*player_shot_collision_with_body allowed*/ true, 
-    /*enemy_shot_collision_with_body allowed*/ false, 
-    /*player_bullet_collide allowed*/ true, 
-    /*enemy_bullet_collide allowed*/ false,
-    /*collision_bullet_with_wall_allowed*/ true,
-    /*collision_body_with_wall_allowed*/ true);
-    
-    TempEnemyTank.setAIVersion(3); //spawner AI
-    //TempEnemyTank.setTurretSize(80, 63); //width, height
-    TempEnemyTank.setBulletColor(200, 200, 200);
-    
-    enemies.add(TempEnemyTank);
-  }
-  
-  public void addMinionEnemy(float spawnX, float spawnY)
+
+  public void addBurstShotEnemy(float spawnX, float spawnY)
   {
     TempEnemyTank = new EnemyTank(
     /*tank_width*/75, 
     /*tank_height*/68, 
-    /*tank_speed*/1, 
-    /*tank_health*/3,
-    /*bullet_size*/20, 
-    /*bullet_speed*/3, 
-    /*bullet_health/pentration/damage*/1,
-    /*bullet frequency measured in ticks per shot*/ 100,
-    /*number of times bullets bounce*/0,
+    /*tank_speed*/.3, 
+    /*tank_health*/5,
+    /*tank_health_regeneration*/0,
+    /*bullet_size*/15, 
+    /*bullet_speed*/4, 
+    /*bullet_health/pentration/damage*/.75,
+    /*bullet frequency measured in ticks per shot*/ 200,
+    /*number of times bullets bounce*/1,
     /*spawn_x*/spawnX, 
     /*spawn_y*/spawnY, 
     /*target_location_x*/myTank.location.x, 
     /*target_location_y*/myTank.location.y,
-    /*Tank Color           r/g/b*/200, 200, 200,
+    /*Tank Color           r/g/b*/105, 0, 105,
     /*Tank Outline Color   r/g/b*/0, 0, 0,
-    /*Tank Stroke Weight*/0,
+    /*Tank Stroke Weight*/3,
     /*Turret Color         r/g/b*/0, 0, 0,
     /*Turret Outline Color r/g/b*/0, 0, 0,
-    /*Turret Stroke Weight*/0);
+    /*Turret Stroke Weight*/2);
     
     TempEnemyTank.updateCollisionPermissions(
     /*player_shot_collision_with_body allowed*/ true, 
@@ -345,12 +340,12 @@ class TankController
     /*collision_bullet_with_wall_allowed*/ true,
     /*collision_body_with_wall_allowed*/ true);
     
-    TempEnemyTank.setAIVersion(1); //spawner AI
-    //TempEnemyTank.setTurretSize(80, 63); //width, height
+    TempEnemyTank.setAIVersion(3); //burst shot AI   
+    TempEnemyTank.setTurretSize(75, 60); //width, height
     
     enemies.add(TempEnemyTank);
   }
-  
+
   //BOSS ENEMIES
   public void addBossEnemy1(float spawnX, float spawnY)
   {
@@ -359,6 +354,7 @@ class TankController
     /*tank_height*/50, 
     /*tank_speed*/4.5, //your bullet speed is 4
     /*tank_health*/.01,
+    /*tank_health_regeneration*/0,
     /*bullet_size*/10, 
     /*bullet_speed*/5, 
     /*bullet_health/pentration/damage*/.34,
@@ -395,6 +391,7 @@ class TankController
     /*tank_height*/100, 
     /*tank_speed*/.5, 
     /*tank_health*/20,
+    /*tank_health_regeneration*/0,
     /*bullet_size*/100, 
     /*bullet_speed*/1, 
     /*bullet_health/pentration/damage*/100,
