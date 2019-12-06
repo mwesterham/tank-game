@@ -19,6 +19,8 @@ class PlayerTank
   private float original_tank_health;
   private float tank_health;
   private float tank_health_regeneration;
+  private int regeneration_kickin = 10;
+  private int regeneration_cool_down = 0;
   private float tank_width;
   private float tank_height;
   private float turret_cir_width;
@@ -120,6 +122,7 @@ class PlayerTank
     shootCheck();
     if(shoot_input)
       tempTickCount++;
+    regeneration_cool_down--;
   }
   
   private void collisionCheck()
@@ -214,13 +217,14 @@ class PlayerTank
       {
         this.tank_health -= bulletController.getBList().get(i).bullet_health;
         bulletController.removeBullet(bulletController.getBList().get(i));
+        regeneration_cool_down = framerate * regeneration_kickin; //sets it so that the player cannot regenerate for a certain amount of time
       }
     }
     
     //passive regeneration
-    if(tank_health < original_tank_health && tickCount % framerate == 0) //if below original health, regenerate specified amt every number of frames given by framecount
-      tank_health += tank_health_regeneration;
-    if(tank_health > original_tank_health)
+    if(tank_health < original_tank_health && regeneration_cool_down <= 0) //if below original health, regenerate specified amt every number of frames given by framecount
+      tank_health += tank_health_regeneration / framerate;
+    if(tank_health > original_tank_health) //set health to 100 percent if over 100 percent
       tank_health = original_tank_health;
   }
   
@@ -384,9 +388,9 @@ class PlayerTank
     location = new PVector(spawnX, spawnY);
   }
   
-  public void setTankHealthZero()
+  public void setTankHealthNegative()
   {
-    tank_health = 0;
+    tank_health = -1;
   }
   
   public void resetTank()

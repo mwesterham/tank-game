@@ -12,6 +12,8 @@ class EnemyTank
   private float original_tank_health;
   private float tank_health;
   private float tank_health_regeneration;
+  private int regeneration_cool_down = 0;
+  private int regeneration_kickin = 10;
   private float tank_width;
   private float tank_height;
   private float turret_cir_width;

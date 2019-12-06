@@ -27,7 +27,7 @@ String num3KeyEnemy = "StandardEnemy";
 String num4KeyEnemy = "SlowStrongEnemy";
 String num5KeyEnemy = "SniperEnemy";
 String num6KeyEnemy = "BurstShotEnemy";
-String num7KeyEnemy = "NoMovingEnemy";
+String num7KeyEnemy = "RegenEnemy";
 String num8KeyEnemy = "NoMovingEnemy";
 String num9KeyEnemy = "NoMovingEnemy";
 String num0KeyEnemy = "NoMovingEnemy";
@@ -74,7 +74,7 @@ void draw()
     fill(255, 255, 255);
     rect(wall_x, wall_y, wall_x2 - wall_x, wall_y2 - wall_y);
   }
-  
+    
   for(int i = 0; i < walls.length; i++)
     rect(walls[i][0], walls[i][1], walls[i][2], walls[i][3]);
   
@@ -258,6 +258,8 @@ void mouseReleased()
   walls[wall_index][2] = wall_x2 - wall_x;
   walls[wall_index][3] = wall_y2 - wall_y;
   
+  if(walls[wall_index][2] == 0 || walls[wall_index][2] == 0) //if the height or width are zero, delete the wall
+    wall_index--;
   
   System.out.println("//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
   System.out.printf("" + "\n" +

@@ -37,7 +37,8 @@ class TankController
       Random rand = new Random();
       TempEnemyTank = enemies.get(i);
       AI = new EnemyAI(TempEnemyTank); //applies AI to the tank in the enemies list with new velocity
-      
+       TempEnemyTank.regeneration_cool_down--;
+       
       if(tickCount % (int)(64 * framerate / 80) == 0 && rand.nextInt(3) == 0) //every 64 ticks give it a 1/3 chance of changing direction
       {
         PVector velocity_direction = new PVector(rand.nextInt(), rand.nextInt());
@@ -127,9 +128,9 @@ class TankController
     TempEnemyTank = new EnemyTank(
     /*tank_width*/100, //ratioed to screen resolution
     /*tank_height*/100, 
-    /*tank_speed*/1, 
+    /*tank_speed*/1.2, 
     /*tank_health*/3,
-    /*tank_health_regeneration*/.05,
+    /*tank_health_regeneration*/.25,
     /*bullet_size*/20, 
     /*bullet_speed*/4, 
     /*bullet_health/pentration/damage*/1,
@@ -140,11 +141,11 @@ class TankController
     /*target_location_x*/myTank.location.x, 
     /*target_location_y*/myTank.location.y,
     /*Tank Color           r/g/b*/111, 222, 0,
-    /*Tank Outline Color   r/g/b*/50, 40, 30,
-    /*Tank Stroke Weight*/1,
+    /*Tank Outline Color   r/g/b*/0, 0, 0,
+    /*Tank Stroke Weight*/3,
     /*Turret Color         r/g/b*/0,0, 0,
-    /*Turret Outline Color r/g/b*/70, 60, 50,
-    /*Turret Stroke Weight*/1);
+    /*Turret Outline Color r/g/b*/0, 0, 0,
+    /*Turret Stroke Weight*/2);
 
     TempEnemyTank.updateCollisionPermissions(
     /*player_shot_collision_with_body allowed*/ true, 
@@ -155,6 +156,7 @@ class TankController
     /*collision_body_with_wall_allowed*/ true);
     
     TempEnemyTank.setAIVersion(1);
+    TempEnemyTank.regeneration_kickin = 2; //default is 10
     
     enemies.add(TempEnemyTank);
   }
@@ -342,6 +344,44 @@ class TankController
     
     TempEnemyTank.setAIVersion(3); //burst shot AI   
     TempEnemyTank.setTurretSize(75, 60); //width, height
+    
+    enemies.add(TempEnemyTank);
+  }
+  
+  public void addRegenEnemy(float spawnX, float spawnY)
+  {
+    TempEnemyTank = new EnemyTank(
+    /*tank_width*/75, //ratioed to screen resolution
+    /*tank_height*/68, 
+    /*tank_speed*/1.2, 
+    /*tank_health*/3,
+    /*tank_health_regeneration*/.25,
+    /*bullet_size*/20, 
+    /*bullet_speed*/4, 
+    /*bullet_health/pentration/damage*/1.2,
+    /*bullet frequency measured in ticks per shot*/ 100,
+    /*number of times bullets bounce*/1,
+    /*spawn_x*/spawnX, 
+    /*spawn_y*/spawnY, 
+    /*target_location_x*/myTank.location.x, 
+    /*target_location_y*/myTank.location.y,
+    /*Tank Color           r/g/b*/111, 222, 0,
+    /*Tank Outline Color   r/g/b*/0, 0, 0,
+    /*Tank Stroke Weight*/3,
+    /*Turret Color         r/g/b*/0,0, 0,
+    /*Turret Outline Color r/g/b*/0, 0, 0,
+    /*Turret Stroke Weight*/2);
+
+    TempEnemyTank.updateCollisionPermissions(
+    /*player_shot_collision_with_body allowed*/ true, 
+    /*enemy_shot_collision_with_body allowed*/ false, 
+    /*player_bullet_collide allowed*/ true, 
+    /*enemy_bullet_collide allowed*/ false,
+    /*collision_bullet_with_wall_allowed*/ true,
+    /*collision_body_with_wall_allowed*/ true);
+    
+    TempEnemyTank.setAIVersion(1);
+    TempEnemyTank.regeneration_kickin = 2; //default is 10
     
     enemies.add(TempEnemyTank);
   }

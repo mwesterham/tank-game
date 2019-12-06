@@ -30,6 +30,7 @@
   private boolean upgrades_on;
   private boolean keep_upgrades;
   public int tickCount = 0;
+  public int click_protection_timer = 0;
   private int framerate;
   private int FRAMERATE;
   
@@ -64,7 +65,7 @@ void setup()
   /*tank_width*/75, //typically 75
   /*tank_height*/68, 
   /*tank_health*/3 + .3*(0), //typically 3, 0 intial upgrades
-  /*tank_health_regeneration*/0, //typically 0
+  /*tank_health_regeneration*/.25, //typically 0
   /*tank_speed*/2 + .2*(0), //typically 2, 0 intial upgrades
   /*bullet_size*/20 + 2*(0), //typically 20, 0 intial upgrades
   /*bullet_speed*/4 + .4*(0), //typically 4, 0 intial upgrades
@@ -94,6 +95,7 @@ void setup()
 void draw() 
 {
   tickCount++;
+  click_protection_timer--;
   background(background_color[0], background_color[1], background_color[2]);
   if(!runGame)
   {
@@ -154,7 +156,7 @@ void keyPressed()
   if (key == 's' || key == 'S' || keyCode == DOWN)
     move_down = true;
   if ((key == 'p' || key == 'P') && runGame)
-    myTank.setTankHealthZero();
+    myTank.setTankHealthNegative();
 }
 
 
@@ -162,7 +164,7 @@ void mousePressed()
 {
   if(runGame)
     shoot_input = true;
-  if(!runGame)
+  if(!runGame && click_protection_timer <= 0)
   {
     if(upgrades_on)
     {

@@ -250,6 +250,7 @@ class UI
       else
         displayYouWon = true;
       trigger_text = "You Won";
+      click_protection_timer = FRAMERATE; //just makes sure that the player does not accidentally upgrade
     }
     else if(myTank.tank_health <= 0)
     {
@@ -257,6 +258,7 @@ class UI
       myUI.resetGame(); //resets the game by restoring player health and deleting all remaining enemies
       displayGameOver = true;
       trigger_text = "Game Over";
+      click_protection_timer = (int)(FRAMERATE / 2);
     }
   }
   

@@ -240,14 +240,15 @@ class EnemyAI
         if(bulletController.getBList().get(i).bullet_health > 0)
           enemyTank.tank_health -= bulletController.getBList().get(i).bullet_health;
         bulletController.getBList().get(i).bullet_health -= damage;
+        enemyTank.regeneration_cool_down = framerate * enemyTank.regeneration_kickin; //sets it so that the enemy cannot regenerate health for awhile
         //bulletController.removeBullet(bulletController.getBList().get(i));
       }
     }
     
     //passive regeneration
-    if(enemyTank.tank_health < enemyTank.original_tank_health && tickCount % framerate == 0) //if below original health, regenerate specified amt every number of frames given by framecount
-      enemyTank.tank_health += enemyTank.tank_health_regeneration;
-    if(enemyTank.tank_health > enemyTank.original_tank_health)
+    if(enemyTank.tank_health < enemyTank.original_tank_health && enemyTank.regeneration_cool_down <= 0) //if below original health, regenerate specified amt every number of frames given by framecount
+      enemyTank.tank_health += enemyTank.tank_health_regeneration / framerate;
+    if(enemyTank.tank_health > enemyTank.original_tank_health) //sets health to 100 percent if over 100 percent
       enemyTank.tank_health = enemyTank.original_tank_health;
   }
 }

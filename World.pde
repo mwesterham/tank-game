@@ -220,7 +220,7 @@ class World
     }
 
     {i = 4;
-    wall_x = 300;
+    wall_x = 700;
     wall_y = 300;
     wall_width = 100;
     wall_height = 500;
@@ -244,8 +244,8 @@ class World
   {
 
     myUI.resetGame();
-    this.num_of_walls = 7;
-    float[][] walls = new float[7][4];
+    this.num_of_walls = 6;
+    float[][] walls = new float[6][4];
     this.walls = walls;
 
 
@@ -294,10 +294,10 @@ class World
     }
 
     {i = 4;
-    wall_x = 0;
-    wall_y = 0;
-    wall_width = 0;
-    wall_height = 0;
+    wall_x = 1019;
+    wall_y = 81;
+    wall_width = 90;
+    wall_height = 362;
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080; //y cord
       walls[i][2] = width *  wall_width / 1920;//width
@@ -305,33 +305,22 @@ class World
     }
 
     {i = 5;
-    wall_x = 970;
-    wall_y = 78;
-    wall_width = 299;
-    wall_height = 692;
+    wall_x = 1019;
+    wall_y = 472;
+    wall_width = 92;
+    wall_height = 538;
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080; //y cord
       walls[i][2] = width *  wall_width / 1920;//width
       walls[i][3] = height * wall_height / 1080;//length
     }
 
-    {i = 6;
-    wall_x = 1061;
-    wall_y = 746;
-    wall_width = 44;
-    wall_height = 197;
-      walls[i][0] = width * wall_x / 1920; //x-coord
-      walls[i][1] = height * wall_y / 1080; //y cord
-      walls[i][2] = width *  wall_width / 1920;//width
-      walls[i][3] = height * wall_height / 1080;//length
-    }
-
-    spawn_x = 481;
-    spawn_y = 481;
+    spawn_x = 574;
+    spawn_y = 469;
       myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
 
-    spawn_x = 1754;
-    spawn_y = 665;
+    spawn_x = 1453;
+    spawn_y = 583;
       enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
   }
 
@@ -384,17 +373,6 @@ class World
     wall_y = 980;
     wall_width = 1920;
     wall_height = 100;
-      walls[i][0] = width * wall_x / 1920; //x-coord
-      walls[i][1] = height * wall_y / 1080; //y cord
-      walls[i][2] = width *  wall_width / 1920;//width
-      walls[i][3] = height * wall_height / 1080;//length
-    }
-
-    {i = 4;
-    wall_x = 902;
-    wall_y = 538;
-    wall_width = 0;
-    wall_height = 0;
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080; //y cord
       walls[i][2] = width *  wall_width / 1920;//width
@@ -796,8 +774,8 @@ class World
   {
 
     myUI.resetGame();
-    this.num_of_walls = 10;
-    float[][] walls = new float[10][4];
+    this.num_of_walls = 5;
+    float[][] walls = new float[5][4];
     this.walls = walls;
 
 
@@ -846,102 +824,31 @@ class World
     }
 
     {i = 4;
-    wall_x = 1363;
-    wall_y = 96;
-    wall_width = 73;
-    wall_height = 267;
+    wall_x = 680;
+    wall_y = 338;
+    wall_width = 579;
+    wall_height = 254;
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080; //y cord
       walls[i][2] = width *  wall_width / 1920;//width
       walls[i][3] = height * wall_height / 1080;//length
     }
 
-    {i = 5;
-    wall_x = 1559;
-    wall_y = 295;
-    wall_width = 270;
-    wall_height = 72;
-      walls[i][0] = width * wall_x / 1920; //x-coord
-      walls[i][1] = height * wall_y / 1080; //y cord
-      walls[i][2] = width *  wall_width / 1920;//width
-      walls[i][3] = height * wall_height / 1080;//length
-    }
-
-    {i = 6;
-    wall_x = 1355;
-    wall_y = 520;
-    wall_width = 479;
-    wall_height = 85;
-      walls[i][0] = width * wall_x / 1920; //x-coord
-      walls[i][1] = height * wall_y / 1080; //y cord
-      walls[i][2] = width *  wall_width / 1920;//width
-      walls[i][3] = height * wall_height / 1080;//length
-    }
-
-    {i = 7;
-    wall_x = 943;
-    wall_y = 504;
-    wall_width = 99;
-    wall_height = 480;
-      walls[i][0] = width * wall_x / 1920; //x-coord
-      walls[i][1] = height * wall_y / 1080; //y cord
-      walls[i][2] = width *  wall_width / 1920;//width
-      walls[i][3] = height * wall_height / 1080;//length
-    }
-
-    {i = 8;
-    wall_x = 512;
-    wall_y = 191;
-    wall_width = 466;
-    wall_height = 85;
-      walls[i][0] = width * wall_x / 1920; //x-coord
-      walls[i][1] = height * wall_y / 1080; //y cord
-      walls[i][2] = width *  wall_width / 1920;//width
-      walls[i][3] = height * wall_height / 1080;//length
-    }
-
-    {i = 9;
-    wall_x = 422;
-    wall_y = 515;
-    wall_width = 104;
-    wall_height = 476;
-      walls[i][0] = width * wall_x / 1920; //x-coord
-      walls[i][1] = height * wall_y / 1080; //y cord
-      walls[i][2] = width *  wall_width / 1920;//width
-      walls[i][3] = height * wall_height / 1080;//length
-    }
-
-    spawn_x = 1677;
-    spawn_y = 222;
+    spawn_x = 488;
+    spawn_y = 792;
       myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
 
-    spawn_x = 1172;
-    spawn_y = 434;
-      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+    spawn_x = 726;
+    spawn_y = 197;
+      enemyController.addRegenEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
 
-    spawn_x = 1705;
-    spawn_y = 816;
-      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+    spawn_x = 1445;
+    spawn_y = 257;
+      enemyController.addRegenEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
 
-    spawn_x = 1281;
-    spawn_y = 752;
-      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
-
-    spawn_x = 770;
-    spawn_y = 785;
-      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
-
-    spawn_x = 205;
-    spawn_y = 854;
-      enemyController.addBurstShotEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
-
-    spawn_x = 707;
-    spawn_y = 140;
-      enemyController.addSniperEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
-
-    spawn_x = 1722;
-    spawn_y = 906;
-      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+    spawn_x = 1594;
+    spawn_y = 655;
+      enemyController.addRegenEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
   }
 
 }
