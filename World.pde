@@ -25,6 +25,24 @@ class World
     stroke(wall_outline_color[0], wall_outline_color[1], wall_outline_color[2]);
     for(int i = 0; i < num_of_walls; i++)
       rect(walls[i][0], walls[i][1], walls[i][2], walls[i][3]);
+      
+    fill(255, 255, 255);
+    textSize(20);
+    text("Lives: " + myTank.lives, 1600, 20);
+    
+    if(myUI.trigger_int == 2) //trigger int = 2 when on level 1
+    {
+      textSize(40);
+      text("Movement", 120, 250);
+      text("    Up: W", 120, 300);
+      text("    Down: S", 120, 350);
+      text("    Left: A", 120, 400);
+      text("    Right: D", 120, 450);
+      text("Shooting/Aiming", 120, 550);
+      text("    Aim: mouse", 120, 600);
+      text("    Shoot: mouse click", 120, 650);
+      text("Restart level: p", 120, 750);
+    }
   }
   
   public void setWallColor(int red, int green, int blue)
@@ -168,12 +186,13 @@ class World
 
   public void generateLevel1()
   {
-
     myUI.resetGame();
     this.num_of_walls = 5;
     float[][] walls = new float[5][4];
     this.walls = walls;
-
+    background_color[0] = 20;
+    background_color[1] = 50;
+    background_color[2] = 20;
 
     {i = 0;
     wall_x = 0;
@@ -230,8 +249,8 @@ class World
       walls[i][3] = height * wall_height / 1080;//length
     }
 
-    spawn_x = 256;
-    spawn_y = 594;
+    spawn_x = 500;
+    spawn_y = 380;
       myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
 
     spawn_x = 1435;
@@ -772,12 +791,10 @@ class World
 
   public void generateLevel7()
   {
-
     myUI.resetGame();
-    this.num_of_walls = 5;
-    float[][] walls = new float[5][4];
+    this.num_of_walls = 8;
+    float[][] walls = new float[8][4];
     this.walls = walls;
-
 
     {i = 0;
     wall_x = 0;
@@ -824,31 +841,796 @@ class World
     }
 
     {i = 4;
-    wall_x = 680;
-    wall_y = 338;
-    wall_width = 579;
-    wall_height = 254;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 0;
+    wall_height = 0;
       walls[i][0] = width * wall_x / 1920; //x-coord
       walls[i][1] = height * wall_y / 1080; //y cord
       walls[i][2] = width *  wall_width / 1920;//width
       walls[i][3] = height * wall_height / 1080;//length
     }
 
-    spawn_x = 488;
-    spawn_y = 792;
+    {i = 5;
+    wall_x = 636;
+    wall_y = 204;
+    wall_width = 81;
+    wall_height = 419;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 6;
+    wall_x = 877;
+    wall_y = 421;
+    wall_width = 84;
+    wall_height = 411;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 7;
+    wall_x = 1106;
+    wall_y = 219;
+    wall_width = 87;
+    wall_height = 403;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    spawn_x = 1584;
+    spawn_y = 646;
       myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
 
-    spawn_x = 726;
-    spawn_y = 197;
-      enemyController.addRegenEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+    spawn_x = 790;
+    spawn_y = 526;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
 
-    spawn_x = 1445;
-    spawn_y = 257;
-      enemyController.addRegenEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+    spawn_x = 1030;
+    spawn_y = 523;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
 
-    spawn_x = 1594;
-    spawn_y = 655;
-      enemyController.addRegenEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+    spawn_x = 340;
+    spawn_y = 755;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
   }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  public void generateLevel8()
+  {
+    myUI.resetGame();
+    this.num_of_walls = 7;
+    float[][] walls = new float[7][4];
+    this.walls = walls;
+
+    {i = 0;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 1;
+    wall_x = 1820;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 2;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 3;
+    wall_x = 0;
+    wall_y = 980;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 4;
+    wall_x = 61;
+    wall_y = 361;
+    wall_width = 944;
+    wall_height = 157;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 5;
+    wall_x = 1066;
+    wall_y = 61;
+    wall_width = 189;
+    wall_height = 187;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 6;
+    wall_x = 936;
+    wall_y = 467;
+    wall_width = 460;
+    wall_height = 279;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    spawn_x = 200;
+    spawn_y = 200;
+      myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1024;
+    spawn_y = 451;
+      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1802;
+    spawn_y = 117;
+      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 573;
+    spawn_y = 810;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1609;
+    spawn_y = 769;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 709;
+    spawn_y = 791;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+  }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  public void generateLevel9()
+  {
+    myUI.resetGame();
+    this.num_of_walls = 13;
+    float[][] walls = new float[13][4];
+    this.walls = walls;
+
+    {i = 0;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 1;
+    wall_x = 1820;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 2;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 3;
+    wall_x = 0;
+    wall_y = 980;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 4;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 0;
+    wall_height = 0;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 5;
+    wall_x = 709;
+    wall_y = 660;
+    wall_width = 378;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 6;
+    wall_x = 696;
+    wall_y = 267;
+    wall_width = 387;
+    wall_height = 96;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 7;
+    wall_x = 696;
+    wall_y = 66;
+    wall_width = 68;
+    wall_height = 249;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 8;
+    wall_x = 1013;
+    wall_y = 73;
+    wall_width = 70;
+    wall_height = 242;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 9;
+    wall_x = 710;
+    wall_y = 718;
+    wall_width = 85;
+    wall_height = 282;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 10;
+    wall_x = 995;
+    wall_y = 711;
+    wall_width = 92;
+    wall_height = 295;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 11;
+    wall_x = 342;
+    wall_y = 480;
+    wall_width = 102;
+    wall_height = 543;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 12;
+    wall_x = 1588;
+    wall_y = 341;
+    wall_width = 79;
+    wall_height = 430;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    spawn_x = 234;
+    spawn_y = 832;
+      myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 898;
+    spawn_y = 383;
+      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 899;
+    spawn_y = 628;
+      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1129;
+    spawn_y = 931;
+      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1722;
+    spawn_y = 423;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1747;
+    spawn_y = 682;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 571;
+    spawn_y = 807;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1739;
+    spawn_y = 542;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+  }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  public void generateLevel10()
+  {
+    myUI.resetGame();
+    this.num_of_walls = 14;
+    float[][] walls = new float[14][4];
+    this.walls = walls;
+
+    {i = 0;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 1;
+    wall_x = 1820;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 2;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 3;
+    wall_x = 0;
+    wall_y = 980;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 4;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 0;
+    wall_height = 0;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 5;
+    wall_x = 615;
+    wall_y = 287;
+    wall_width = 74;
+    wall_height = 255;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 6;
+    wall_x = 393;
+    wall_y = 473;
+    wall_width = 260;
+    wall_height = 69;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 7;
+    wall_x = 1053;
+    wall_y = 288;
+    wall_width = 76;
+    wall_height = 255;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 8;
+    wall_x = 1093;
+    wall_y = 475;
+    wall_width = 266;
+    wall_height = 68;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 9;
+    wall_x = 829;
+    wall_y = 293;
+    wall_width = 97;
+    wall_height = 352;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 10;
+    wall_x = 1549;
+    wall_y = 348;
+    wall_width = 96;
+    wall_height = 400;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 11;
+    wall_x = 1604;
+    wall_y = 494;
+    wall_width = 277;
+    wall_height = 109;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 12;
+    wall_x = 383;
+    wall_y = 723;
+    wall_width = 373;
+    wall_height = 79;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 13;
+    wall_x = 978;
+    wall_y = 722;
+    wall_width = 381;
+    wall_height = 79;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    spawn_x = 872;
+    spawn_y = 760;
+      myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 866;
+    spawn_y = 178;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1631;
+    spawn_y = 270;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 303;
+    spawn_y = 753;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1457;
+    spawn_y = 760;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 528;
+    spawn_y = 378;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1222;
+    spawn_y = 370;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1720;
+    spawn_y = 652;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1726;
+    spawn_y = 405;
+      enemyController.addSlowStrongEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+  }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  public void generateLevel11()
+  {
+    myUI.resetGame();
+    this.num_of_walls = 10;
+    float[][] walls = new float[10][4];
+    this.walls = walls;
+
+    {i = 0;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 1;
+    wall_x = 1820;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 2;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 3;
+    wall_x = 0;
+    wall_y = 980;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 4;
+    wall_x = 1305;
+    wall_y = 75;
+    wall_width = 96;
+    wall_height = 357;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 5;
+    wall_x = 1305;
+    wall_y = 614;
+    wall_width = 95;
+    wall_height = 371;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 6;
+    wall_x = 50;
+    wall_y = 370;
+    wall_width = 20;
+    wall_height = 50;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 7;
+    wall_x = 450;
+    wall_y = 439;
+    wall_width = 20;
+    wall_height = 30;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 8;
+    wall_x = 450;
+    wall_y = 508;
+    wall_width = 20;
+    wall_height = 30;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 9;
+    wall_x = 450;
+    wall_y = 580;
+    wall_width = 20;
+    wall_height = 30;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    spawn_x = 1599;
+    spawn_y = 240;
+      myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 1272;
+    spawn_y = 134;
+      enemyController.addNoMovingEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 854;
+    spawn_y = 625;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 339;
+    spawn_y = 467;
+      enemyController.addSniperEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 338;
+    spawn_y = 534;
+      enemyController.addSniperEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+  }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  public void generateLevel12()
+  {
+    myUI.resetGame();
+    this.num_of_walls = 7;
+    float[][] walls = new float[7][4];
+    this.walls = walls;
+
+    {i = 0;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 1;
+    wall_x = 1820;
+    wall_y = 0;
+    wall_width = 100;
+    wall_height = 1080;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 2;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 3;
+    wall_x = 0;
+    wall_y = 980;
+    wall_width = 1920;
+    wall_height = 100;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 4;
+    wall_x = 0;
+    wall_y = 0;
+    wall_width = 0;
+    wall_height = 0;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    {i = 5;
+    wall_x = 826;
+    wall_y = 429;
+    wall_width = 246;
+    wall_height = 148;
+      walls[i][0] = width * wall_x / 1920; //x-coord
+      walls[i][1] = height * wall_y / 1080; //y cord
+      walls[i][2] = width *  wall_width / 1920;//width
+      walls[i][3] = height * wall_height / 1080;//length
+    }
+
+    spawn_x = 953;
+    spawn_y = 669;
+      myTank.setSpawn(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 808;
+    spawn_y = 218;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 706;
+    spawn_y = 328;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 840;
+    spawn_y = 335;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+
+    spawn_x = 935;
+    spawn_y = 218;
+      enemyController.addStandardEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+    
+    spawn_x = 1500;
+    spawn_y = 150;
+      enemyController.addSniperEnemy(width * spawn_x / 1920, height * spawn_y / 1080);
+  }
+
 
 }

@@ -282,7 +282,7 @@ class TankController
     /*tank_health_regeneration*/0,
     /*bullet_size*/15, 
     /*bullet_speed*/7, 
-    /*bullet_health/pentration/damage*/4,
+    /*bullet_health/pentration/damage*/4.5,
     /*bullet frequency measured in ticks per shot*/ 120,
     /*number of times bullets bounce*/0,
     /*spawn_x*/spawnX, 

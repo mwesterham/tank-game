@@ -19,8 +19,10 @@ class PlayerTank
   private float original_tank_health;
   private float tank_health;
   private float tank_health_regeneration;
-  private int regeneration_kickin = 10;
-  private int regeneration_cool_down = 0;
+  private int regeneration_kickin = 10; // this sets the actual counter before the tank can start regenerating
+  private int regeneration_cool_down = 0; //this is the actual counter before the tank can start regenerating
+  private int lives;
+  
   private float tank_width;
   private float tank_height;
   private float turret_cir_width;
@@ -59,6 +61,7 @@ class PlayerTank
   float tank_height, 
   float tank_health,
   float tank_health_regeneration,
+  int lives,
   float tank_speed, 
   float bullet_size, 
   float bullet_speed, 
@@ -81,6 +84,7 @@ class PlayerTank
     this.original_tank_health = tank_health;
     this.tank_health = tank_health;
     this.tank_health_regeneration = tank_health_regeneration;
+    this.lives = lives;
     this.bullet_health = bullet_health;
     velocity = new PVector(tank_speed  * 80 / framerate, tank_speed  * 80 / framerate);
     this.tank_speed = tank_speed * 80 / framerate;
@@ -121,7 +125,10 @@ class PlayerTank
     updatePosition();
     shootCheck();
     if(shoot_input)
+    {
       tempTickCount++;
+      regeneration_cool_down = framerate * regeneration_kickin; //sets it so that the player cannot regenerate for a certain amount of time
+    }
     regeneration_cool_down--;
   }
   
@@ -392,11 +399,49 @@ class PlayerTank
   {
     tank_health = -1;
   }
-  
+  /*
   public void resetTank()
   {
     tank_health = original_tank_health;
     location = new PVector(spawn_x, spawn_y);
+  }
+  */
+  public void resetEntireTank()
+  {
+  //DO NOT CHANGE ORIGINAL TANK. THIS IS WHAT THE PLAYER WILL ALWAYS START WITH
+  PlayerTank originalPlayerTank  = new PlayerTank(
+  /*tank_width*/75, //typically 75
+  /*tank_height*/68, 
+  /*tank_health*/3 + .3*(0), //typically 3, 0 intial upgrades
+  /*tank_health_regeneration*/0, //typically 0, .25 could be original
+  /*Number of lives*/3,
+  /*tank_speed*/2 + .2*(0), //typically 2, 0 intial upgrades
+  /*bullet_size*/20 + 2*(0), //typically 20, 0 intial upgrades
+  /*bullet_speed*/4 + .4*(0), //typically 4, 0 intial upgrades
+  /*bullet_health/pentration/damage*/1 + .1*(0),//typically 1
+  /*bullet_frequency*/48 - 2 * (0), //typically 48, cannot go below 3 since (int)(80 / framerate) = 0
+  /*number of times bullets bounce*/1,
+  /*spawn_x*/600, 
+  /*spawn_y*/500,
+  /*Tank Color           r/g/b*/8, 247, 254,
+  /*Tank Outline Color   r/g/b*/0, 0, 0,
+  /*Tank Stroke Weight*/5,
+  /*Turret Color         r/g/b*/0, 0, 0,
+  /*Turret Outline Color r/g/b*/0, 0, 0,
+  /*Turret Stroke Weight*/3);
+  originalPlayerTank.regeneration_kickin = 10;
+  
+  originalPlayerTank.updateCollisionPermissions(
+  /*player_shot_collision_with_body allowed*/ false, 
+  /*enemy_shot_collision_with_body allowed*/ true, 
+  /*player_bullet_collide allowed*/ false, 
+  /*enemy_bullet_collide allowed*/ true,
+  /*collision_bullet_with_wall_allowed*/ true,
+  /*collision_body_with_wall_allowed*/ true);
+  
+  //Only turn on if self-damage is on: //originalPlayerTank.setBulletSpawnFromLength(14);//add or subtract extra distance from turret length
+   
+   myTank = originalPlayerTank;
   }
   
   public void setBulletSpawnFromLength(int extra_distance)
@@ -417,9 +462,9 @@ class PlayerTank
   
   
   
-  public void addTankSpeed(float percent_speed_increase)
+  public void addTankSpeed(float speed_increase)
   {
-    tank_speed *= 1 + percent_speed_increase / 100;
+    tank_speed += speed_increase * 80 / framerate;
     velocity = new PVector(width * tank_speed / 1920, height * tank_speed / 1080);
   }  
   

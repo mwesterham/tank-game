@@ -1,6 +1,6 @@
 class UI
 {
-  private Button[] ButtonList = new Button[103];
+  private Button[] ButtonList = new Button[104];
   private String trigger_text = "Home Page";
   private int trigger_int = 0;
   private String upgrade_text = "";
@@ -31,6 +31,7 @@ class UI
     this.ButtonList[46] = new Button("Upgrades", "You Won", "BulletSize -2", 1150, 165 + (75)*4, 250, 30);
     this.ButtonList[44] = new Button("Upgrades", "You Won", "BulletFrequency -2 tick/shot", 800, 165 + (75)*5, 600, 30);
     this.ButtonList[45] = new Button("Upgrades", "You Won", "BulletBounce +1 (-20% everything else)", 800, 165 + (75)*6, 600, 30);
+    this.ButtonList[103] = new Button("Upgrades", "You Won", "Lives +1", 800, 165 + (75)*7, 600, 30);
     this.ButtonList[9] = new Button("Upgrades", "You Won", "No Upgrade", 1400, 165 + (75)*9, 300, 50);
     
     this.ButtonList[8] = new Button("You Won", "Home Page", "Return to Home Page", 50, 50, 260, 25);
@@ -139,6 +140,9 @@ class UI
   
   public void displayGameOver()
   {
+    textSize(50);
+    text("Lives: " + myTank.lives, 900, 450);
+    
     textSize(100);
     text("GAME OVER", width / 2, 100);
     updateButtonHover("Game Over"); //ditto ^
@@ -148,7 +152,17 @@ class UI
   {
     textSize(100);
     text("YOU WON", width / 2, 100);
-    updateButtonHover("You Won"); 
+    textSize(50);
+    text("TankSpeed: " + (int)(myTank.tank_speed * framerate / 80 * 10) + "\n"
+      +  "Tank Health: " + (int)(myTank.original_tank_health * 10) + "\n"
+      +  "Bullet Speed: " + (int)(myTank.bullet_speed * 10) + "\n"
+      +  "Bullet Damage: " + (int)(myTank.bullet_health * 10) + "\n"
+      +  "Bullet Size: " + (int)myTank.bullet_size + "\n"
+      +  "Bullet Frequency: " + myTank.bullet_frequency + "\n"
+      +  "Num Bullet Bounce: " + myTank.num_bullet_bounce + "\n"
+      +  "Lives: " + myTank.lives + "\n", width / 10, 200);
+      
+    updateButtonHover("You Won");
   }
   
   public void displayUpgrades()
@@ -159,12 +173,13 @@ class UI
     text("(Choose an upgrade)", 1500, 200);
     textSize(50);
     text("TankSpeed: " + (int)(myTank.tank_speed * framerate / 80 * 10) + "\n"
-      +  "Tank Health: " + (int)(myTank.tank_health * 10) + "\n"
+      +  "Tank Health: " + (int)(myTank.original_tank_health * 10) + "\n"
       +  "Bullet Speed: " + (int)(myTank.bullet_speed * 10) + "\n"
       +  "Bullet Damage: " + (int)(myTank.bullet_health * 10) + "\n"
       +  "Bullet Size: " + (int)myTank.bullet_size + "\n"
       +  "Bullet Frequency: " + myTank.bullet_frequency + "\n"
-      +  "Num Bullet Bounce: " + myTank.num_bullet_bounce + "\n\n", width / 10, 200);
+      +  "Num Bullet Bounce: " + myTank.num_bullet_bounce + "\n"
+      +  "Lives: " + myTank.lives + "\n", width / 10, 200);
     
     updateButtonHover("Upgrades"); 
   }
@@ -181,11 +196,11 @@ class UI
     textSize(50);
     text("About", width / 2, 100);
     textSize(40);
-    text("I worked pretty hard on this blah blah blah blah blah blah blah", 100, 300);
-    text("blegh blar blatt blange blah blah blah blah blah blah blah blah", 100, 350);
-    text("blegh blar blatt blange blah blah blah blah blah blah blah blah", 100, 400);
-    text("blegh blar blatt blange blah blah blah blah blah blah blah blah", 100, 450);
-    text("blegh blar blatt blange blah blah blah blah blah blah blah blah", 100, 500);
+    text("I worked pretty hard on this", 100, 300);
+    text("Aira helped a lot", 100, 350);
+    text("Sean too", 100, 400);
+    text("Bryce is the official tester I guess", 100, 450);
+    text("Sakan be like, fabian is like", 100, 500);
     updateButtonHover("About");
   }
   
@@ -254,10 +269,20 @@ class UI
     }
     else if(myTank.tank_health <= 0)
     {
+      myTank.lives--;
       runGame = false;
       myUI.resetGame(); //resets the game by restoring player health and deleting all remaining enemies
-      displayGameOver = true;
-      trigger_text = "Game Over";
+      if(myTank.lives > 0)
+      {
+        displayGameOver = true;
+        trigger_text = "Game Over";
+      }
+      if(myTank.lives <= 0)
+      {
+        displayHome = true;
+        myTank.resetEntireTank();
+        trigger_text = "Return to Home Page";
+      }
       click_protection_timer = (int)(FRAMERATE / 2);
     }
   }
@@ -266,7 +291,7 @@ class UI
   {
     enemyController.resetEnemies();
     bulletController.resetBullets();
-    myTank.resetTank();
+    myTank.tank_health = myTank.original_tank_health;
   }
   
   public void setTriggerText(String text)

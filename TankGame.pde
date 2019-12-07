@@ -65,7 +65,8 @@ void setup()
   /*tank_width*/75, //typically 75
   /*tank_height*/68, 
   /*tank_health*/3 + .3*(0), //typically 3, 0 intial upgrades
-  /*tank_health_regeneration*/.25, //typically 0
+  /*tank_health_regeneration*/0, //typically 0, .25 could be original
+  /*Number of lives*/3,
   /*tank_speed*/2 + .2*(0), //typically 2, 0 intial upgrades
   /*bullet_size*/20 + 2*(0), //typically 20, 0 intial upgrades
   /*bullet_speed*/4 + .4*(0), //typically 4, 0 intial upgrades
@@ -80,6 +81,7 @@ void setup()
   /*Turret Color         r/g/b*/0, 0, 0,
   /*Turret Outline Color r/g/b*/0, 0, 0,
   /*Turret Stroke Weight*/3);
+  myTank.regeneration_kickin = 10;
   
   myTank.updateCollisionPermissions(
   /*player_shot_collision_with_body allowed*/ false, 
@@ -127,7 +129,7 @@ void draw()
     //  background_music.stop();
     
     upgrades_on = true;
-    keep_upgrades = true;
+    keep_upgrades = false;
     myUI.runGame();
     myUI.endGameCheck();//if player health reaches zero or num of enemies reach zero, resets the game
   }
@@ -159,7 +161,6 @@ void keyPressed()
     myTank.setTankHealthNegative();
 }
 
-
 void mousePressed() 
 {
   if(runGame)
@@ -172,37 +173,7 @@ void mousePressed()
       {
         case "Return to Home Page":
           if (upgrades_on && !keep_upgrades) 
-          {
-            myTank  = new PlayerTank(
-            /*tank_width*/75, //typically 75
-            /*tank_height*/68, 
-            /*tank_health*/3 + .3*(0), //typically 3, 0 intial upgrades
-            /*tank_health_regeneration*/0, //typically 0
-            /*tank_speed*/2 + .2*(0), //typically 2, 0 intial upgrades
-            /*bullet_size*/20 + 2*(0), //typically 20, 0 intial upgrades
-            /*bullet_speed*/4 + .4*(0), //typically 4, 0 intial upgrades
-            /*bullet_health/pentration/damage*/1 + .1*(0),//typically 1
-            /*bullet_frequency*/48 - 2 * (0), //typically 48, cannot go below 3 since (int)(80 / framerate) = 0
-            /*number of times bullets bounce*/1,
-            /*spawn_x*/600, 
-            /*spawn_y*/500,
-            /*Tank Color           r/g/b*/8, 247, 254,
-            /*Tank Outline Color   r/g/b*/0, 0, 0,
-            /*Tank Stroke Weight*/5,
-            /*Turret Color         r/g/b*/0, 0, 0,
-            /*Turret Outline Color r/g/b*/0, 0, 0,
-            /*Turret Stroke Weight*/3);
-            
-            myTank.updateCollisionPermissions(
-            /*player_shot_collision_with_body allowed*/ false, 
-            /*enemy_shot_collision_with_body allowed*/ true, 
-            /*player_bullet_collide allowed*/ false, 
-            /*enemy_bullet_collide allowed*/ true,
-            /*collision_bullet_with_wall_allowed*/ true,
-            /*collision_body_with_wall_allowed*/ true);
-            
-            //Only turn on if self-damage is on: //myTank.setBulletSpawnFromLength(14);//add or subtract extra distance from turret length
-          }
+            myTank.resetEntireTank();
           break;
         case "No Upgrade":
           break;
@@ -229,12 +200,15 @@ void mousePressed()
           break;
         case "BulletBounce +1 (-20% everything else)":
           myTank.addBulletBounce(1);
-          myTank.addTankSpeed(-.4); //decreases 40 percent of original
-          myTank.addTankHealth(-.6); //decreases 40 percent of original
-          myTank.addBulletSpeed(-.8); //decreases 40 percent of original
-          myTank.addBulletPenetration(-.2); //decreases 40 percent of original
+          myTank.addTankSpeed(-.4); //decreases 20 percent of original
+          myTank.addTankHealth(-.6); //decreases 20 percent of original
+          myTank.addBulletSpeed(-.8); //decreases 20 percent of original
+          myTank.addBulletPenetration(-.2); //decreases 20 percent of original
           myTank.addBulletSize(-2); //decreases by 10 percent
           myTank.increaseBulletFrequency(4); //increases by 8 ticks per shot
+          break;
+        case "Lives +1":
+          myTank.lives++;
           break;
       }
       if(myTank.bullet_frequency < 3) //minimum is 1
@@ -324,6 +298,41 @@ void mousePressed()
         break;
       case 7:
         myWorld.generateLevel7();
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
+        runGame = true;
+        break;
+      case 8:
+        myWorld.generateLevel8();
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
+        runGame = true;
+        break;
+      case 9:
+        myWorld.generateLevel9();
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
+        runGame = true;
+        break;
+      case 10:
+        myWorld.generateLevel10();
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
+        runGame = true;
+        break;
+      case 11:
+        myWorld.generateLevel11();
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
+        runGame = true;
+        break;
+      case 12:
+        myWorld.generateLevel12();
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
+        runGame = true;
+        break;
+      case 13:
+        myWorld.generateLevel12();
+        myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
+        runGame = true;
+        break;
+      case 14:
+        myWorld.generateLevel12();
         myUI = new UI(myUI.trigger_int + 1);//makes it so that the next button references the level ahead of it
         runGame = true;
         break;
