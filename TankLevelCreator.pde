@@ -32,6 +32,10 @@ String num8KeyEnemy = "NoMovingEnemy";
 String num9KeyEnemy = "NoMovingEnemy";
 String num0KeyEnemy = "NoMovingEnemy";
 
+boolean select = false;
+int original_mouseX;
+int original_mouseY;
+
 void setup()
 {
   fullScreen();
@@ -68,7 +72,8 @@ void draw()
 {
   background(130, 130, 130);  
   fill(255, 255, 255);
-  
+  if(select)
+    fill(200, 200, 200);
   if(mousepress)
   {
     fill(255, 255, 255);
@@ -186,14 +191,15 @@ void draw()
   fill(0, 0, 0);
   text("Add Controls:", 300, 25);
   textSize(10);
-  text("Drag Mouse: add wall", 500, 20);
+  text("Drag Mouse: add/move wall", 500, 20);
+  text("s: toggle select mode", 500, 40);
   text("1: set player spawn", 650, 20);
   text("2: add no moving enemy", 650, 40);
   text("3: add standard enemy", 650, 60);
   text("4: add slow strong enemy", 650, 80);
   text("5: add sniper enemy", 800, 20);
   text("6: add burst shot enemy", 800, 40);
-  text("7: add no moving enemy", 800, 60);
+  text("7: add regen enemy", 800, 60);
   text("8: add no moving enemy", 800, 80);
   text("9: add no moving enemy", 950, 20);
   text("0: add no moving enemy", 950, 40);
@@ -218,59 +224,95 @@ void draw()
 
 void mousePressed()
 {
-  wall_x = mouseX;
-  wall_y = mouseY;
-  wall_x2 = wall_x; //prevents a visual glitch
-  wall_y2 = wall_y;  
-  mousepress = true;
+  if(!select) //don't run if select is on
+  {
+    wall_x = mouseX;
+    wall_y = mouseY;
+    wall_x2 = wall_x; //prevents a visual glitch
+    wall_y2 = wall_y;  
+    mousepress = true;
+  }
+  
+  if(select)
+  {
+    original_mouseX = mouseX;
+    original_mouseY = mouseY;
+  }
 }
 
 void mouseReleased()
 {
-  mousepress = false;
-  wall_index++; //originally 3
-  
-  //organizes the points and lengths so that they can be stored without negatives
-  if(wall_x > wall_x2 && wall_y < wall_y2
-  || wall_x < wall_x2 && wall_y > wall_y2)
+  if(!select) //do not run this if you are on select mode
   {
-    int placeholder;
-    placeholder = wall_y;
-    wall_y = wall_y2;
-    wall_y2 = placeholder;
+    mousepress = false;
+    wall_index++; //originally 3
+    
+    //organizes the points and lengths so that they can be stored without negatives
+    if(wall_x > wall_x2 && wall_y < wall_y2
+    || wall_x < wall_x2 && wall_y > wall_y2)
+    {
+      int placeholder;
+      placeholder = wall_y;
+      wall_y = wall_y2;
+      wall_y2 = placeholder;
+    }
+    
+    if(wall_x > wall_x2 && wall_y > wall_y2)
+    {
+      int placeholder;
+      placeholder = wall_x;
+      wall_x = wall_x2;
+      wall_x2 = placeholder;    
+      
+      placeholder = wall_y;
+      wall_y = wall_y2;
+      wall_y2 = placeholder;
+    }
+      
+      
+    walls[wall_index][0] = wall_x;
+    walls[wall_index][1] = wall_y;
+    walls[wall_index][2] = wall_x2 - wall_x;
+    walls[wall_index][3] = wall_y2 - wall_y;
+    
+    for(int i = 0; i < 4; i++)//rounding the walls to the nearest 10 px
+    {
+      int remainder = walls[wall_index][i] % 10;
+      if(remainder >= 5)
+        walls[wall_index][i] += 10 - remainder;
+      
+      if( remainder < 5)
+        walls[wall_index][i] -= remainder;
+    }
   }
   
-  if(wall_x > wall_x2 && wall_y > wall_y2)
+  if(select) //autocorrect the x and y coordinates when released
   {
-    int placeholder;
-    placeholder = wall_x;
-    wall_x = wall_x2;
-    wall_x2 = placeholder;    
-    
-    placeholder = wall_y;
-    wall_y = wall_y2;
-    wall_y2 = placeholder;
+    for(int i = 0; i < walls.length; i++)
+    {
+      for(int a = 0; a < 2; a++)//rounding the walls to the nearest 10 px
+      {
+        int remainder = walls[i][a] % 10;
+        if(remainder >= 5)
+          walls[i][a] += 10 - remainder;
+        
+        if( remainder < 5)
+          walls[i][a] -= remainder;
+      }
+    }
   }
-    
-    
-  walls[wall_index][0] = wall_x;
-  walls[wall_index][1] = wall_y;
-  walls[wall_index][2] = wall_x2 - wall_x;
-  walls[wall_index][3] = wall_y2 - wall_y;
-  
-  if(walls[wall_index][2] == 0 || walls[wall_index][2] == 0) //if the height or width are zero, delete the wall
-    wall_index--;
   
   System.out.println("//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
   System.out.printf("" + "\n" +
   "  public void generateLevel#()" + "\n" +
-  "  {" + "\n");
+  "  {");
   
   System.out.printf("" + "\n" + 
   "    myUI.resetGame();" + "\n" + 
   "    this.num_of_walls = " + (wall_index + 1) + ";" + "\n" +
   "    float[][] walls = new float[" + (wall_index + 1) + "][4];" + "\n" +
-  "    this.walls = walls;" + "\n\n");
+  "    this.walls = walls; \n");
+  //System.out.printf("    background_color[0] = 50; \n    background_color[1] = 50; \n    background_color[2] = 50; \n\n");
   
   for(int i = 0; i <= wall_index; i++)
   {
@@ -353,12 +395,39 @@ void keyPressed()
 {
   if(key == 'd' || key == 'D')
   {
-    walls[wall_index][0] = 0;
-    walls[wall_index][1] = 0;
-    walls[wall_index][2] = 0;
-    walls[wall_index][3] = 0;
-    if(wall_index + 1 > 5)
-      wall_index--;
+    for(int i = 0; i < walls.length; i++)
+    {
+      if(walls[i][0] < mouseX && mouseX < walls[i][0] + walls[i][2]
+      && walls[i][1] < mouseY && mouseY < walls[i][1] + walls[i][3])
+      {
+        walls[i][0] = 0;
+        walls[i][1] = 0;
+        walls[i][2] = 0;
+        walls[i][3] = 0;
+        if(wall_index + 1 > 4)
+          wall_index--;
+      }
+    }
+    
+    for(int i = 0; i < walls.length - 1; i++)
+    {
+      if(walls[i][2] == 0 && walls[i][3] == 0)
+      {
+        walls[i][0] = walls[i+1][0];
+        walls[i][1] = walls[i+1][1];
+        walls[i][2] = walls[i+1][2];
+        walls[i][3] = walls[i+1][3];
+        if(!(i < walls.length - 1))
+        {
+          walls[i+1][0] = 0;
+          walls[i+1][1] = 0;
+          walls[i+1][2] = 0;
+          walls[i+1][3] = 0;
+        }
+      }
+    }
+    
+
   }
   
   if(key == 'w' || key == 'W')
@@ -431,6 +500,14 @@ void keyPressed()
     tanks[8][tank_index9][1] = 0;
     if(tank_index9 + 1 > 1)
       tank_index9--;
+  }
+  
+  if(key == 's' || key == 'S')
+  {
+    if(select == false)
+      select = true;
+    else
+      select = false;
   }
   
   if(key == '1')
@@ -524,14 +601,15 @@ void keyPressed()
   System.out.println("//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
   System.out.printf("" + "\n" +
   "  public void generateLevel#()" + "\n" +
-  "  {" + "\n");
+  "  {");
   
   System.out.printf("" + "\n" + 
   "    myUI.resetGame();" + "\n" + 
   "    this.num_of_walls = " + (wall_index + 1) + ";" + "\n" +
   "    float[][] walls = new float[" + (wall_index + 1) + "][4];" + "\n" +
-  "    this.walls = walls;" + "\n\n");
-  
+  "    this.walls = walls;" + "\n");
+  //System.out.printf("    background_color[0] = 50; \n    background_color[1] = 50; \n    background_color[2] = 50; \n\n");
+
   for(int i = 0; i <= wall_index; i++)
   {
     System.out.printf("" + "\n" +
@@ -611,6 +689,26 @@ void keyPressed()
 
 void mouseDragged()
 {
-  wall_x2 = mouseX;
-  wall_y2 = mouseY;
+  if(!select)
+  {
+    wall_x2 = mouseX;
+    wall_y2 = mouseY;
+  }
+  
+  if(select) //if selecting a wall is true
+  {
+    for(int i = 0; i < walls.length; i++)
+    {
+      fill(200, 200, 200);
+      rect(walls[i][0], walls[i][1], walls[i][2], walls[i][3]);
+      if(walls[i][0] < mouseX && mouseX < walls[i][0] + walls[i][2]
+      && walls[i][1] < mouseY && mouseY < walls[i][1] + walls[i][3])
+      {
+        walls[i][0] += mouseX - original_mouseX;
+        walls[i][1] += mouseY - original_mouseY;
+        original_mouseX = mouseX;
+        original_mouseY = mouseY;
+      }
+    }
+  }
 }
