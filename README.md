@@ -22,4 +22,4 @@ A fun little game I am working on. Includes basic AI and an upgradable tank. Lev
 
 • UI.pde:   UI class that controls the entire user interface and can start the actual game.
 
-• World.pde:  Contains definitions for each world, including wall placements, enemy types, and enemy placements
+• World.pde:  Contains definitions for each level, including wall placements, enemy types, and enemy placements. Note: I do not recommend writing level definitions by hand, use the TankLevelCreator.pde script to draw the levels and then copy-paste the code here.
