@@ -2,7 +2,7 @@
 
 A fun little game I am working on. Includes basic AI and an upgradable tank. Levels get harder as you get farther into the game. Included a levelcreator class but must be put into it's own folder to be used. Includes a randomized level feature with modifiable amount of enemies/walls.
 
-• Bullet.pde:   Bullet class, instances are stored in an arraylist in the BulletController.pde script
+• Bullet.pde:   Bullet class, instances are stored in a linkedlist in the BulletController.pde script
 
 • BulletController.pde:  Handles the bullet collisions
 
