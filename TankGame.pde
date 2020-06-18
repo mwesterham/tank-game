@@ -53,13 +53,13 @@ void setup()
   //GAME SETUP
   //size(1900, 900); //for testing game breaking stuff
   fullScreen();
-  framerate = 25; // 25, how many frames the game thinks the game is running at, cannot go below 3 since (int)(80 / framerate) = 0)
-  FRAMERATE = 30; //30, actual framerate of the game, base frame rate is 80 fps hence why everything is like 80 / framerate instead of  FRAMERATE / framerate
+  framerate = 25; // 25, how many frames the game thinks the game is running at, cannot go below 3 
+  FRAMERATE = 30; //30, actual framerate of the game, base frame rate is 80 fps
   frameRate(FRAMERATE); 
   //speed of the game is dependent on ratio between the two framerates: FRAMERATE / framerate = game speed
-  //but make sure your FRAMERATE is within your cpu's capabilities (ie. do not run at FRAMERATE = 100)
+  //but make sure your FRAMERATE is within your cpu's capabilities 
  
-  myUI = new UI(0); //instantiate it here so it can inherit the width and height
+  myUI = new UI(0); 
   
   myTank  = new PlayerTank(
   /*tank_width*/75, //typically 75
