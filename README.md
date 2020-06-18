@@ -20,6 +20,6 @@ A fun little game I am working on. Includes basic AI and an upgradable tank. Lev
 
 • TankLevelCreator.pde:   Level creator to aide in level creation (seperate from main game). Also note: very basic, must copy-paste the code printed in the terminal to the World.pde file
 
-• UI.pde:   Controls the entire UI and interacts with main loop to run game. Can be treated as a wrapper
+• UI.pde:   UI class that controls the entire user interface and can start the actual game.
 
 • World.pde:  Contains definitions for each world, including wall placements, enemy types, and enemy placements
