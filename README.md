@@ -26,3 +26,11 @@ A fun little game I am working on. Includes basic AI and an upgradable tank. Lev
 
 • World.pde:  Contains definitions for each level, including wall placements, enemy types, and enemy placements. Note: I do not recommend writing level definitions by hand, use the TankLevelCreator.pde script to draw the levels and then copy-paste the code here.
 
+<p float="left">
+  <img src="images/TankGame_UI.png" width = 400>
+  <img src="images/TankGame_Upgrades.png" width = 400>
+  <img src="images/TankGame_LevelPic1.png">
+  <img src="images/TankGame_LevelPic3.png">
+</p>
+
+
