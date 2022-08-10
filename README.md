@@ -1,4 +1,4 @@
-# TankGame
+# Tank Game
 
 This is a prototype built with processing, game was moved to Unity!
 
