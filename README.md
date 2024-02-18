@@ -1,32 +1,30 @@
 # Tank Game
 
-This is a prototype built with processing, game was moved to Unity!
+This is a prototype built with processing 3, game was moved to Unity!
 
 A fun little game I am working on. Includes basic AI and an upgradable tank. Levels get harder as you get farther into the game. Included a levelcreator class but must be put into it's own folder to be used. Includes a randomized level feature with modifiable amount of enemies/walls.
 
+• Bullet.pde: Bullet class, instances are stored in a linkedlist in the BulletController.pde script
 
+• BulletController.pde: Handles the bullet collisions
 
-• Bullet.pde:   Bullet class, instances are stored in a linkedlist in the BulletController.pde script
+• Button.pde: Button class used in the UI.pde script
 
-• BulletController.pde:  Handles the bullet collisions
+• EnemyAI.pde: Defines enemy AI
 
-• Button.pde:   Button class used in the UI.pde script
+• EnemyTank.pde: Enemy tank class, used in the TankController.pde script for multiple tanks
 
-• EnemyAI.pde:  Defines enemy AI 
+• PlayerTank.pde: Player tank class
 
-• EnemyTank.pde:  Enemy tank class, used in the TankController.pde script for multiple tanks
+• TankController.pde: Handles enemy placement, rendering, and shot cooldowns
 
-• PlayerTank.pde:   Player tank class
+• TankGame.pde: Main loop to run the game
 
-• TankController.pde:   Handles enemy placement, rendering, and shot cooldowns
+• TankLevelCreator.pde: Level creator to aide in level creation (seperate from main game). Also note: very basic, must copy-paste the code printed in the terminal to the World.pde file
 
-• TankGame.pde:   Main loop to run the game
+• UI.pde: UI class that controls the entire user interface and can start the actual game.
 
-• TankLevelCreator.pde:   Level creator to aide in level creation (seperate from main game). Also note: very basic, must copy-paste the code printed in the terminal to the World.pde file
-
-• UI.pde:   UI class that controls the entire user interface and can start the actual game.
-
-• World.pde:  Contains definitions for each level, including wall placements, enemy types, and enemy placements. Note: I do not recommend writing level definitions by hand, use the TankLevelCreator.pde script to draw the levels and then copy-paste the code here.
+• World.pde: Contains definitions for each level, including wall placements, enemy types, and enemy placements. Note: I do not recommend writing level definitions by hand, use the TankLevelCreator.pde script to draw the levels and then copy-paste the code here.
 
 <p float="left">
   <img src="images/TankGame_UI.png" width = 400>
@@ -34,5 +32,3 @@ A fun little game I am working on. Includes basic AI and an upgradable tank. Lev
   <img src="images/TankGame_LevelPic1.png">
   <img src="images/TankGame_LevelPic3.png">
 </p>
-
-
